@@ -14,12 +14,46 @@ const router = createBrowserRouter([
     path: "admin",
     children: [
       {
-        path: "login",
-        element: <LoginPage />,
+        path: "",
+        element: <HomePage />,
+        children: [
+          {
+            path: "",
+            element: (
+              <>
+                <h2>หน้าหลัก</h2>
+              </>
+            ),
+          },
+          {
+            path: "table",
+            element: (
+              <>
+                <h2>จัดการโต๊ะ</h2>
+              </>
+            ),
+          },
+          {
+            path: "kitchen",
+            element: (
+              <>
+                <h2>จัดการครัว</h2>
+              </>
+            ),
+          },
+          {
+            path: "menu",
+            element: (
+              <>
+                <h2>รายการอาหาร</h2>
+              </>
+            ),
+          },
+        ],
       },
       {
-        path: "home",
-        element: <HomePage />,
+        path: "login",
+        element: <LoginPage />,
       },
     ],
   },
