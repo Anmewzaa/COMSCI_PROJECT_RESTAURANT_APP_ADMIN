@@ -1,11 +1,16 @@
 // SWAL
 import Swal from "sweetalert2";
 // React Hook
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // Axios
 import axios from "axios";
 
 const LoginPage = () => {
+  useEffect(() => {
+    if (localStorage.getItem("PARADISE_LOGIN_TOKEN")) {
+      return (window.location.href = "/admin/");
+    }
+  }, []);
   const [state, setState] = useState({
     username: "",
     password: "",
@@ -35,13 +40,16 @@ const LoginPage = () => {
             text: result.data.error,
           });
         } else {
-          localStorage.setItem("LOGIN_TOKEN", result.data.response[0].token);
+          localStorage.setItem(
+            "PARADISE_LOGIN_TOKEN",
+            result.data.response[0].token
+          );
           Swal.fire({
             icon: "success",
             title: "Sign In Success",
             text: "...",
           }).then(() => {
-            window.location.href = "/admin/home";
+            window.location.href = "/admin/";
           });
         }
         setState({ username: "", password: "" });
