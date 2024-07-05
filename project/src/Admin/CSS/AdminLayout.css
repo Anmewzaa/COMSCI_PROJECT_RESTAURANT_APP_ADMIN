@@ -1,0 +1,13 @@
+.admin-home-page {
+  display: flex;
+}
+
+.navigation-box {
+  height: 100vh;
+  width: 300px;
+  background: lightcoral;
+}
+
+.header-box {
+  background: lightgoldenrodyellow;
+}
