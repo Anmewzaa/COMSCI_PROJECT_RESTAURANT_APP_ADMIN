@@ -1,0 +1,9 @@
+.container {
+  display: flex;
+  padding: 1rem;
+  text-decoration: none;
+  list-style: none;
+}
+.container li {
+  margin-right: 1rem;
+}
