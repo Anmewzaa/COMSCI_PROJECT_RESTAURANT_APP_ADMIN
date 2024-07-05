@@ -7,7 +7,11 @@ import "./global.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // Pages
 import LoginPage from "./Admin/Pages/LoginPage";
+import AdminLayout from "./Admin/Pages/AdminLayout";
 import HomePage from "./Admin/Pages/HomePage";
+import TablePage from "./Admin/Pages/TablePage";
+import KitchenPage from "./Admin/Pages/KitchenPage";
+import MenuPage from "./Admin/Pages/MenuPage";
 
 const router = createBrowserRouter([
   {
@@ -15,13 +19,13 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <HomePage />,
+        element: <AdminLayout />,
         children: [
           {
             path: "",
             element: (
               <>
-                <h2>หน้าหลัก</h2>
+                <HomePage />
               </>
             ),
           },
@@ -29,7 +33,7 @@ const router = createBrowserRouter([
             path: "table",
             element: (
               <>
-                <h2>จัดการโต๊ะ</h2>
+                <TablePage />
               </>
             ),
           },
@@ -37,7 +41,7 @@ const router = createBrowserRouter([
             path: "kitchen",
             element: (
               <>
-                <h2>จัดการครัว</h2>
+                <KitchenPage />
               </>
             ),
           },
@@ -45,7 +49,7 @@ const router = createBrowserRouter([
             path: "menu",
             element: (
               <>
-                <h2>รายการอาหาร</h2>
+                <MenuPage />
               </>
             ),
           },
