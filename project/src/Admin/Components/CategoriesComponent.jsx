@@ -5,10 +5,10 @@ import axios from "axios";
 // CSS
 import "../CSS/CategoriesComponent.css";
 // Context
-import { AppContext } from "../Pages/MenuPage";
+import { SearchContext } from "../Pages/MenuPage";
 
 const CategoriesComponent = () => {
-  const { setSearch } = useContext(AppContext);
+  const { search, setSearch } = useContext(SearchContext);
   const [categories, setCategories] = useState([]);
   const fetchAPI = () => {
     axios.get(`${import.meta.env.VITE_API_URL}/category/get`).then((data) => {
@@ -22,22 +22,28 @@ const CategoriesComponent = () => {
   return (
     <>
       <ul className="container">
-        <li onClick={() => setSearch("")} className="cursor">
+        <li
+          onClick={() => setSearch("")}
+          className={`cursor ${search === "" ? "active" : ""}`}
+        >
           ทั้งหมด
         </li>
-        {categories.map((item) => {
-          return (
-            <li
-              key={item.category_id}
-              onClick={() => {
-                setSearch(item.category_name.thai);
-              }}
-              className="cursor"
-            >
-              {item.category_name.thai}
-            </li>
-          );
-        })}
+        {categories &&
+          categories.map((item) => {
+            return (
+              <li
+                key={item.category_id}
+                onClick={() => {
+                  setSearch(item.category_name.thai);
+                }}
+                className={`cursor ${
+                  search === item.category_name.thai ? "active" : ""
+                }`}
+              >
+                {item.category_name.thai}
+              </li>
+            );
+          })}
       </ul>
     </>
   );
