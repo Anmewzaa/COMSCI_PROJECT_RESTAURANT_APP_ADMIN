@@ -12,6 +12,9 @@ import HomePage from "./Admin/Pages/HomePage";
 import TablePage from "./Admin/Pages/TablePage";
 import KitchenPage from "./Admin/Pages/KitchenPage";
 import MenuPage from "./Admin/Pages/MenuPage";
+import MenuInfo from "./Admin/Pages/MenuInfo";
+import CategoriesPage from "./Admin/Pages/CategoriesPage";
+import OptionPage from "./Admin/Pages/OptionPage";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +53,26 @@ const router = createBrowserRouter([
             element: (
               <>
                 <MenuPage />
+              </>
+            ),
+          },
+          {
+            path: "menu/:id",
+            element: <MenuInfo />,
+          },
+          {
+            path: "menu/categories",
+            element: (
+              <>
+                <CategoriesPage />
+              </>
+            ),
+          },
+          {
+            path: "menu/option",
+            element: (
+              <>
+                <OptionPage />
               </>
             ),
           },
