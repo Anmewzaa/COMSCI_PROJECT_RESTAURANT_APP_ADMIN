@@ -1,18 +1,37 @@
 // React
-import { useEffect, useState } from "react";
-// JWT-decode
-import { jwtDecode } from "jwt-decode";
+import { useContext } from "react";
+// React Router Dom
+import { useLocation } from "react-router-dom";
+// Context
+import { UserContext } from "../Pages/AdminLayout";
 
 const HeaderComponent = () => {
-  const [user, setUser] = useState([]);
-  useEffect(() => {
-    const jwt_token = localStorage.getItem("PARADISE_LOGIN_TOKEN");
-    setUser(jwtDecode(jwt_token));
-  }, []);
+  const location = useLocation();
+  const { user } = useContext(UserContext);
+  const TitleName = () => {
+    switch (location.pathname) {
+      case "/admin":
+        return "หน้าหลัก";
+      case "/admin/table":
+        return "จัดการโต๊ะ";
+      case "/admin/kitchen":
+        return "จัดการครัว";
+      case "/admin/menu":
+        return "รายการอาหาร";
+      case "/admin/menu/categories":
+        return "หมวดหมู่อาหาร";
+      case "/admin/menu/option":
+        return "ส่วนเสริมอาหาร";
+    }
+  };
+
   return (
     <>
       <div className="header-box">
-        <h3>{user.user_fullname}</h3>
+        <h2>{TitleName()}</h2>
+        <h3>
+          <span>Welcome !</span> {user.user_fullname}
+        </h3>
       </div>
     </>
   );
