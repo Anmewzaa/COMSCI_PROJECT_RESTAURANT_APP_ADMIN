@@ -1,0 +1,20 @@
+.card-box {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.footer-box {
+  display: flex;
+  list-style: none;
+  background: #ee8100;
+  position: absolute;
+  bottom: 0%;
+  width: calc(100vw - 250px);
+}
+.footer-box a {
+  text-decoration: none;
+  color: white;
+}
+.footer-box .item {
+  margin-right: 1rem;
+}
