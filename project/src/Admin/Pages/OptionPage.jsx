@@ -25,8 +25,8 @@ const OptionPage = () => {
   return (
     <>
       <div>
-        <input type="text" placeholder="ค้นหาหมวดหมู่อาหาร" />
-        <Link to={"create"}>เพิ่มหมวดหมู่</Link>
+        <input type="text" placeholder="ค้นหาส่วนเสริมอาหาร" />
+        <Link to={"create"}>เพิ่มส่วนเสริมอาหาร</Link>
       </div>
       <table>
         <tr>
@@ -46,14 +46,14 @@ const OptionPage = () => {
             ).toLocaleString();
             return (
               <>
-                <tr key={item?.option_id}>
+                <tr key={item?.option_id} className="table">
                   <td>{`${item?.option_name?.thai} (${item?.option_name?.english})`}</td>
                   <td>
                     {item?.sub_option &&
                       item?.sub_option.map((item) => {
                         return (
                           <ul key={item?._id}>
-                            <li>{`${item.sub_option_name.thai} (${item.sub_option_name.english})`}</li>
+                            <li className="test">{`${item.sub_option_name.thai} (${item.sub_option_name.english})`}</li>
                           </ul>
                         );
                       })}
