@@ -17,6 +17,7 @@ import CategoriesPage from "./Admin/Pages/CategoriesPage";
 import CreateCategoriesPage from "./Admin/Pages/CreateCategoriesPage";
 import EditCategoriesPage from "./Admin/Pages/EditCategoriesPage";
 import OptionPage from "./Admin/Pages/OptionPage";
+import CreateOptionPage from "./Admin/Pages/CreateOptionPage";
 
 const router = createBrowserRouter([
   {
@@ -91,6 +92,14 @@ const router = createBrowserRouter([
             element: (
               <>
                 <OptionPage />
+              </>
+            ),
+          },
+          {
+            path: "menu/option/create",
+            element: (
+              <>
+                <CreateOptionPage />
               </>
             ),
           },
