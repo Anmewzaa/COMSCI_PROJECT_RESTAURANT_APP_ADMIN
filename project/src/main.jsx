@@ -14,6 +14,8 @@ import KitchenPage from "./Admin/Pages/KitchenPage";
 import MenuPage from "./Admin/Pages/MenuPage";
 import MenuInfo from "./Admin/Pages/MenuInfo";
 import CategoriesPage from "./Admin/Pages/CategoriesPage";
+import CreateCategoriesPage from "./Admin/Pages/CreateCategoriesPage";
+import EditCategoriesPage from "./Admin/Pages/EditCategoriesPage";
 import OptionPage from "./Admin/Pages/OptionPage";
 
 const router = createBrowserRouter([
@@ -65,6 +67,22 @@ const router = createBrowserRouter([
             element: (
               <>
                 <CategoriesPage />
+              </>
+            ),
+          },
+          {
+            path: "menu/categories/create",
+            element: (
+              <>
+                <CreateCategoriesPage />
+              </>
+            ),
+          },
+          {
+            path: "menu/categories/edit/:id",
+            element: (
+              <>
+                <EditCategoriesPage />
               </>
             ),
           },
