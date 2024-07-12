@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 // axios
 import axios from "axios";
+// Components
+import BackFooter from "../Components/BackFooter";
 
 const MenuInfo = () => {
   const { id } = useParams();
@@ -35,6 +37,7 @@ const MenuInfo = () => {
           {menu && <>{menu?.menu_name?.thai}</>}
         </>
       )}
+      <BackFooter props={"/admin/menu"} />
     </>
   );
 };
