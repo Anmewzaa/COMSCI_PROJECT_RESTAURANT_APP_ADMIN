@@ -18,3 +18,25 @@
 .footer-box .item {
   margin-right: 1rem;
 }
+
+tr td ul li {
+  list-style: none;
+}
+
+.btn {
+  border-radius: 5px;
+  padding: 0.8rem 1.6rem;
+  color: white;
+  border: none;
+  margin-right: 0.4rem;
+}
+.btn-yellow {
+  background: #ffd43b;
+}
+.btn-red {
+  background: #f03e3e;
+}
+.btn a {
+  text-decoration: none;
+  color: white;
+}
