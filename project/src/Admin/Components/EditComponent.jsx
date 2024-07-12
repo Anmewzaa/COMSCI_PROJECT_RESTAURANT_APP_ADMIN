@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const EditComponent = ({ id }) => {
   return (
     <>
-      <button>
+      <button className="btn btn-yellow">
         <Link to={`edit/${id}`}>แก้ไข</Link>
       </button>
     </>
