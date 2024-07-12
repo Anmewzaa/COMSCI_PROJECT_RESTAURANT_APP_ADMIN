@@ -24,6 +24,8 @@ const HeaderComponent = () => {
         return "สร้างหมวดหมู่อาหาร";
       case "/admin/menu/option":
         return "ส่วนเสริมอาหาร";
+      case "/admin/menu/option/create":
+        return "สร้างส่วนเสริมอาหาร";
     }
   };
 
