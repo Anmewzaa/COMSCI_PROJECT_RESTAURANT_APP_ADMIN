@@ -20,9 +20,12 @@ const CreateOptionPage = () => {
   const inputValue = (name) => (event) => {
     setOption({ ...option, [name]: event.target.value });
   };
+  const inputSubOptionValue = (name) => (event) => {
+    setSubOption({ ...subOption, [name]: event.target.value });
+  };
   const submitForm = async (e) => {
     e.preventDefault();
-    if (!(option.thai && option.english && option.sub_option.length === 0)) {
+    if (!(option.thai && option.english && option.sub_option.length !== 0)) {
       return Swal.fire({
         icon: "error",
         title: "Oops...",
@@ -45,6 +48,7 @@ const CreateOptionPage = () => {
         }
       )
       .then((result) => {
+        console.log(result);
         if (result.data.error) {
           Swal.fire({
             icon: "error",
@@ -62,6 +66,32 @@ const CreateOptionPage = () => {
         }
       });
   };
+  const addSubOption = async () => {
+    if (!(subOption.thai && subOption.english)) {
+      return;
+    }
+    setOption((prevOption) => ({
+      ...prevOption,
+      sub_option: [
+        ...prevOption.sub_option,
+        {
+          sub_option_name: {
+            thai: subOption.thai,
+            english: subOption.english,
+          },
+        },
+      ],
+    }));
+    setSubOption({ ...subOption, ["thai"]: "", ["english"]: "" });
+  };
+  const deleteSubOption = async (indexToRemove) => {
+    setOption((prevOption) => ({
+      ...prevOption,
+      sub_option: prevOption.sub_option.filter(
+        (_, index) => index !== indexToRemove
+      ),
+    }));
+  };
   return (
     <>
       <form onSubmit={submitForm}>
@@ -77,20 +107,42 @@ const CreateOptionPage = () => {
           value={option.english}
           onChange={inputValue("english")}
         />
+        <br />
+        {option.sub_option &&
+          option.sub_option.map((item, index) => {
+            return (
+              <div key={index}>
+                {JSON.stringify(item)}
+                <button
+                  type="button"
+                  onClick={() => {
+                    deleteSubOption(index);
+                  }}
+                >
+                  x
+                </button>
+              </div>
+            );
+          })}
         <div>
           <input
             type="text"
             value={subOption.thai}
             placeholder="sub option thai"
+            onChange={inputSubOptionValue("thai")}
           />
           <input
             type="text"
             value={subOption.english}
             placeholder="sub option english"
+            onChange={inputSubOptionValue("english")}
           />
-          <button>Add</button>
+          <button type="button" onClick={() => addSubOption()}>
+            Add
+          </button>
         </div>
         <button type="submit">สร้างส่วนเสริมอาหาร</button>
+        {JSON.stringify(option)}
       </form>
       <BackFooter props={"/admin/menu/categories"} />
     </>
