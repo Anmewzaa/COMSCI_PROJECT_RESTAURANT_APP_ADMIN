@@ -29,7 +29,7 @@ const DeleteComponent = ({ name, id }) => {
               text: "Your file has been deleted.",
               icon: "success",
             });
-            window.location.replace("/admin/menu/categories");
+            window.location.replace(`/admin/menu/${name}`);
           });
       }
     });
