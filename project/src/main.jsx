@@ -11,13 +11,15 @@ import AdminLayout from "./Admin/Pages/AdminLayout";
 import HomePage from "./Admin/Pages/HomePage";
 import TablePage from "./Admin/Pages/TablePage";
 import KitchenPage from "./Admin/Pages/KitchenPage";
-import MenuPage from "./Admin/Pages/MenuPage";
-import MenuInfo from "./Admin/Pages/MenuInfo";
-import CategoriesPage from "./Admin/Pages/CategoriesPage";
-import CreateCategoriesPage from "./Admin/Pages/CreateCategoriesPage";
-import EditCategoriesPage from "./Admin/Pages/EditCategoriesPage";
-import OptionPage from "./Admin/Pages/OptionPage";
-import CreateOptionPage from "./Admin/Pages/CreateOptionPage";
+import MenuPage from "./Admin/Pages/MenuPage/MenuPage";
+import MenuInfo from "./Admin/Pages/MenuPage/MenuInfo";
+import CreateMenuPage from "./Admin/Pages/MenuPage/CreateMenuPage";
+import CategoriesPage from "./Admin/Pages/CategoryPage/CategoriesPage";
+import CreateCategoriesPage from "./Admin/Pages/CategoryPage/CreateCategoriesPage";
+import EditCategoriesPage from "./Admin/Pages/CategoryPage/EditCategoriesPage";
+import OptionPage from "./Admin/Pages/OptionPage/OptionPage";
+import CreateOptionPage from "./Admin/Pages/OptionPage/CreateOptionPage";
+import EditOptionPage from "./Admin/Pages/OptionPage/EditOptionPage";
 
 const router = createBrowserRouter([
   {
@@ -60,8 +62,20 @@ const router = createBrowserRouter([
             ),
           },
           {
+            path: "menu/create",
+            element: (
+              <>
+                <CreateMenuPage />
+              </>
+            ),
+          },
+          {
             path: "menu/:id",
-            element: <MenuInfo />,
+            element: (
+              <>
+                <MenuInfo />
+              </>
+            ),
           },
           {
             path: "menu/categories",
@@ -100,6 +114,14 @@ const router = createBrowserRouter([
             element: (
               <>
                 <CreateOptionPage />
+              </>
+            ),
+          },
+          {
+            path: "menu/option/edit/:id",
+            element: (
+              <>
+                <EditOptionPage />
               </>
             ),
           },
