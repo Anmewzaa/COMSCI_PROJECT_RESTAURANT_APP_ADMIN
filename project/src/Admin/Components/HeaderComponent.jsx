@@ -18,6 +18,8 @@ const HeaderComponent = () => {
         return "จัดการครัว";
       case "/admin/menu":
         return "รายการอาหาร";
+      case "/admin/menu/create":
+        return "สร้างรายการอาหาร";
       case "/admin/menu/categories":
         return "หมวดหมู่อาหาร";
       case "/admin/menu/categories/create":
