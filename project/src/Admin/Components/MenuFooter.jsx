@@ -12,7 +12,7 @@ const MenuFooter = () => {
           <Link to={"option"}>ส่วนเสริมอาหาร</Link>
         </li>
         <li className="item">
-          <Link to={""}>สร้างรายการอาหาร</Link>
+          <Link to={"create"}>สร้างรายการอาหาร</Link>
         </li>
       </ul>
     </>
