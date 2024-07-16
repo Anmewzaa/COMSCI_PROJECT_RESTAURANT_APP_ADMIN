@@ -5,7 +5,7 @@ import axios from "axios";
 // CSS
 import "../CSS/CategoriesComponent.css";
 // Context
-import { SearchContext } from "../Pages/MenuPage";
+import { SearchContext } from "../Pages/MenuPage/MenuPage";
 
 const CategoriesComponent = () => {
   const { search, setSearch } = useContext(SearchContext);
