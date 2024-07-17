@@ -33,13 +33,10 @@ const MenuPage = () => {
         <>Loading...</>
       ) : (
         <div className="card-box">
-          {menu ? (
-            <>Empty</>
-          ) : (
+          {menu &&
             menu.map((item) => {
               return <CardComponent key={item.menu_id} menu={item} />;
-            })
-          )}
+            })}
         </div>
       )}
       <MenuFooter />
