@@ -43,6 +43,20 @@ const CreateMenuPage = () => {
   }, []);
   const submitForm = async (e) => {
     e.preventDefault();
+    if (
+      !(
+        menu.name_thai &&
+        menu.name_english &&
+        menu.describe_thai &&
+        menu.describe_english &&
+        menu.price &&
+        menu.category_id &&
+        menu.option_id &&
+        selectedFile
+      )
+    ) {
+      return;
+    }
     const form = new FormData();
     form.append("menu_name_thai", menu.name_thai);
     form.append("menu_name_english", menu.name_english);
@@ -82,7 +96,6 @@ const CreateMenuPage = () => {
   return (
     <>
       <form onSubmit={submitForm} encType="multipart/form-data">
-        {JSON.stringify(menu)}
         <input type="file" accept="image/*" onChange={onImageChange} required />
         <input
           type="text"
