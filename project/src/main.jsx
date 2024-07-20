@@ -5,14 +5,16 @@ import ReactDOM from "react-dom/client";
 import "./global.css";
 // React Router Dom
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-// Pages
+// Admin Pages
 import LoginPage from "./Admin/Pages/LoginPage";
 import AdminLayout from "./Admin/Pages/AdminLayout";
 import HomePage from "./Admin/Pages/HomePage";
-import TablePage from "./Admin/Pages/TablePage";
+import TablePage from "./Admin/Pages/TablePage/TablePage";
+import TableInfoPage from "./Admin/Pages/TablePage/TableInfoPage";
 import KitchenPage from "./Admin/Pages/KitchenPage";
 import MenuPage from "./Admin/Pages/MenuPage/MenuPage";
 import MenuInfo from "./Admin/Pages/MenuPage/MenuInfo";
+import EditMenuInfoPage from "./Admin/Pages/MenuPage/EditMenuInfoPage";
 import CreateMenuPage from "./Admin/Pages/MenuPage/CreateMenuPage";
 import CategoriesPage from "./Admin/Pages/CategoryPage/CategoriesPage";
 import CreateCategoriesPage from "./Admin/Pages/CategoryPage/CreateCategoriesPage";
@@ -44,6 +46,23 @@ const router = createBrowserRouter([
                 <TablePage />
               </>
             ),
+            children: [
+              {
+                path: "",
+                element: (
+                  <div>
+                    <h3>รายละเอียดโต๊ะ</h3>
+                    <div className="full-height flex-center white-container">
+                      กรุณาเลือกโต๊ะ
+                    </div>
+                  </div>
+                ),
+              },
+              {
+                path: ":id",
+                element: <TableInfoPage />,
+              },
+            ],
           },
           {
             path: "kitchen",
@@ -74,6 +93,14 @@ const router = createBrowserRouter([
             element: (
               <>
                 <MenuInfo />
+              </>
+            ),
+          },
+          {
+            path: "menu/edit/:id",
+            element: (
+              <>
+                <EditMenuInfoPage />
               </>
             ),
           },
