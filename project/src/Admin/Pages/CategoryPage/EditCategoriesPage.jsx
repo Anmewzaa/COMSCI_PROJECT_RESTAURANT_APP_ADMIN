@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 // SWAL
 import Swal from "sweetalert2";
+// Components
+import BackFooter from "../../Components/BackFooter";
 
 const EditCategoriesPage = () => {
   const { id } = useParams();
@@ -76,19 +78,29 @@ const EditCategoriesPage = () => {
   };
   return (
     <>
-      <form onSubmit={submitForm}>
-        <input
-          type="text"
-          value={categories.thai}
-          onChange={inputValue("thai")}
-        />
-        <input
-          type="text"
-          value={categories.english}
-          onChange={inputValue("english")}
-        />
+      <form onSubmit={submitForm} className="form">
+        <div className="form-menu-container">
+          <div>
+            <label>ชื่อหมวดหมู่ภาษาไทย</label>
+            <input
+              type="text"
+              value={categories.thai}
+              placeholder="ชื่อหมวดหมู่ภาษาไทย"
+              onChange={inputValue("thai")}
+            />
+          </div>
+          <div>
+            <label>ชื่อหมวดหมู่ภาษาอังกฤษ</label>
+            <input
+              type="text"
+              value={categories.english}
+              onChange={inputValue("english")}
+            />
+          </div>
+        </div>
         <button type="submit">อัพเดทหมวดหมู่อาหาร</button>
       </form>
+      <BackFooter props={"/admin/menu/categories"} />
     </>
   );
 };
