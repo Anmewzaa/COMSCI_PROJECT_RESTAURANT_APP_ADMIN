@@ -6,7 +6,7 @@ const BackFooter = ({ props }) => {
   return (
     <>
       <ul className="footer-box">
-        <li>
+        <li className="back-item">
           <Link to={props}>ย้อนกลับ</Link>
         </li>
       </ul>
