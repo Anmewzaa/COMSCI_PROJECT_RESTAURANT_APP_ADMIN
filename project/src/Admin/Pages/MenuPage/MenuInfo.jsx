@@ -1,7 +1,7 @@
 // React Hook
 import { useState, useEffect } from "react";
 // React Router Dom
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 // axios
 import axios from "axios";
 // Components
@@ -10,6 +10,7 @@ import BackFooter from "../../Components/BackFooter";
 import Swal from "sweetalert2";
 
 const MenuInfo = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [menu, setMenu] = useState([]);
   const [loading, setLoading] = useState();
@@ -25,7 +26,9 @@ const MenuInfo = () => {
   useEffect(() => {
     fetchAPI();
   }, []);
-  const editMenuInfo = () => {};
+  const editMenuInfo = () => {
+    navigate(`/admin/menu/edit/${menu.menu_id}`);
+  };
   const deleteMenuInfo = () => {
     Swal.fire({
       title: "ต้องการลบใช่ไหม?",
@@ -81,6 +84,9 @@ const MenuInfo = () => {
                   <span>ราคา</span> {menu?.menu_price} บาท
                 </p>
                 <p>
+                  <span>ราคาต้นทุน</span> {menu?.menu_cost} บาท
+                </p>
+                <p>
                   <span>คำอธิบาย</span>
                   <br />
                   <p>
@@ -104,6 +110,7 @@ const MenuInfo = () => {
                 )}
                 <button onClick={() => editMenuInfo()}>แก้ไข</button>
                 <button onClick={() => deleteMenuInfo()}>ลบ</button>
+                <button onClick={() => {}}>แจ้งเมนูหมด</button>
               </div>
             </div>
           ) : (
