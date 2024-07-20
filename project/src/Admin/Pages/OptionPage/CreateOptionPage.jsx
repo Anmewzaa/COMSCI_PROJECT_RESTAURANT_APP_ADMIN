@@ -94,57 +94,94 @@ const CreateOptionPage = () => {
   };
   return (
     <>
-      <form onSubmit={submitForm}>
-        <input
-          type="text"
-          placeholder="ชื่อส่วนเสริมอาหารภาษาไทย"
-          value={option.thai}
-          onChange={inputValue("thai")}
-        />
-        <input
-          type="text"
-          placeholder="ชื่อส่วนเสริมอาหารภาษาอังกฤษ"
-          value={option.english}
-          onChange={inputValue("english")}
-        />
-        <br />
-        {option.sub_option &&
-          option.sub_option.map((item, index) => {
-            return (
-              <div key={index}>
-                {JSON.stringify(item)}
-                <button
-                  type="button"
-                  onClick={() => {
-                    deleteSubOption(index);
-                  }}
-                >
-                  x
-                </button>
-              </div>
-            );
-          })}
-        <div>
-          <input
-            type="text"
-            value={subOption.thai}
-            placeholder="sub option thai"
-            onChange={inputSubOptionValue("thai")}
-          />
-          <input
-            type="text"
-            value={subOption.english}
-            placeholder="sub option english"
-            onChange={inputSubOptionValue("english")}
-          />
-          <button type="button" onClick={() => addSubOption()}>
-            Add
-          </button>
+      <form onSubmit={submitForm} className="form">
+        <div className="form-menu-container">
+          <div>
+            <label>ชื่อส่วนเสริมอาหารภาษาไทย</label>
+            <input
+              type="text"
+              placeholder="ชื่อส่วนเสริมอาหารภาษาไทย"
+              value={option.thai}
+              onChange={inputValue("thai")}
+            />
+          </div>
+          <div>
+            <label>ชื่อส่วนเสริมอาหารภาษาอังกฤษ</label>
+            <input
+              type="text"
+              placeholder="ชื่อส่วนเสริมอาหารภาษาอังกฤษ"
+              value={option.english}
+              onChange={inputValue("english")}
+            />
+          </div>
         </div>
-        <button type="submit">สร้างส่วนเสริมอาหาร</button>
-        {JSON.stringify(option)}
+        <div className="mb-1">
+          <div className="form-menu-container">
+            <div>
+              <label>ชื่อส่วนเสริมอาหารย่อยภาษาไทย</label>
+              <input
+                type="text"
+                value={subOption.thai}
+                placeholder="ชื่อส่วนเสริมอาหารย่อยภาษาไทย"
+                onChange={inputSubOptionValue("thai")}
+              />
+            </div>
+            <div>
+              <label>ชื่อส่วนเสริมอาหารย่อยภาษาอังกฤษ</label>
+              <input
+                type="text"
+                value={subOption.english}
+                placeholder="ชื่อส่วนเสริมอาหารย่อยภาษาอังกฤษ"
+                onChange={inputSubOptionValue("english")}
+              />
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => addSubOption()}
+            className="btn-add-sub"
+          >
+            เพิ่มรายการย่อย
+          </button>
+          <table className="sub-box">
+            <thead>
+              <tr>
+                <th>ชื่อรายการย่อยภาษาไทย</th>
+                <th>ชื่อรายการย่อยภาษาอังกฤษ</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {option.sub_option &&
+                option.sub_option.map((item, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>
+                        <>{item.sub_option_name.thai}</>
+                      </td>
+                      <td>{item.sub_option_name.english}</td>
+                      <td>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            deleteSubOption(index);
+                          }}
+                          className="btn btn-red"
+                        >
+                          ลบรายการย่อย
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
+        <button type="submit" className="btn-add-sub">
+          สร้างส่วนเสริมอาหาร
+        </button>
       </form>
-      <BackFooter props={"/admin/menu/categories"} />
+      <BackFooter props={"/admin/menu/option"} />
     </>
   );
 };
