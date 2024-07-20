@@ -12,3 +12,17 @@
 .cursor {
   cursor: pointer;
 }
+
+.mb-1 {
+  margin-bottom: 1rem;
+}
+
+.full-height {
+  height: 70vh;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
