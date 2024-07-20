@@ -14,6 +14,7 @@ const CreateMenuPage = () => {
     describe_thai: "",
     describe_english: "",
     price: "",
+    menu_cost: "",
     category_id: "",
     option_id: "",
   });
@@ -50,6 +51,7 @@ const CreateMenuPage = () => {
         menu.describe_thai &&
         menu.describe_english &&
         menu.price &&
+        menu.menu_cost &&
         menu.category_id &&
         menu.option_id &&
         selectedFile
@@ -63,6 +65,7 @@ const CreateMenuPage = () => {
     form.append("menu_describe_thai", menu.describe_thai);
     form.append("menu_describe_english", menu.describe_english);
     form.append("menu_price", menu.price);
+    form.append("menu_cost", menu.menu_cost);
     form.append("menu_category_id", menu.category_id);
     form.append("menu_option_id", menu.option_id);
     form.append("menu_image", selectedFile);
@@ -95,59 +98,99 @@ const CreateMenuPage = () => {
   };
   return (
     <>
-      <form onSubmit={submitForm} encType="multipart/form-data">
+      <form
+        onSubmit={submitForm}
+        encType="multipart/form-data"
+        className="form"
+      >
         <input type="file" accept="image/*" onChange={onImageChange} required />
-        <input
-          type="text"
-          placeholder="ชื่ออาหารภาษาไทย"
-          value={menu.name_thai}
-          onChange={inputValue("name_thai")}
-          required
-        />
-        <input
-          type="text"
-          placeholder="ชื่ออาหารภาษาอังกฤษ"
-          value={menu.name_english}
-          onChange={inputValue("name_english")}
-          required
-        />
-        <input
-          type="text"
-          placeholder="คำอธิบายภาษาไทย"
-          value={menu.describe_thai}
-          onChange={inputValue("describe_thai")}
-          required
-        />
-        <input
-          type="text"
-          placeholder="คำอธิบายภาษาอังกฤษ"
-          value={menu.describe_english}
-          onChange={inputValue("describe_english")}
-          required
-        />
-        <input
-          type="text"
-          placeholder="ราคาอาหาร"
-          value={menu.price}
-          onChange={inputValue("price")}
-          required
-        />
-        <select value={menu.option_id} onChange={inputValue("option_id")}>
-          <option value="">เลือกตัวเลือก</option>
-          {options.map((option) => (
-            <option key={option.id} value={option._id}>
-              {option.option_name.thai}
-            </option>
-          ))}
-        </select>
-        <select value={menu.category_id} onChange={inputValue("category_id")}>
-          <option value="">เลือกตัวเลือก</option>
-          {categories.map((category) => (
-            <option key={category.id} value={category._id}>
-              {category.category_name.thai}
-            </option>
-          ))}
-        </select>
+        <div className="form-menu-container">
+          <div>
+            <label>ชื่ออาหารภาษาไทย</label>
+            <input
+              type="text"
+              placeholder="ชื่ออาหารภาษาไทย"
+              value={menu.name_thai}
+              onChange={inputValue("name_thai")}
+              required
+            />
+          </div>
+          <div>
+            <label>ชื่ออาหารภาษาอังกฤษ</label>
+            <input
+              type="text"
+              placeholder="ชื่ออาหารภาษาอังกฤษ"
+              value={menu.name_english}
+              onChange={inputValue("name_english")}
+              required
+            />
+          </div>
+          <div>
+            <label>คำอธิบายภาษาไทย</label>
+            <input
+              type="text"
+              placeholder="คำอธิบายภาษาไทย"
+              value={menu.describe_thai}
+              onChange={inputValue("describe_thai")}
+              required
+            />
+          </div>
+          <div>
+            <label>คำอธิบายภาษาอังกฤษ</label>
+            <input
+              type="text"
+              placeholder="คำอธิบายภาษาอังกฤษ"
+              value={menu.describe_english}
+              onChange={inputValue("describe_english")}
+              required
+            />
+          </div>
+          <div>
+            <label>ราคาอาหาร</label>
+            <input
+              type="text"
+              placeholder="ราคาอาหาร"
+              value={menu.price}
+              onChange={inputValue("price")}
+              required
+            />
+          </div>
+          <div>
+            <label>ราคาต้นทุนอาหาร</label>
+            <input
+              type="text"
+              placeholder="ราคาต้นทุนอาหาร"
+              value={menu.menu_cost}
+              onChange={inputValue("menu_cost")}
+              required
+            />
+          </div>
+          <div>
+            <label>ตัวเลือกส่วนเสริม</label>
+            <select value={menu.option_id} onChange={inputValue("option_id")}>
+              <option value="">เลือกตัวเลือก</option>
+              {options.map((option) => (
+                <option key={option.id} value={option._id}>
+                  {option.option_name.thai}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label>ตัวเลือกหมวดหมู่อาหาร</label>
+            <select
+              value={menu.category_id}
+              onChange={inputValue("category_id")}
+            >
+              <option value="">เลือกตัวเลือก</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category._id}>
+                  {category.category_name.thai}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
         <button type="submit">สร้างรายการอาหาร</button>
       </form>
       <BackFooter props={"/admin/menu"} />
