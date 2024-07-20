@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const MenuFooter = () => {
   return (
     <>
-      <ul className="footer-box">
+      <ul className="footer-box flex-end">
         <li className="item">
           <Link to={"categories"}>หมวดหมู่อาหาร</Link>
         </li>
