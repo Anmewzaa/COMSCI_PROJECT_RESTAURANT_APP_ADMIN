@@ -7,7 +7,7 @@ import "../CSS/CardComponent.css";
 const CardComponent = ({ menu }) => {
   const navigate = useNavigate();
   return (
-    <div className="card" onClick={() => navigate(`${menu.menu_id}`)}>
+    <div className="card cursor" onClick={() => navigate(`${menu.menu_id}`)}>
       <img
         src={`${import.meta.env.VITE_API_URL}/images/${menu.menu_image}`}
         alt=""
@@ -15,7 +15,6 @@ const CardComponent = ({ menu }) => {
       <h2>{menu.menu_name.thai}</h2>
       <div className="container">
         <p>{menu.menu_price} บาท</p>
-        <button>แจ้งเมนูหมด</button>
       </div>
     </div>
   );
