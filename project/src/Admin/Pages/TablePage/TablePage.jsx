@@ -24,18 +24,24 @@ const TablePage = () => {
   return (
     <>
       <div className="table-container">
-        <div className="table-select-box">
-          <h3>โต๊ะทั้งหมด</h3>
-          <div className="white-container table-box-grid">
-            {table &&
-              table.map((item, index) => {
-                return <TableBox key={index} item={item} />;
-              })}
-          </div>
-        </div>
-        <div className="table-info-box">
-          <Outlet />
-        </div>
+        {table ? (
+          <>
+            <div className="table-select-box">
+              <h3>โต๊ะทั้งหมด</h3>
+              <div className="white-container table-box-grid">
+                {table &&
+                  table.map((item, index) => {
+                    return <TableBox key={index} item={item} />;
+                  })}
+              </div>
+            </div>
+            <div className="table-info-box">
+              <Outlet />
+            </div>
+          </>
+        ) : (
+          <>EMPTY</>
+        )}
       </div>
     </>
   );
