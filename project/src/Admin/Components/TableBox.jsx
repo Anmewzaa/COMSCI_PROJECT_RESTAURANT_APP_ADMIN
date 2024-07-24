@@ -8,7 +8,7 @@ const TableBox = ({ item }) => {
     <>
       <div
         className="table-box-grid-container"
-        onClick={() => navigate(`${item?.table_id}`)}
+        onClick={() => navigate(`${item?._id}`)}
       >
         <div
           className={`table-box cursor ${
