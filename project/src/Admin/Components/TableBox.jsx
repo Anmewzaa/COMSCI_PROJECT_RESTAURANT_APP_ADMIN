@@ -16,11 +16,11 @@ const TableBox = ({ item }) => {
           }`}
         >
           <p>{item?.table_number}</p>
-          <p>
-            {item.table_zone.map((item) => {
-              return <>{item.zone_name}</>;
+          <div>
+            {item.table_zone.map((item, index) => {
+              return <p key={index}>{item.zone_name}</p>;
             })}
-          </p>
+          </div>
           <p>{item?.table_seat} ที่นั่ง</p>
         </div>
       </div>
