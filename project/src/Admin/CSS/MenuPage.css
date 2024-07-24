@@ -51,6 +51,9 @@ tr td ul li {
 .btn-green {
   background: #23952e;
 }
+.btn-blue {
+  background: #4dabf7;
+}
 .btn a {
   text-decoration: none;
   color: white;
