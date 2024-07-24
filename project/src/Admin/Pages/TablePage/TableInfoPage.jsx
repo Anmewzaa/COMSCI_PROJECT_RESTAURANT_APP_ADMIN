@@ -15,9 +15,16 @@ const TableInfoPage = () => {
     employee: "",
     customer_amount: "",
   });
+  const [cart, setCart] = useState([]);
   const [search, setSearch] = useState("1");
   const searchFilter = tableinfo?.table_order?.filter((item) => {
-    return item.status === search;
+    if (search === "1") {
+      return item.status === "1";
+    } else if (search === "2") {
+      return item.status === "2";
+    } else if (search === "3") {
+      return item.status === "3";
+    }
   });
   const inputValue = (name) => (event) => {
     setTable({ ...table, [name]: event.target.value });
@@ -43,7 +50,7 @@ const TableInfoPage = () => {
     const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
     await axios
       .put(
-        `${import.meta.env.VITE_API_URL}/table/close/${tableinfo.table_id}`,
+        `${import.meta.env.VITE_API_URL}/table/close/${tableinfo._id}`,
         {},
         {
           headers: {
@@ -58,6 +65,15 @@ const TableInfoPage = () => {
   useEffect(() => {
     fetchAPI();
   }, []);
+  const handleCheckboxChange = (item) => {
+    setCart((prevCart) => {
+      if (prevCart.some((cartItem) => cartItem.id === item.id)) {
+        return prevCart.filter((cartItem) => cartItem.id !== item.id);
+      } else {
+        return [...prevCart, item];
+      }
+    });
+  };
   const formSubmit = async (e) => {
     e.preventDefault();
     const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
@@ -96,117 +112,153 @@ const TableInfoPage = () => {
   return (
     <>
       <h3>รายละเอียดโต๊ะ</h3>
-      {tableinfo.table_status === "close" ? (
+      {tableinfo ? (
         <>
-          <form className="white-container mb-1" onSubmit={formSubmit}>
-            <div>
-              <div className="table-header">
-                <h3 className="table-header-text">
-                  โต๊ะที่ {tableinfo?.table_number}{" "}
-                  <span>(เหมาะสำหรับ {tableinfo?.table_seat} ที่นั่ง)</span>
-                </h3>
-                <h3>
-                  {tableinfo?.table_zone &&
-                    tableinfo?.table_zone.map((item, index) => {
-                      return <div key={index}>โซน{item.zone_name}</div>;
-                    })}
-                </h3>
-              </div>
-            </div>
-            <div>
-              <label>พนักงาน</label>
-              <select
-                value={table.employee}
-                onChange={inputValue("employee")}
-                required
-              >
-                <option value="">เลือกตัวเลือก</option>
-                {users.map((user, index) => (
-                  <option key={index} value={user._id}>
-                    {user?.user_fullname}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label>จำนวนลูกค้า</label>
-              <input
-                type="number"
-                placeholder="จำนวนลูกค้า"
-                onChange={inputValue("customer_amount")}
-                required
-              />
-            </div>
-            <button type="submit">เปิดโต๊ะ</button>
-          </form>
-        </>
-      ) : (
-        <>
-          <div className="white-container mb-1">
+          {tableinfo.table_status === "close" ? (
             <>
-              <div className="table-header mb-1">
-                <h3 className="table-header-text">
-                  โต๊ะที่ {tableinfo?.table_number}{" "}
-                  <span>(เหมาะสำหรับ {tableinfo?.table_seat} ที่นั่ง)</span>
-                </h3>
-                <h3>
-                  {tableinfo?.table_zone &&
-                    tableinfo?.table_zone.map((item, index) => {
-                      return <div key={index}>โซน{item.zone_name}</div>;
-                    })}
-                </h3>
+              <form className="white-container mb-1" onSubmit={formSubmit}>
+                <div>
+                  <div className="table-header">
+                    <h3 className="table-header-text">
+                      โต๊ะที่ {tableinfo?.table_number}{" "}
+                      <span>(เหมาะสำหรับ {tableinfo?.table_seat} ที่นั่ง)</span>
+                    </h3>
+                    <h3>
+                      {tableinfo?.table_zone &&
+                        tableinfo?.table_zone.map((item, index) => {
+                          return <div key={index}>โซน{item.zone_name}</div>;
+                        })}
+                    </h3>
+                  </div>
+                </div>
+                <div>
+                  <label>พนักงาน</label>
+                  <select
+                    value={table.employee}
+                    onChange={inputValue("employee")}
+                    required
+                  >
+                    <option value="">เลือกตัวเลือก</option>
+                    {users.map((user, index) => (
+                      <option key={index} value={user._id}>
+                        {user?.user_fullname}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label>จำนวนลูกค้า</label>
+                  <input
+                    type="number"
+                    placeholder="จำนวนลูกค้า"
+                    onChange={inputValue("customer_amount")}
+                    required
+                  />
+                </div>
+                <button type="submit">เปิดโต๊ะ</button>
+              </form>
+            </>
+          ) : (
+            <>
+              <div className="white-container mb-1">
+                <>
+                  <div className="table-header mb-1">
+                    <h3 className="table-header-text">
+                      โต๊ะที่ {tableinfo?.table_number}{" "}
+                      <span>(เหมาะสำหรับ {tableinfo?.table_seat} ที่นั่ง)</span>
+                    </h3>
+                    <h3>
+                      {tableinfo?.table_zone &&
+                        tableinfo?.table_zone.map((item, index) => {
+                          return <div key={index}>โซน{item.zone_name}</div>;
+                        })}
+                    </h3>
+                  </div>
+                  <p className="mb-1">
+                    พนักงานประจำโต๊ะ{" "}
+                    <span>
+                      {tableinfo.table_employee &&
+                        tableinfo.table_employee.map((item, index) => {
+                          return <div key={index}>{item.user_fullname}</div>;
+                        })}
+                    </span>
+                  </p>
+                  <div>
+                    <button
+                      className="btn btn-red cursor"
+                      onClick={() => {
+                        closeTable();
+                      }}
+                      type="button"
+                    >
+                      ยกเลิก
+                    </button>
+                    <button className="btn btn-blue ">คิวอาร์โคด</button>
+                    <button className="btn btn-blue ">เพิ่มรายการอาหาร</button>
+                  </div>
+                </>
               </div>
-              <p className="mb-1">
-                พนักงานประจำโต๊ะ{" "}
-                <span>
-                  {tableinfo.table_employee &&
-                    tableinfo.table_employee.map((item, index) => {
-                      return <div key={index}>{item.user_fullname}</div>;
-                    })}
-                </span>
-              </p>
+              <div className="mb-1">
+                <h3>รายการอาหาร</h3>
+                <div className="white-container">
+                  <button type="button" onClick={() => setSearch("1")}>
+                    รายการอาหารใหม่
+                  </button>
+                  <button type="button" onClick={() => setSearch("2")}>
+                    กำลังปรุง
+                  </button>
+                  <button type="button" onClick={() => setSearch("3")}>
+                    เสร็จแล้ว
+                  </button>
+                  <div>
+                    {searchFilter?.length === 0 ? (
+                      <>ไม่มีรายการอาหารใหม่</>
+                    ) : (
+                      <>
+                        {searchFilter &&
+                          searchFilter.map((item, index) => {
+                            const isChecked = cart.some(
+                              (cartItem) => cartItem.id === item.id
+                            );
+                            return (
+                              <div key={index} className="item-box">
+                                <div>
+                                  <input
+                                    type="checkbox"
+                                    className="checkbox"
+                                    checked={isChecked}
+                                    onChange={() => handleCheckboxChange(item)}
+                                  ></input>
+                                  {item?.menu?.menu_name?.thai}
+                                  {item?.option}
+                                </div>
+                                <div>{item?.menu?.menu_price}</div>
+                              </div>
+                            );
+                          })}
+                        {search !== "3" ? (
+                          <>
+                            <button>ส่งรายการอาหาร</button>
+                          </>
+                        ) : (
+                          <></>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
               <div>
-                <button
-                  className="btn btn-red cursor"
-                  onClick={() => {
-                    closeTable();
-                  }}
-                  type="button"
-                >
-                  ยกเลิก
-                </button>
-                <button className="btn btn-blue ">คิวอาร์โคด</button>
-                <button className="btn btn-blue ">เพิ่มรายการอาหาร</button>
+                <h3>ข้อมูลชำระเงิน</h3>
+                <div className="white-container">
+                  <button>ชำระเงิน</button>
+                </div>
               </div>
             </>
-            {/* {JSON.stringify(tableinfo)} */}
-          </div>
-          <div className="mb-1">
-            <h3>รายการอาหาร</h3>
-            <div className="white-container">
-              <button type="button">รายการอาหารใหม่</button>
-              <button type="button">กำลังปรุง</button>
-              <button type="button">เสร็จแล้ว</button>
-              {searchFilter?.length === 0 ? (
-                <>Empty</>
-              ) : (
-                <>
-                  {searchFilter &&
-                    searchFilter.map((item, index) => {
-                      return <div key={index}>{JSON.stringify(item)}</div>;
-                    })}
-                </>
-              )}
-              <button>ส่งรายการอาหาร</button>
-            </div>
-          </div>
-          <div>
-            <h3>ข้อมูลชำระเงิน</h3>
-            <div className="white-container">
-              <button>ชำระเงิน</button>
-            </div>
-          </div>
+          )}
         </>
+      ) : (
+        <></>
       )}
     </>
   );
