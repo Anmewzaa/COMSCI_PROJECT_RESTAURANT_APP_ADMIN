@@ -3,3 +3,26 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+.box {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.mb-1 {
+  margin-bottom: 1rem;
+}
+
+.full-height {
+  height: 70vh;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

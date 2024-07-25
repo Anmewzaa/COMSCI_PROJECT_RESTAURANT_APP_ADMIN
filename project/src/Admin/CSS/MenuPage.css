@@ -1,0 +1,113 @@
+.card-box {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 1rem;
+}
+
+.footer-box {
+  display: flex;
+  list-style: none;
+  background: #ee8100;
+  position: absolute;
+  bottom: 0%;
+  width: calc(100vw - 250px);
+}
+.flex-end {
+  justify-content: flex-end;
+}
+.footer-box a {
+  text-decoration: none;
+  color: white;
+  border: 1px solid white;
+  padding: 1rem;
+  border-radius: 5px;
+}
+.footer-box .item {
+  margin: 2rem 0;
+  margin-right: 1rem;
+}
+.footer-box .back-item {
+  margin: 2rem 0;
+  margin-left: 1rem;
+}
+
+tr td ul li {
+  list-style: none;
+}
+
+.btn {
+  border-radius: 5px;
+  padding: 0.8rem 1.6rem;
+  color: white;
+  border: none;
+  margin-right: 0.4rem;
+}
+.btn-yellow {
+  background: #ffd43b;
+}
+.btn-red {
+  background: #f03e3e;
+}
+.btn-green {
+  background: #23952e;
+}
+.btn-blue {
+  background: #4dabf7;
+}
+.btn a {
+  text-decoration: none;
+  color: white;
+}
+.btn-add-sub {
+  width: 100%;
+  border-radius: 5px;
+  padding: 0.8rem 1.6rem;
+  color: white;
+  border: none;
+  background: #23952e;
+  margin-bottom: 1rem;
+}
+
+.menu-info-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.menu-info-image {
+  margin: 1rem;
+  border-radius: 5px;
+}
+.menu-infomation {
+  margin: 1rem;
+}
+.menu-infomation span {
+  font-weight: bold;
+}
+.menu-infomation p {
+  margin-bottom: 1rem;
+}
+.form {
+  padding: 1rem;
+}
+.form-menu-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.form-menu-container label {
+  display: block;
+  margin-bottom: 0.4rem;
+}
+.form-menu-container input {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 5px;
+  border: none;
+}
+.form-menu-container select {
+  width: 100%;
+  border-radius: 5px;
+  padding: 1rem;
+  appearance: none;
+  border: none;
+}
