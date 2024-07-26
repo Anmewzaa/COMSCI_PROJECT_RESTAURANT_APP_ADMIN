@@ -11,19 +11,21 @@ const TableInfoPage = () => {
   const { id } = useParams();
   const [tableinfo, setTableInfo] = useState([]);
   const [users, setUsers] = useState([]);
+  const [price, setPrice] = useState(0);
+  const [count, setCount] = useState(0);
   const [table, setTable] = useState({
     employee: "",
     customer_amount: "",
   });
   const [cart, setCart] = useState([]);
-  const [search, setSearch] = useState("1");
+  const [search, setSearch] = useState(1);
   const searchFilter = tableinfo?.table_order?.filter((item) => {
-    if (search === "1") {
-      return item.status === "1";
-    } else if (search === "2") {
-      return item.status === "2";
-    } else if (search === "3") {
-      return item.status === "3";
+    if (search === 1) {
+      return item.status === 1;
+    } else if (search === 2) {
+      return item.status === 2;
+    } else if (search === 3) {
+      return item.status === 3;
     }
   });
   const inputValue = (name) => (event) => {
@@ -35,6 +37,7 @@ const TableInfoPage = () => {
       .get(`${import.meta.env.VITE_API_URL}/table/get/${id}`)
       .then((data) => {
         setTableInfo(data.data.response);
+        priceCalculate(data.data.response.table_order);
       });
     await axios
       .get(`${import.meta.env.VITE_API_URL}/user/get`, {
@@ -65,12 +68,12 @@ const TableInfoPage = () => {
   useEffect(() => {
     fetchAPI();
   }, []);
-  const handleCheckboxChange = (item) => {
+  const handleCheckboxChange = (itemId) => {
     setCart((prevCart) => {
-      if (prevCart.some((cartItem) => cartItem.id === item.id)) {
-        return prevCart.filter((cartItem) => cartItem.id !== item.id);
+      if (prevCart.includes(itemId)) {
+        return prevCart.filter((cartItem) => cartItem !== itemId);
       } else {
-        return [...prevCart, item];
+        return [...prevCart, itemId];
       }
     });
   };
@@ -108,6 +111,40 @@ const TableInfoPage = () => {
           });
         }
       });
+  };
+  const changeOrderStatus = async (new_status) => {
+    if (cart.length === 0) {
+      return;
+    }
+    const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
+    await axios
+      .put(
+        `${import.meta.env.VITE_API_URL}/table/change_status/${id}`,
+        {
+          order_ids: cart,
+          new_status: `${new_status + 1}`,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${JWT_TOKEN}`,
+          },
+        }
+      )
+      .then(() => {
+        console.log("Success");
+      });
+  };
+  const priceCalculate = (orders) => {
+    let totalPrice = 0;
+    let totalCount = 0;
+    orders?.forEach((item) => {
+      if (item?.status === 3) {
+        totalPrice += parseInt(item?.menu?.menu_price || 0);
+        totalCount += 1;
+      }
+    });
+    setPrice(totalPrice);
+    setCount(totalCount);
   };
   return (
     <>
@@ -174,7 +211,7 @@ const TableInfoPage = () => {
                         })}
                     </h3>
                   </div>
-                  <p className="mb-1">
+                  <div className="mb-1">
                     พนักงานประจำโต๊ะ{" "}
                     <span>
                       {tableinfo.table_employee &&
@@ -182,7 +219,7 @@ const TableInfoPage = () => {
                           return <div key={index}>{item.user_fullname}</div>;
                         })}
                     </span>
-                  </p>
+                  </div>
                   <div>
                     <button
                       className="btn btn-red cursor"
@@ -201,13 +238,13 @@ const TableInfoPage = () => {
               <div className="mb-1">
                 <h3>รายการอาหาร</h3>
                 <div className="white-container">
-                  <button type="button" onClick={() => setSearch("1")}>
+                  <button type="button" onClick={() => setSearch(1)}>
                     รายการอาหารใหม่
                   </button>
-                  <button type="button" onClick={() => setSearch("2")}>
+                  <button type="button" onClick={() => setSearch(2)}>
                     กำลังปรุง
                   </button>
-                  <button type="button" onClick={() => setSearch("3")}>
+                  <button type="button" onClick={() => setSearch(3)}>
                     เสร็จแล้ว
                   </button>
                   <div>
@@ -217,9 +254,7 @@ const TableInfoPage = () => {
                       <>
                         {searchFilter &&
                           searchFilter.map((item, index) => {
-                            const isChecked = cart.some(
-                              (cartItem) => cartItem.id === item.id
-                            );
+                            const isChecked = cart.includes(item._id);
                             return (
                               <div key={index} className="item-box">
                                 <div>
@@ -227,7 +262,9 @@ const TableInfoPage = () => {
                                     type="checkbox"
                                     className="checkbox"
                                     checked={isChecked}
-                                    onChange={() => handleCheckboxChange(item)}
+                                    onChange={() =>
+                                      handleCheckboxChange(item._id)
+                                    }
                                   ></input>
                                   {item?.menu?.menu_name?.thai}
                                   {item?.option}
@@ -236,9 +273,16 @@ const TableInfoPage = () => {
                               </div>
                             );
                           })}
-                        {search !== "3" ? (
+                        {search !== 3 ? (
                           <>
-                            <button>ส่งรายการอาหาร</button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                changeOrderStatus(search);
+                              }}
+                            >
+                              ส่งรายการอาหาร
+                            </button>
                           </>
                         ) : (
                           <></>
@@ -251,6 +295,14 @@ const TableInfoPage = () => {
               <div>
                 <h3>ข้อมูลชำระเงิน</h3>
                 <div className="white-container">
+                  <div className="mb-1 checkbill">
+                    <h4 className="checkbill-text">จำนวนรายการอาหารทั้งหมด</h4>
+                    <h4>{count} รายการ</h4>
+                  </div>
+                  <div className="mb-1 checkbill">
+                    <h4 className="checkbill-text">ยอดที่ต้องชำระ</h4>
+                    <h4>{price} บาท</h4>
+                  </div>
                   <button>ชำระเงิน</button>
                 </div>
               </div>
