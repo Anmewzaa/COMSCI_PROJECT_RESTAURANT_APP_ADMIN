@@ -28,6 +28,8 @@ const HeaderComponent = () => {
         return "ส่วนเสริมอาหาร";
       case "/admin/menu/option/create":
         return "สร้างส่วนเสริมอาหาร";
+      case "/admin/employee":
+        return "หน้าจัดการพนักงาน";
     }
   };
 
