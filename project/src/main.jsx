@@ -22,6 +22,7 @@ import EditCategoriesPage from "./Admin/Pages/CategoryPage/EditCategoriesPage";
 import OptionPage from "./Admin/Pages/OptionPage/OptionPage";
 import CreateOptionPage from "./Admin/Pages/OptionPage/CreateOptionPage";
 import EditOptionPage from "./Admin/Pages/OptionPage/EditOptionPage";
+import EmployeePage from "./Admin/Pages/EmployeePage/EmployeePage";
 
 const router = createBrowserRouter([
   {
@@ -149,6 +150,14 @@ const router = createBrowserRouter([
             element: (
               <>
                 <EditOptionPage />
+              </>
+            ),
+          },
+          {
+            path: "employee",
+            element: (
+              <>
+                <EmployeePage />
               </>
             ),
           },
