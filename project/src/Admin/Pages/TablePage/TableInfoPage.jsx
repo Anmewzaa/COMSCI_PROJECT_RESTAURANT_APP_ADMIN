@@ -146,6 +146,22 @@ const TableInfoPage = () => {
     setPrice(totalPrice);
     setCount(totalCount);
   };
+  const checkbill = async () => {
+    const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
+    await axios
+      .put(
+        `${import.meta.env.VITE_API_URL}/table/checkbill/${tableinfo._id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${JWT_TOKEN}`,
+          },
+        }
+      )
+      .then(() => {
+        console.log("Success");
+      });
+  };
   return (
     <>
       <h3>รายละเอียดโต๊ะ</h3>
@@ -303,7 +319,7 @@ const TableInfoPage = () => {
                     <h4 className="checkbill-text">ยอดที่ต้องชำระ</h4>
                     <h4>{price} บาท</h4>
                   </div>
-                  <button>ชำระเงิน</button>
+                  <button onClick={() => checkbill()}>ชำระเงิน</button>
                 </div>
               </div>
             </>
