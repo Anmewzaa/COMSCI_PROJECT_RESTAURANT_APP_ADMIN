@@ -21,7 +21,7 @@ const CategoriesComponent = () => {
 
   return (
     <>
-      <ul className="container">
+      <ul className="container sarabun-semibold">
         <li
           onClick={() => setSearch("")}
           className={`cursor ${search === "" ? "active" : ""}`}
