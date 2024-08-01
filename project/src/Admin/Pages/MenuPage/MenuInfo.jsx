@@ -8,6 +8,8 @@ import axios from "axios";
 import BackFooter from "../../Components/BackFooter";
 // SWAL
 import Swal from "sweetalert2";
+// CSS
+import "../../CSS/MenuInfoPage.css";
 
 const MenuInfo = () => {
   const navigate = useNavigate();
@@ -58,6 +60,41 @@ const MenuInfo = () => {
       }
     });
   };
+  const changeMenuStatus = () => {
+    Swal.fire({
+      title: "ต้องการแจ้งรายการหมดใช่ไหม?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
+        axios
+          .put(
+            `${import.meta.env.VITE_API_URL}/menu/changestatus/${id}`,
+            {
+              status: true,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${JWT_TOKEN}`,
+              },
+            }
+          )
+          .then(() => {
+            Swal.fire({
+              title: "Change Status Success!",
+              text: "",
+              icon: "success",
+            });
+            window.location.replace(`/admin/menu`);
+          });
+      }
+    });
+  };
 
   return (
     <>
@@ -67,7 +104,7 @@ const MenuInfo = () => {
         <>
           {menu ? (
             <div className="menu-info-box">
-              <>
+              <div className="image-container">
                 <img
                   src={`${import.meta.env.VITE_API_URL}/images/${
                     menu.menu_image
@@ -75,42 +112,61 @@ const MenuInfo = () => {
                   alt="menu images"
                   className="menu-info-image"
                 />
-              </>
+              </div>
               <div className="menu-infomation">
-                <h2>
+                <h2 className="name-text sarabun-extrabold">
                   {menu?.menu_name?.thai} ({menu?.menu_name?.english})
                 </h2>
-                <p>
-                  <span>ราคา</span> {menu?.menu_price} บาท
-                </p>
-                <p>
-                  <span>ราคาต้นทุน</span> {menu?.menu_cost} บาท
-                </p>
-                <p>
-                  <span>คำอธิบาย</span>
-                  <br />
-                  <p>
+                <div className="mb-1 inline">
+                  <span className="sarabun-bold mr-1">ราคา</span>
+                  <p className="sarabun-light">{menu?.menu_price} บาท</p>
+                </div>
+                <div className="mb-1 inline">
+                  <span className="sarabun-bold mr-1">ราคาต้นทุน</span>{" "}
+                  <p className="sarabun-light">{menu?.menu_cost} บาท</p>
+                </div>
+                <div className="mb-1">
+                  <span className="sarabun-bold mr-1">คำอธิบาย</span>
+                  <p className="sarabun-light">
                     {menu?.menu_describe?.thai} ({menu?.menu_describe?.english})
                   </p>
-                </p>
-                <span>ส่วนเสริม</span>
-                {menu.menu_option_id ? (
-                  <>
-                    {menu.menu_option_id &&
-                      menu.menu_option_id.map((item) => {
-                        return (
-                          <div key={item._id}>
-                            {item.option_name.thai} ({item.option_name.english})
-                          </div>
-                        );
-                      })}
-                  </>
-                ) : (
-                  <>Empty</>
-                )}
-                <button onClick={() => editMenuInfo()}>แก้ไข</button>
-                <button onClick={() => deleteMenuInfo()}>ลบ</button>
-                <button onClick={() => {}}>แจ้งเมนูหมด</button>
+                </div>
+                <div className="mb-1">
+                  <span className="sarabun-bold mr-1">ส่วนเสริม</span>
+                  {menu.menu_option_id ? (
+                    <>
+                      {menu.menu_option_id &&
+                        menu.menu_option_id.map((item) => {
+                          return (
+                            <div key={item._id} className="sarabun-light">
+                              - {item.option_name.thai} (
+                              {item.option_name.english})
+                            </div>
+                          );
+                        })}
+                    </>
+                  ) : (
+                    <>Empty</>
+                  )}
+                </div>
+                <button
+                  className="btn-full btn-blue mb-1 sarabun-semibold cursor"
+                  onClick={() => changeMenuStatus()}
+                >
+                  แจ้งเมนูหมด
+                </button>
+                <button
+                  className="btn-full btn-yellow mb-1 sarabun-semibold cursor"
+                  onClick={() => editMenuInfo()}
+                >
+                  แก้ไข
+                </button>
+                <button
+                  className="btn-full btn-red mb-1 sarabun-semibold cursor"
+                  onClick={() => deleteMenuInfo()}
+                >
+                  ลบ
+                </button>
               </div>
             </div>
           ) : (
