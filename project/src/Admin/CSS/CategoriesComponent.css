@@ -8,9 +8,10 @@
   margin-right: 1rem;
   padding: 0.8rem 1.2rem;
   border-radius: 5px;
-  color: black;
-}
-.container .active {
   background: #ee8100;
   color: white;
+  font-weight: bold;
+}
+.container .active {
+  background: #a55f0c;
 }
