@@ -24,40 +24,55 @@ const CategoriesPage = () => {
   }, []);
   return (
     <>
-      <div>
-        <input type="text" placeholder="ค้นหาหมวดหมู่อาหาร" />
-        <Link to={"create"}>เพิ่มหมวดหมู่</Link>
+      <div className="form-input-container">
+        <input
+          type="text"
+          placeholder="ค้นหาหมวดหมู่อาหาร"
+          className="cursor sarabun-semibold"
+        />
+        <Link to={"create"} className="sarabun-semibold">
+          เพิ่มหมวดหมู่
+        </Link>
       </div>
-      <table>
-        <tr>
-          <th>ชื่อ</th>
-          <th>Create Date</th>
-          <th>Update Date</th>
-          <th>Action</th>
-        </tr>
-        {categories &&
-          categories.map((item) => {
-            const formattedCreateDate = new Date(
-              item?.createdAt
-            ).toLocaleString();
-            const formattedLastUpdateDate = new Date(
-              item?.updatedAt
-            ).toLocaleString();
-            return (
-              <>
-                <tr key={item?.category_id}>
-                  <td>{`${item?.category_name?.thai} (${item?.category_name?.english})`}</td>
-                  <td>{formattedCreateDate}</td>
-                  <td>{formattedLastUpdateDate}</td>
-                  <td>
-                    <EditComponent id={item?.category_id} />
-                    <DeleteComponent id={item?.category_id} name={"category"} />
-                  </td>
-                </tr>
-              </>
-            );
-          })}
-      </table>
+      <div className="form-table-container">
+        <table>
+          <thead>
+            <tr className="sarabun-semibold">
+              <th>#</th>
+              <th>ชื่อ</th>
+              <th>วันที่สร้าง</th>
+              <th>วันที่อัพเดทล่าสุด</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {categories &&
+              categories.map((item, index) => {
+                const formattedCreateDate = new Date(
+                  item?.createdAt
+                ).toLocaleString();
+                const formattedLastUpdateDate = new Date(
+                  item?.updatedAt
+                ).toLocaleString();
+                return (
+                  <tr key={item?.category_id} className="sarabun-regular">
+                    <td>{index + 1}</td>
+                    <td>{`${item?.category_name?.thai} (${item?.category_name?.english})`}</td>
+                    <td>{formattedCreateDate}</td>
+                    <td>{formattedLastUpdateDate}</td>
+                    <td className="action-btn-container">
+                      <EditComponent id={item?.category_id} />
+                      <DeleteComponent
+                        id={item?.category_id}
+                        name={"category"}
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
       <BackFooter props={"/admin/menu"} />
     </>
   );
