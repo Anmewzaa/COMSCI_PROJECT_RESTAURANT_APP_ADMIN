@@ -14,9 +14,17 @@ import HeaderCoponent from "../Components/HeaderComponent";
 
 const AdminLayout = () => {
   const [user, setUser] = useState([]);
+
   const checkJWT = () => {
     const jwt_token = localStorage.getItem("PARADISE_LOGIN_TOKEN");
-    setUser(jwtDecode(jwt_token));
+    if (jwt_token) {
+      const decodedToken = jwtDecode(jwt_token);
+      const currentTime = Date.now() / 1000;
+      if (decodedToken.exp <= currentTime) {
+        localStorage.removeItem("PARADISE_LOGIN_TOKEN");
+      }
+      setUser(jwtDecode(jwt_token));
+    }
   };
   useEffect(() => {
     if (!localStorage.getItem("PARADISE_LOGIN_TOKEN")) {
