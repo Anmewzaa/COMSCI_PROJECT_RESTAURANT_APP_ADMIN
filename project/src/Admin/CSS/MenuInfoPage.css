@@ -1,0 +1,21 @@
+.menu-info-box {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+.menu-info-box .image-container {
+  display: flex;
+  justify-content: center;
+}
+.menu-info-image {
+  margin: 1rem;
+  border-radius: 5px;
+  max-width: 500px;
+}
+
+.menu-infomation {
+  margin: 2rem 1rem;
+}
+.menu-infomation .name-text {
+  font-size: 28px;
+  margin-bottom: 1rem;
+}
