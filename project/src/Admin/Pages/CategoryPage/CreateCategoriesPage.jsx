@@ -61,25 +61,32 @@ const CreateCategoriesPage = () => {
       <form onSubmit={submitForm} className="form">
         <div className="form-menu-container">
           <div>
-            <label>ชื่อหมวดหมู่ภาษาไทย</label>
+            <label className="sarabun-semibold">ชื่อหมวดหมู่ภาษาไทย</label>
             <input
               type="text"
               placeholder="ชื่อหมวดหมู่ภาษาไทย"
               value={categories.thai}
               onChange={inputValue("thai")}
+              className="sarabun-regular"
             />
           </div>
           <div>
-            <label>ชื่อหมวดหมู่ภาษาอังกฤษ</label>
+            <label className="sarabun-semibold">ชื่อหมวดหมู่ภาษาอังกฤษ</label>
             <input
               type="text"
               placeholder="ชื่อหมวดหมู่ภาษาอังกฤษ"
               value={categories.english}
               onChange={inputValue("english")}
+              className="sarabun-regular"
             />
           </div>
         </div>
-        <button type="submit">สร้างหมวดหมู่</button>
+        <button
+          type="submit"
+          className="btn-full btn-green cursor sarabun-semibold"
+        >
+          สร้างหมวดหมู่
+        </button>
       </form>
       <BackFooter props={"/admin/menu/categories"} />
     </>
