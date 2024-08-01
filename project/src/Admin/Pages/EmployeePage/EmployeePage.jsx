@@ -27,34 +27,48 @@ const EmployeePage = () => {
   }, []);
   return (
     <>
-      <div>
-        <input type="text" placeholder="ค้นหาพนักงาน" />
-        <Link to={"create"}>เพิ่มพนักงาน</Link>
+      <div className="form-input-container">
+        <input
+          type="text"
+          placeholder="ค้นหาพนักงาน"
+          className="cursor sarabun-semibold"
+        />
+        <Link to={"create"} className="sarabun-semibold">
+          เพิ่มพนักงาน
+        </Link>
       </div>
-      <table>
-        <tr>
-          <th>ชื่อ</th>
-          <th>เบอร์โทร</th>
-          <th>ตำแหน่ง</th>
-          <th>Action</th>
-        </tr>
-        {users &&
-          users.map((item) => {
-            return (
-              <>
-                <tr key={item?.category_id}>
-                  <td>{`${item?.user_fullname} (${item?.user_nickname})`}</td>
-                  <td>{item?.user_telnum}</td>
-                  <td>{item?.user_role}</td>
-                  <td>
-                    <EditComponent id={item?.user_id} />
-                    <DeleteComponent id={item?.user_id} name={"category"} />
-                  </td>
-                </tr>
-              </>
-            );
-          })}
-      </table>
+      <div className="form-table-container">
+        <table>
+          <thead>
+            <tr className="sarabun-semibold">
+              <th>#</th>
+              <th>ชื่อ</th>
+              <th>เบอร์โทร</th>
+              <th>ตำแหน่ง</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {users &&
+              users.map((item, index) => {
+                return (
+                  <>
+                    <tr key={item?.category_id} className="sarabun-regular">
+                      <td>{index + 1}</td>
+                      <td>{`${item?.user_fullname} (${item?.user_nickname})`}</td>
+                      <td>{item?.user_telnum}</td>
+                      <td>{item?.user_role}</td>
+                      <td className="action-btn-container">
+                        <EditComponent id={item?.user_id} />
+                        <DeleteComponent id={item?.user_id} name={"category"} />
+                      </td>
+                    </tr>
+                  </>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 };
