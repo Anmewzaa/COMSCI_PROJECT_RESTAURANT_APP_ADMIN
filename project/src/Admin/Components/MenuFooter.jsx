@@ -1,11 +1,13 @@
 // React Router Dom
 import { Link } from "react-router-dom";
+// CSS
+import "../CSS/MenuFooter.css";
 
 const MenuFooter = () => {
   return (
     <>
-      <ul className="footer-box flex-end">
-        <li className="item">
+      <ul className="footer-box flex-end sarabun-semibold">
+        <li className="item ">
           <Link to={"categories"}>หมวดหมู่อาหาร</Link>
         </li>
         <li className="item">
