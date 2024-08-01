@@ -24,32 +24,40 @@ const OptionPage = () => {
   }, []);
   return (
     <>
-      <div>
-        <input type="text" placeholder="ค้นหาส่วนเสริมอาหาร" />
-        <Link to={"create"}>เพิ่มส่วนเสริมอาหาร</Link>
+      <div className="form-input-container">
+        <input
+          type="text"
+          placeholder="ค้นหาส่วนเสริมอาหาร"
+          className="cursor sarabun-semibold"
+        />
+        <Link to={"create"} className="sarabun-semibold">
+          เพิ่มส่วนเสริมอาหาร
+        </Link>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>ชื่อ</th>
-            <th>ส่วนเสริม</th>
-            <th>Create Date</th>
-            <th>Update Date</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {option &&
-            option.map((item) => {
-              const formattedCreateDate = new Date(
-                item?.createdAt
-              ).toLocaleString();
-              const formattedLastUpdateDate = new Date(
-                item?.updatedAt
-              ).toLocaleString();
-              return (
-                <>
-                  <tr key={item?.option_id} className="table">
+      <div className="form-table-container">
+        <table>
+          <thead>
+            <tr className="sarabun-semibold">
+              <th>#</th>
+              <th>ชื่อ</th>
+              <th>ส่วนเสริม</th>
+              <th>วันที่สร้าง</th>
+              <th>วันที่อัพเดทล่าสุด</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {option &&
+              option.map((item, index) => {
+                const formattedCreateDate = new Date(
+                  item?.createdAt
+                ).toLocaleString();
+                const formattedLastUpdateDate = new Date(
+                  item?.updatedAt
+                ).toLocaleString();
+                return (
+                  <tr key={item?.option_id} className="sarabun-regular">
+                    <td>{index + 1}</td>
                     <td>{`${item?.option_name?.thai} (${item?.option_name?.english})`}</td>
                     <td>
                       {item?.sub_option &&
@@ -63,16 +71,16 @@ const OptionPage = () => {
                     </td>
                     <td>{formattedCreateDate}</td>
                     <td>{formattedLastUpdateDate}</td>
-                    <td>
+                    <td className="action-btn-container">
                       <EditComponent id={item?.option_id} />
                       <DeleteComponent id={item?.option_id} name={"option"} />
                     </td>
                   </tr>
-                </>
-              );
-            })}
-        </tbody>
-      </table>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
       <BackFooter props={"/admin/menu"} />
     </>
   );
