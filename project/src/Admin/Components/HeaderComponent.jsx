@@ -35,10 +35,10 @@ const HeaderComponent = () => {
 
   return (
     <>
-      <div className="header-box">
-        <h2>{TitleName()}</h2>
+      <div className="header-box sarabun-light">
+        <h2 className="sarabun-bold">{TitleName()}</h2>
         <h3>
-          <span>Welcome !</span> {user.user_fullname}
+          <span>ยินดีต้อนรับ!</span> {user.user_fullname}
         </h3>
       </div>
     </>
