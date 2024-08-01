@@ -37,7 +37,10 @@ const DeleteComponent = ({ name, id }) => {
 
   return (
     <>
-      <button onClick={formSubmit} className="btn btn-red cursor">
+      <button
+        onClick={formSubmit}
+        className="btn btn-red cursor sarabun-semibold"
+      >
         ลบ
       </button>
     </>
