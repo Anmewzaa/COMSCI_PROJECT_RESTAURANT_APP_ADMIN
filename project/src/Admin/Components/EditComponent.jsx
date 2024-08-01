@@ -7,7 +7,7 @@ const EditComponent = ({ id }) => {
   return (
     <>
       <button
-        className="btn btn-yellow cursor"
+        className="btn btn-yellow cursor sarabun-semibold"
         onClick={() => navigate(`edit/${id}`)}
       >
         แก้ไข
