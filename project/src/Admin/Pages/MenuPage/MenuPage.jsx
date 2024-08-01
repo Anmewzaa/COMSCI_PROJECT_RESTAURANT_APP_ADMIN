@@ -25,7 +25,14 @@ const MenuPage = () => {
   useEffect(() => {
     fetchAPI();
   }, []);
-
+  const searchFilter = menu?.filter((item) => {
+    if (search === "") {
+      return item;
+    }
+    return item?.menu_category_id[0]?.category_name?.thai
+      .toLowerCase()
+      .includes(search.toLowerCase());
+  });
   return (
     <SearchContext.Provider value={{ search, setSearch }}>
       <CategoriesComponent />
@@ -37,7 +44,7 @@ const MenuPage = () => {
             <>Empty</>
           ) : (
             <>
-              {menu.map((item) => {
+              {searchFilter.map((item) => {
                 return <CardComponent key={item.menu_id} menu={item} />;
               })}
             </>
