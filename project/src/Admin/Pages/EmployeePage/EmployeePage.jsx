@@ -10,6 +10,18 @@ import DeleteComponent from "../../Components/DeleteComponent";
 
 const EmployeePage = () => {
   const [users, setUsers] = useState([]);
+  const [search, setSearch] = useState("");
+  const searchFilter = users?.filter((item) => {
+    if (search === "") {
+      return item;
+    }
+    return (
+      item?.user_fullname.toLowerCase().includes(search.toLowerCase()) ||
+      item?.user_nickname.toLowerCase().includes(search.toLowerCase()) ||
+      item?.user_role.toLowerCase().includes(search.toLowerCase()) ||
+      item?.user_telnum.toLowerCase().includes(search.toLowerCase())
+    );
+  });
   const fetchAPI = async () => {
     const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
     await axios
@@ -32,6 +44,8 @@ const EmployeePage = () => {
           type="text"
           placeholder="ค้นหาพนักงาน"
           className="cursor sarabun-semibold"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
         <Link to={"create"} className="sarabun-semibold">
           เพิ่มพนักงาน
@@ -49,8 +63,8 @@ const EmployeePage = () => {
             </tr>
           </thead>
           <tbody>
-            {users &&
-              users.map((item, index) => {
+            {searchFilter &&
+              searchFilter.map((item, index) => {
                 return (
                   <>
                     <tr key={item?.category_id} className="sarabun-regular">

@@ -47,7 +47,7 @@ const NavBarComponent = () => {
   return (
     <div className="navigation-box">
       <img src={AppLogo} alt="" className="image " />
-      <h2 className="name">Paradise Steak House</h2>
+      <h2 className="name sarabun-extrabold">Paradise Steak House</h2>
       <ul>
         {navItem.map((item) => {
           if (
@@ -57,12 +57,12 @@ const NavBarComponent = () => {
             return (
               <li
                 key={item.number}
-                className={
+                className={`${
                   location.pathname ===
                   `/admin${item.link !== "" ? `/${item.link}` : ""}`
                     ? "active"
                     : ""
-                }
+                } sarabun-semibold`}
               >
                 <Link
                   to={item.link}

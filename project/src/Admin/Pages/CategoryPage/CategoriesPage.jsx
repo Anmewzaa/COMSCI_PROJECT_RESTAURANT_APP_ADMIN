@@ -12,6 +12,16 @@ import DeleteComponent from "../../Components/DeleteComponent";
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
+  const [search, setSearch] = useState("");
+  const searchFilter = categories?.filter((item) => {
+    if (search === "") {
+      return item;
+    }
+    return (
+      item?.category_name?.thai.toLowerCase().includes(search.toLowerCase()) ||
+      item?.category_name?.english.toLowerCase().includes(search.toLowerCase())
+    );
+  });
   const fetchAPI = async () => {
     await axios
       .get(`${import.meta.env.VITE_API_URL}/category/get`)
@@ -29,6 +39,8 @@ const CategoriesPage = () => {
           type="text"
           placeholder="ค้นหาหมวดหมู่อาหาร"
           className="cursor sarabun-semibold"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
         <Link to={"create"} className="sarabun-semibold">
           เพิ่มหมวดหมู่
@@ -46,8 +58,8 @@ const CategoriesPage = () => {
             </tr>
           </thead>
           <tbody>
-            {categories &&
-              categories.map((item, index) => {
+            {searchFilter &&
+              searchFilter.map((item, index) => {
                 const formattedCreateDate = new Date(
                   item?.createdAt
                 ).toLocaleString();

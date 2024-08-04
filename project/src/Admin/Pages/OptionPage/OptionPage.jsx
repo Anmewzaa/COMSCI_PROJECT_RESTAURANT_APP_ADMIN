@@ -12,6 +12,16 @@ import DeleteComponent from "../../Components/DeleteComponent";
 
 const OptionPage = () => {
   const [option, setOption] = useState([]);
+  const [search, setSearch] = useState("");
+  const searchFilter = option?.filter((item) => {
+    if (search === "") {
+      return item;
+    }
+    return (
+      item?.option_name?.thai.toLowerCase().includes(search.toLowerCase()) ||
+      item?.option_name?.english.toLowerCase().includes(search.toLowerCase())
+    );
+  });
   const fetchAPI = async () => {
     await axios
       .get(`${import.meta.env.VITE_API_URL}/option/get`)
@@ -29,6 +39,8 @@ const OptionPage = () => {
           type="text"
           placeholder="ค้นหาส่วนเสริมอาหาร"
           className="cursor sarabun-semibold"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
         <Link to={"create"} className="sarabun-semibold">
           เพิ่มส่วนเสริมอาหาร
@@ -47,8 +59,8 @@ const OptionPage = () => {
             </tr>
           </thead>
           <tbody>
-            {option &&
-              option.map((item, index) => {
+            {searchFilter &&
+              searchFilter.map((item, index) => {
                 const formattedCreateDate = new Date(
                   item?.createdAt
                 ).toLocaleString();

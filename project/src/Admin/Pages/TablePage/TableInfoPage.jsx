@@ -6,6 +6,8 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 // SWAL
 import Swal from "sweetalert2";
+// QRCODE
+import QRCode from "react-qr-code";
 
 const TableInfoPage = () => {
   const { id } = useParams();
@@ -13,6 +15,7 @@ const TableInfoPage = () => {
   const [users, setUsers] = useState([]);
   const [price, setPrice] = useState(0);
   const [count, setCount] = useState(0);
+  const [qrCode, setQrCode] = useState(false);
   const [table, setTable] = useState({
     employee: "",
     customer_amount: "",
@@ -50,20 +53,44 @@ const TableInfoPage = () => {
       });
   };
   const closeTable = async () => {
-    const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
-    await axios
-      .put(
-        `${import.meta.env.VITE_API_URL}/table/close/${tableinfo._id}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${JWT_TOKEN}`,
-          },
-        }
-      )
-      .then(() => {
-        console.log("Success");
-      });
+    Swal.fire({
+      title: "ต้องการยกเลิกโต๊ะใช่ไหม?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
+        axios
+          .put(
+            `${import.meta.env.VITE_API_URL}/table/close/${tableinfo._id}`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${JWT_TOKEN}`,
+              },
+            }
+          )
+          .then((data) => {
+            Swal.fire({
+              title: "Deleted!",
+              text: data,
+              icon: "success",
+            });
+            window.location.replace(`/admin/table`);
+          })
+          .catch(() => {
+            Swal.fire({
+              title: "Error!",
+              text: "รายการอาหารต้องว่าง",
+              icon: "error",
+            });
+          });
+      }
+    });
   };
   useEffect(() => {
     fetchAPI();
@@ -116,23 +143,44 @@ const TableInfoPage = () => {
     if (cart.length === 0) {
       return;
     }
-    const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
-    await axios
-      .put(
-        `${import.meta.env.VITE_API_URL}/table/change_status/${id}`,
-        {
-          order_ids: cart,
-          new_status: `${new_status + 1}`,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${JWT_TOKEN}`,
-          },
-        }
-      )
-      .then(() => {
-        console.log("Success");
-      });
+    Swal.fire({
+      title: "ต้องการที่จะส่งรายการอาหารใช่ไหม?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
+        axios
+          .put(
+            `${import.meta.env.VITE_API_URL}/table/change_status/${id}`,
+            { order_ids: cart, new_status: `${new_status + 1}` },
+            {
+              headers: {
+                Authorization: `Bearer ${JWT_TOKEN}`,
+              },
+            }
+          )
+          .then((data) => {
+            Swal.fire({
+              title: "ส่งรายการอาหารสำเร็จ!",
+              text: data,
+              icon: "success",
+            });
+            window.location.replace(`/admin/table/${id}`);
+          })
+          .catch((err) => {
+            Swal.fire({
+              title: "Error!",
+              text: err,
+              icon: "error",
+            });
+          });
+      }
+    });
   };
   const priceCalculate = (orders) => {
     let totalPrice = 0;
@@ -236,7 +284,7 @@ const TableInfoPage = () => {
                         })}
                     </span>
                   </div>
-                  <div>
+                  <div className="mb-1">
                     <button
                       className="btn btn-red cursor"
                       onClick={() => {
@@ -246,26 +294,66 @@ const TableInfoPage = () => {
                     >
                       ยกเลิก
                     </button>
-                    <button className="btn btn-blue ">คิวอาร์โคด</button>
-                    <button className="btn btn-blue ">เพิ่มรายการอาหาร</button>
+                    <button
+                      className="btn btn-blue cursor"
+                      onClick={() => {
+                        setQrCode((qrCode) => !qrCode);
+                      }}
+                    >
+                      คิวอาร์โคด
+                    </button>
+                    <button className="btn btn-blue cursor">
+                      เพิ่มรายการอาหาร
+                    </button>
+                  </div>
+                  <div>
+                    {qrCode && (
+                      <QRCode
+                        value={`${import.meta.env.VITE_API_URL}/${
+                          tableinfo.table_id
+                        }`}
+                      />
+                    )}
                   </div>
                 </>
               </div>
               <div className="mb-1">
                 <h3>รายการอาหาร</h3>
                 <div className="white-container">
-                  <button type="button" onClick={() => setSearch(1)}>
-                    รายการอาหารใหม่
-                  </button>
-                  <button type="button" onClick={() => setSearch(2)}>
-                    กำลังปรุง
-                  </button>
-                  <button type="button" onClick={() => setSearch(3)}>
-                    เสร็จแล้ว
-                  </button>
+                  <div className="status-container">
+                    <button
+                      type="button"
+                      onClick={() => setSearch(1)}
+                      className={`cursor status-group sarabun-semibold ${
+                        search == "1" ? "status-active" : ""
+                      }`}
+                    >
+                      รายการอาหารใหม่
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSearch(2)}
+                      className={`cursor status-group sarabun-semibold ${
+                        search == "2" ? "status-active" : ""
+                      }`}
+                    >
+                      กำลังปรุง
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSearch(3)}
+                      className={`cursor status-group sarabun-semibold ${
+                        search == "3" ? "status-active" : ""
+                      }`}
+                    >
+                      เสร็จแล้ว
+                    </button>
+                  </div>
                   <div>
                     {searchFilter?.length === 0 ? (
-                      <>ไม่มีรายการอาหารใหม่</>
+                      <div className="empty-item">
+                        <p className="sarabun-semibold">ไม่มีรายการอาหารใหม่</p>
+                      </div>
                     ) : (
                       <>
                         {searchFilter &&
@@ -296,6 +384,7 @@ const TableInfoPage = () => {
                               onClick={() => {
                                 changeOrderStatus(search);
                               }}
+                              className="btn btn-full btn-green cursor sarabun-semibold"
                             >
                               ส่งรายการอาหาร
                             </button>
@@ -319,7 +408,12 @@ const TableInfoPage = () => {
                     <h4 className="checkbill-text">ยอดที่ต้องชำระ</h4>
                     <h4>{price} บาท</h4>
                   </div>
-                  <button onClick={() => checkbill()}>ชำระเงิน</button>
+                  <button
+                    onClick={() => checkbill()}
+                    className="btn btn-full btn-green cursor sarabun-semibold"
+                  >
+                    ชำระเงิน
+                  </button>
                 </div>
               </div>
             </>

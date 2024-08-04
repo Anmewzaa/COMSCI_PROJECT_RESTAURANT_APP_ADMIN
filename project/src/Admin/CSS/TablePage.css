@@ -66,3 +66,24 @@
 .checkbill-text {
   font-weight: 100;
 }
+.status-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+}
+.status-container .status-group {
+  border: none;
+  border-radius: 5px;
+  padding: 0.8rem 1.6rem;
+  background: #979797;
+  color: white;
+}
+.status-container .status-active {
+  background: #ee8100;
+}
+.empty-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+}
