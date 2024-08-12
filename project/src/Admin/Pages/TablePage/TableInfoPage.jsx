@@ -8,6 +8,8 @@ import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 // QRCODE
 import QRCode from "react-qr-code";
+// CSS
+import "../../CSS/TableInfoPage.css";
 
 const TableInfoPage = () => {
   const { id } = useParams();
@@ -195,24 +197,66 @@ const TableInfoPage = () => {
     setCount(totalCount);
   };
   const checkbill = async () => {
-    const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
-    await axios
-      .put(
-        `${import.meta.env.VITE_API_URL}/table/checkbill/${tableinfo._id}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${JWT_TOKEN}`,
-          },
-        }
-      )
-      .then(() => {
-        console.log("Success");
+    if (tableinfo.table_order.length === 0) {
+      return Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "ไม่มีรายการอาหารไม่สามารถชำระเงินได้",
+        footer: '<a href="#">Why do I have this issue?</a>',
       });
+    }
+    Swal.fire({
+      title: "ต้องการเช็คบิลใช่หรือไม่ ?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
+        axios
+          .put(
+            `${import.meta.env.VITE_API_URL}/table/checkbill/${tableinfo._id}`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${JWT_TOKEN}`,
+              },
+            }
+          )
+          .then((data) => {
+            Swal.fire({
+              title: "Deleted!",
+              text: data,
+              icon: "success",
+            });
+            window.location.replace(`/admin/table`);
+          })
+          .catch(() => {
+            Swal.fire({
+              title: "Error!",
+              text: "รายการอาหารต้องว่าง",
+              icon: "error",
+            });
+          });
+      }
+    });
   };
   return (
     <>
-      <h3>รายละเอียดโต๊ะ</h3>
+      <div className="table-container-box">
+        <h3 className="sarabun-extrabold">รายละเอียดโต๊ะ</h3>
+        <div>
+          <button className="btn btn-yellow sarabun-extrabold cursor">
+            แก้ไขโต๊ะ
+          </button>
+          <button className="btn btn-red sarabun-extrabold cursor">
+            ลบโต๊ะ
+          </button>
+        </div>
+      </div>
       {tableinfo ? (
         <>
           {tableinfo.table_status === "close" ? (
@@ -220,23 +264,32 @@ const TableInfoPage = () => {
               <form className="white-container mb-1" onSubmit={formSubmit}>
                 <div>
                   <div className="table-header">
-                    <h3 className="table-header-text">
-                      โต๊ะที่ {tableinfo?.table_number}{" "}
-                      <span>(เหมาะสำหรับ {tableinfo?.table_seat} ที่นั่ง)</span>
-                    </h3>
+                    <div className="inline-text">
+                      <h3 className="table-header-text sarabun-bold">
+                        โต๊ะที่ {tableinfo?.table_number}{" "}
+                      </h3>
+                      <span className="sub-text">
+                        (เหมาะสำหรับ {tableinfo?.table_seat} ที่นั่ง)
+                      </span>
+                    </div>
                     <h3>
                       {tableinfo?.table_zone &&
                         tableinfo?.table_zone.map((item, index) => {
-                          return <div key={index}>โซน{item.zone_name}</div>;
+                          return (
+                            <div key={index} className="sarabun-bold">
+                              โซน{item.zone_name}
+                            </div>
+                          );
                         })}
                     </h3>
                   </div>
                 </div>
-                <div>
-                  <label>พนักงาน</label>
+                <div className="mb-1">
+                  <label className="block sarabun-medium">พนักงาน</label>
                   <select
                     value={table.employee}
                     onChange={inputValue("employee")}
+                    className="input-full"
                     required
                   >
                     <option value="">เลือกตัวเลือก</option>
@@ -247,16 +300,22 @@ const TableInfoPage = () => {
                     ))}
                   </select>
                 </div>
-                <div>
-                  <label>จำนวนลูกค้า</label>
+                <div className="mb-1">
+                  <label className="block sarabun-medium">จำนวนลูกค้า</label>
                   <input
                     type="number"
                     placeholder="จำนวนลูกค้า"
                     onChange={inputValue("customer_amount")}
+                    className="input-full"
                     required
                   />
                 </div>
-                <button type="submit">เปิดโต๊ะ</button>
+                <button
+                  type="submit"
+                  className="btn-full btn-green sarabun-semibold"
+                >
+                  เปิดโต๊ะ
+                </button>
               </form>
             </>
           ) : (
@@ -264,10 +323,14 @@ const TableInfoPage = () => {
               <div className="white-container mb-1">
                 <>
                   <div className="table-header mb-1">
-                    <h3 className="table-header-text">
-                      โต๊ะที่ {tableinfo?.table_number}{" "}
-                      <span>(เหมาะสำหรับ {tableinfo?.table_seat} ที่นั่ง)</span>
-                    </h3>
+                    <div className="inline-text">
+                      <h3 className="table-header-text sarabun-bold">
+                        โต๊ะที่ {tableinfo?.table_number}{" "}
+                      </h3>
+                      <span className="sub-text">
+                        (เหมาะสำหรับ {tableinfo?.table_seat} ที่นั่ง)
+                      </span>
+                    </div>
                     <h3>
                       {tableinfo?.table_zone &&
                         tableinfo?.table_zone.map((item, index) => {
@@ -275,18 +338,18 @@ const TableInfoPage = () => {
                         })}
                     </h3>
                   </div>
-                  <div className="mb-1">
-                    พนักงานประจำโต๊ะ{" "}
-                    <span>
+                  <div className="mb-1 inline-text ">
+                    <span className="mr-1 sarabun-bold">พนักงานประจำโต๊ะ </span>
+                    <span className="sarabun-light">
                       {tableinfo.table_employee &&
                         tableinfo.table_employee.map((item, index) => {
                           return <div key={index}>{item.user_fullname}</div>;
                         })}
                     </span>
                   </div>
-                  <div className="mb-1">
+                  <div className="mb-1 flex-end">
                     <button
-                      className="btn btn-red cursor"
+                      className="btn btn-red cursor sarabun-bold"
                       onClick={() => {
                         closeTable();
                       }}
@@ -295,14 +358,14 @@ const TableInfoPage = () => {
                       ยกเลิก
                     </button>
                     <button
-                      className="btn btn-blue cursor"
+                      className="btn btn-blue cursor sarabun-bold"
                       onClick={() => {
                         setQrCode((qrCode) => !qrCode);
                       }}
                     >
                       คิวอาร์โคด
                     </button>
-                    <button className="btn btn-blue cursor">
+                    <button className="btn btn-blue cursor sarabun-bold">
                       เพิ่มรายการอาหาร
                     </button>
                   </div>
@@ -318,13 +381,13 @@ const TableInfoPage = () => {
                 </>
               </div>
               <div className="mb-1">
-                <h3>รายการอาหาร</h3>
+                <h3 className="sarabun-extrabold">รายการอาหาร</h3>
                 <div className="white-container">
                   <div className="status-container">
                     <button
                       type="button"
                       onClick={() => setSearch(1)}
-                      className={`cursor status-group sarabun-semibold ${
+                      className={`cursor status-group sarabun-bold ${
                         search == "1" ? "status-active" : ""
                       }`}
                     >
@@ -333,7 +396,7 @@ const TableInfoPage = () => {
                     <button
                       type="button"
                       onClick={() => setSearch(2)}
-                      className={`cursor status-group sarabun-semibold ${
+                      className={`cursor status-group sarabun-bold ${
                         search == "2" ? "status-active" : ""
                       }`}
                     >
@@ -342,7 +405,7 @@ const TableInfoPage = () => {
                     <button
                       type="button"
                       onClick={() => setSearch(3)}
-                      className={`cursor status-group sarabun-semibold ${
+                      className={`cursor status-group sarabun-bold ${
                         search == "3" ? "status-active" : ""
                       }`}
                     >
@@ -352,7 +415,7 @@ const TableInfoPage = () => {
                   <div>
                     {searchFilter?.length === 0 ? (
                       <div className="empty-item">
-                        <p className="sarabun-semibold">ไม่มีรายการอาหารใหม่</p>
+                        <p className="sarabun-regular">ไม่มีรายการอาหารใหม่</p>
                       </div>
                     ) : (
                       <>
@@ -361,19 +424,27 @@ const TableInfoPage = () => {
                             const isChecked = cart.includes(item._id);
                             return (
                               <div key={index} className="item-box">
-                                <div>
+                                <div className="box-container">
                                   <input
                                     type="checkbox"
-                                    className="checkbox"
+                                    className="checkbox cursor"
                                     checked={isChecked}
                                     onChange={() =>
                                       handleCheckboxChange(item._id)
                                     }
                                   ></input>
-                                  {item?.menu?.menu_name?.thai}
-                                  {item?.option}
+                                  <div>
+                                    <span className="sarabun-regular ">
+                                      {item?.menu?.menu_name?.thai}
+                                    </span>
+                                    <span className="block option-text sarabun-light">
+                                      {item?.option}
+                                    </span>
+                                  </div>
                                 </div>
-                                <div>{item?.menu?.menu_price}</div>
+                                <div className="sarabun-regular">
+                                  {item?.menu?.menu_price} บาท
+                                </div>
                               </div>
                             );
                           })}
@@ -398,7 +469,7 @@ const TableInfoPage = () => {
                 </div>
               </div>
               <div>
-                <h3>ข้อมูลชำระเงิน</h3>
+                <h3 className="sarabun-extrabold">ข้อมูลชำระเงิน</h3>
                 <div className="white-container">
                   <div className="mb-1 checkbill">
                     <h4 className="checkbill-text">จำนวนรายการอาหารทั้งหมด</h4>

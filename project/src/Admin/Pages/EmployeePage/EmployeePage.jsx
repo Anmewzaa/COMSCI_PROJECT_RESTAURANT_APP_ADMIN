@@ -6,7 +6,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 // Components
 import EditComponent from "../../Components/EditComponent";
-import DeleteComponent from "../../Components/DeleteComponent";
+// SWAL
+import Swal from "sweetalert2";
 
 const EmployeePage = () => {
   const [users, setUsers] = useState([]);
@@ -58,7 +59,7 @@ const EmployeePage = () => {
               <th>#</th>
               <th>ชื่อ</th>
               <th>เบอร์โทร</th>
-              <th>ตำแหน่ง</th>
+              <th>หน้าที่</th>
               <th></th>
             </tr>
           </thead>
@@ -74,7 +75,47 @@ const EmployeePage = () => {
                       <td>{item?.user_role}</td>
                       <td className="action-btn-container">
                         <EditComponent id={item?.user_id} />
-                        <DeleteComponent id={item?.user_id} name={"category"} />
+                        <button
+                          onClick={() => {
+                            Swal.fire({
+                              title: "ต้องการลบใช่ไหม?",
+                              text: "You won't be able to revert this!",
+                              icon: "warning",
+                              showCancelButton: true,
+                              confirmButtonColor: "#3085d6",
+                              cancelButtonColor: "#d33",
+                              confirmButtonText: "Yes, delete it!",
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                const JWT_TOKEN = localStorage.getItem(
+                                  "PARADISE_LOGIN_TOKEN"
+                                );
+                                axios
+                                  .delete(
+                                    `${
+                                      import.meta.env.VITE_API_URL
+                                    }/user/delete/${item?.user_id}`,
+                                    {
+                                      headers: {
+                                        Authorization: `Bearer ${JWT_TOKEN}`,
+                                      },
+                                    }
+                                  )
+                                  .then(() => {
+                                    Swal.fire({
+                                      title: "Deleted!",
+                                      text: "Your file has been deleted.",
+                                      icon: "success",
+                                    });
+                                    window.location.replace(`/admin/employee`);
+                                  });
+                              }
+                            });
+                          }}
+                          className="btn btn-red cursor sarabun-semibold"
+                        >
+                          ลบ
+                        </button>
                       </td>
                     </tr>
                   </>

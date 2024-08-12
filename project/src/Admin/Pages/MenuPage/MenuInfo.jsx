@@ -1,5 +1,5 @@
 // React Hook
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 // React Router Dom
 import { useParams, useNavigate } from "react-router-dom";
 // axios
@@ -10,8 +10,11 @@ import BackFooter from "../../Components/BackFooter";
 import Swal from "sweetalert2";
 // CSS
 import "../../CSS/MenuInfoPage.css";
+// Context
+import { UserContext } from "../AdminLayout";
 
 const MenuInfo = () => {
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const { id } = useParams();
   const [menu, setMenu] = useState([]);
@@ -97,11 +100,11 @@ const MenuInfo = () => {
   };
 
   return (
-    <>
+    <div className="info-container">
       {loading ? (
         <>Loading...</>
       ) : (
-        <>
+        <div>
           {menu ? (
             <div className="menu-info-box">
               <div className="image-container">
@@ -149,33 +152,39 @@ const MenuInfo = () => {
                     <>Empty</>
                   )}
                 </div>
-                <button
-                  className="btn-full btn-blue mb-1 sarabun-semibold cursor"
-                  onClick={() => changeMenuStatus()}
-                >
-                  แจ้งเมนูหมด
-                </button>
-                <button
-                  className="btn-full btn-yellow mb-1 sarabun-semibold cursor"
-                  onClick={() => editMenuInfo()}
-                >
-                  แก้ไข
-                </button>
-                <button
-                  className="btn-full btn-red mb-1 sarabun-semibold cursor"
-                  onClick={() => deleteMenuInfo()}
-                >
-                  ลบ
-                </button>
+                <div className="btn-group">
+                  <button
+                    className="btn-full btn-blue sarabun-semibold cursor"
+                    onClick={() => changeMenuStatus()}
+                  >
+                    แจ้งเมนูหมด
+                  </button>
+                  {user.user_access_rights === "Admin" && (
+                    <>
+                      <button
+                        className="btn-full btn-yellow sarabun-semibold cursor"
+                        onClick={() => editMenuInfo()}
+                      >
+                        แก้ไข
+                      </button>
+                      <button
+                        className="btn-full btn-red sarabun-semibold cursor"
+                        onClick={() => deleteMenuInfo()}
+                      >
+                        ลบ
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           ) : (
             <>Empty</>
           )}
-        </>
+        </div>
       )}
       <BackFooter props={"/admin/menu"} />
-    </>
+    </div>
   );
 };
 

@@ -27,7 +27,12 @@ const TablePage = () => {
         {table ? (
           <>
             <div className="table-select-box">
-              <h3>โต๊ะทั้งหมด</h3>
+              <div className="table-container-box">
+                <h3 className="sarabun-extrabold">โต๊ะทั้งหมด</h3>
+                <button className="btn btn-green sarabun-extrabold cursor">
+                  สร้างโต๊ะ
+                </button>
+              </div>
               <div className="white-container table-box-grid">
                 {table &&
                   table.map((item, index) => {

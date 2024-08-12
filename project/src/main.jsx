@@ -11,7 +11,7 @@ import AdminLayout from "./Admin/Pages/AdminLayout";
 import HomePage from "./Admin/Pages/HomePage";
 import TablePage from "./Admin/Pages/TablePage/TablePage";
 import TableInfoPage from "./Admin/Pages/TablePage/TableInfoPage";
-import KitchenPage from "./Admin/Pages/KitchenPage";
+import KitchenPage from "./Admin/Pages/KitchenPage/KitchenPage";
 import MenuPage from "./Admin/Pages/MenuPage/MenuPage";
 import MenuInfo from "./Admin/Pages/MenuPage/MenuInfo";
 import EditMenuInfoPage from "./Admin/Pages/MenuPage/EditMenuInfoPage";
@@ -23,6 +23,8 @@ import OptionPage from "./Admin/Pages/OptionPage/OptionPage";
 import CreateOptionPage from "./Admin/Pages/OptionPage/CreateOptionPage";
 import EditOptionPage from "./Admin/Pages/OptionPage/EditOptionPage";
 import EmployeePage from "./Admin/Pages/EmployeePage/EmployeePage";
+import CreateEmployeePage from "./Admin/Pages/EmployeePage/CreateEmployeePage";
+import EditEmployeePage from "./Admin/Pages/EmployeePage/EditEmployeePage";
 
 const router = createBrowserRouter([
   {
@@ -158,6 +160,22 @@ const router = createBrowserRouter([
             element: (
               <>
                 <EmployeePage />
+              </>
+            ),
+          },
+          {
+            path: "employee/create",
+            element: (
+              <>
+                <CreateEmployeePage />
+              </>
+            ),
+          },
+          {
+            path: "employee/edit/:id",
+            element: (
+              <>
+                <EditEmployeePage />
               </>
             ),
           },

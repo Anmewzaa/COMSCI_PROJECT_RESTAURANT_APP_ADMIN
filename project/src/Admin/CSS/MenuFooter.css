@@ -2,8 +2,6 @@
   display: flex;
   list-style: none;
   background: #ee8100;
-  position: absolute;
-  bottom: 0%;
   width: calc(100vw - 250px);
 }
 .flex-end {
@@ -31,4 +29,17 @@
 .footer-box .back-item:hover {
   transform: scale(1.03);
   transition: ease-in-out 0.2s;
+}
+
+@media screen and (max-width: 600px) {
+  .footer-box {
+    width: 100%;
+  }
+  .flex-end {
+    justify-content: flex-start;
+  }
+  .footer-box .item {
+    margin: 1.8rem 0;
+    margin-left: 1rem;
+  }
 }

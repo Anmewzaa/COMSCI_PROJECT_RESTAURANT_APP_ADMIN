@@ -30,7 +30,7 @@
 .card-inactive {
   background: rgba(0, 0, 0, 0.65);
   position: absolute;
-  z-index: 100;
+  z-index: 10;
   width: 200px;
   height: 275px;
   top: 0;

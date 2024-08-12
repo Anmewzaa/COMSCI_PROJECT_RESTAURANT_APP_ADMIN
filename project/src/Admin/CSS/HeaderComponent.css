@@ -1,0 +1,16 @@
+.header-box {
+  width: calc(100vw - 250px);
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  background: white;
+}
+.header-box h3 span {
+  color: #ee8100;
+}
+
+@media screen and (max-width: 600px) {
+  .header-box {
+    display: none;
+  }
+}

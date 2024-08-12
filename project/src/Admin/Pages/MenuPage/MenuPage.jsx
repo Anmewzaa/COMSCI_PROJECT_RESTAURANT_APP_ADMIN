@@ -36,21 +36,23 @@ const MenuPage = () => {
   return (
     <SearchContext.Provider value={{ search, setSearch }}>
       <CategoriesComponent />
-      {loading ? (
-        <>Loading...</>
-      ) : (
-        <div className="card-box">
-          {menu.length === 0 ? (
-            <>Empty</>
-          ) : (
-            <>
-              {searchFilter.map((item) => {
-                return <CardComponent key={item.menu_id} menu={item} />;
-              })}
-            </>
-          )}
-        </div>
-      )}
+      <div>
+        {loading ? (
+          <>Loading...</>
+        ) : (
+          <div className="card-box">
+            {menu.length === 0 ? (
+              <>Empty</>
+            ) : (
+              <>
+                {searchFilter.map((item) => {
+                  return <CardComponent key={item.menu_id} menu={item} />;
+                })}
+              </>
+            )}
+          </div>
+        )}
+      </div>
       <MenuFooter />
     </SearchContext.Provider>
   );

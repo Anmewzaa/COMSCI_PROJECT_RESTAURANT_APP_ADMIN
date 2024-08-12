@@ -1,0 +1,88 @@
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.table-header h3 {
+  font-size: 22px;
+  margin-right: 0.4rem;
+}
+.table-header .subtext {
+  font-size: 12px;
+}
+.table-header .table-header-text span {
+  font-weight: 100;
+}
+
+.inline-text {
+  display: flex;
+  align-items: end;
+}
+.block {
+  display: block;
+  margin-bottom: 0.4rem;
+}
+.input-full {
+  width: 100%;
+  padding: 1rem;
+  appearance: none;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.status-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+}
+.status-container .status-group {
+  border: none;
+  border-radius: 5px;
+  padding: 0.8rem 1.6rem;
+  background: #979797;
+  color: white;
+}
+.status-container .status-active {
+  background: #ee8100;
+}
+
+.item-box {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0;
+  border: 1px solid black;
+  padding: 1rem;
+  border-radius: 5px;
+  align-items: center;
+}
+.item-box input {
+  margin-right: 1rem;
+}
+
+.empty-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+.box-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.box-container .checkbox {
+  padding: 1rem;
+}
+
+.option-text {
+  color: #797979;
+  font-size: 14px;
+  margin-top: 0.2rem;
+}

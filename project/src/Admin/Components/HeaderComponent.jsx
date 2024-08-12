@@ -4,6 +4,8 @@ import { useContext } from "react";
 import { useLocation } from "react-router-dom";
 // Context
 import { UserContext } from "../Pages/AdminLayout";
+// CSS
+import "../CSS/HeaderComponent.css";
 
 const HeaderComponent = () => {
   const location = useLocation();
@@ -30,6 +32,8 @@ const HeaderComponent = () => {
         return "สร้างส่วนเสริมอาหาร";
       case "/admin/employee":
         return "หน้าจัดการพนักงาน";
+      case "/admin/employee/create":
+        return "เพิ่มพนักงาน";
     }
   };
 
