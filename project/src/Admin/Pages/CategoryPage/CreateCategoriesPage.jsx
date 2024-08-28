@@ -67,7 +67,7 @@ const CreateCategoriesPage = () => {
               placeholder="ชื่อหมวดหมู่ภาษาไทย"
               value={categories.thai}
               onChange={inputValue("thai")}
-              className="sarabun-regular"
+              className="sarabun-regular cursor"
             />
           </div>
           <div>
@@ -77,7 +77,7 @@ const CreateCategoriesPage = () => {
               placeholder="ชื่อหมวดหมู่ภาษาอังกฤษ"
               value={categories.english}
               onChange={inputValue("english")}
-              className="sarabun-regular"
+              className="sarabun-regular cursor"
             />
           </div>
         </div>

@@ -1,17 +1,21 @@
 // React Hook
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 // Axios
 import axios from "axios";
 // React Router Dom
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 // SWAL
 import Swal from "sweetalert2";
 // QRCODE
 import QRCode from "react-qr-code";
 // CSS
 import "../../CSS/TableInfoPage.css";
+// Context
+import { UserContext } from "../AdminLayout";
 
 const TableInfoPage = () => {
+  const navigate = useNavigate();
+  const { user } = useContext(UserContext);
   const { id } = useParams();
   const [tableinfo, setTableInfo] = useState([]);
   const [users, setUsers] = useState([]);
@@ -94,9 +98,6 @@ const TableInfoPage = () => {
       }
     });
   };
-  useEffect(() => {
-    fetchAPI();
-  }, []);
   const handleCheckboxChange = (itemId) => {
     setCart((prevCart) => {
       if (prevCart.includes(itemId)) {
@@ -244,18 +245,61 @@ const TableInfoPage = () => {
       }
     });
   };
+  const deleteTable = async () => {
+    Swal.fire({
+      title: "ต้องการลบโต๊ะใช่ไหม?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
+        axios
+          .delete(`${import.meta.env.VITE_API_URL}/table/delete/${id}`, {
+            headers: {
+              Authorization: `Bearer ${JWT_TOKEN}`,
+            },
+          })
+          .then(() => {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success",
+            });
+            window.location.replace(`/admin/table`);
+          });
+      }
+    });
+  };
+  useEffect(() => {
+    fetchAPI();
+  }, []);
   return (
     <>
       <div className="table-container-box">
         <h3 className="sarabun-extrabold">รายละเอียดโต๊ะ</h3>
-        <div>
-          <button className="btn btn-yellow sarabun-extrabold cursor">
-            แก้ไขโต๊ะ
-          </button>
-          <button className="btn btn-red sarabun-extrabold cursor">
-            ลบโต๊ะ
-          </button>
-        </div>
+        {user.user_access_rights === "Admin" &&
+          tableinfo.table_status === "close" && (
+            <div>
+              <button
+                className="btn btn-yellow sarabun-extrabold cursor"
+                onClick={() => navigate(`/admin/table/edit/${tableinfo._id}`)}
+              >
+                แก้ไขโต๊ะ
+              </button>
+              <button
+                className="btn btn-red sarabun-extrabold cursor"
+                onClick={() => {
+                  deleteTable();
+                }}
+              >
+                ลบโต๊ะ
+              </button>
+            </div>
+          )}
       </div>
       {tableinfo ? (
         <>
@@ -289,7 +333,7 @@ const TableInfoPage = () => {
                   <select
                     value={table.employee}
                     onChange={inputValue("employee")}
-                    className="input-full"
+                    className="input-full cursor"
                     required
                   >
                     <option value="">เลือกตัวเลือก</option>
@@ -306,13 +350,13 @@ const TableInfoPage = () => {
                     type="number"
                     placeholder="จำนวนลูกค้า"
                     onChange={inputValue("customer_amount")}
-                    className="input-full"
+                    className="input-full cursor"
                     required
                   />
                 </div>
                 <button
                   type="submit"
-                  className="btn-full btn-green sarabun-semibold"
+                  className="btn-full btn-green sarabun-semibold cursor"
                 >
                   เปิดโต๊ะ
                 </button>
@@ -369,16 +413,17 @@ const TableInfoPage = () => {
                       เพิ่มรายการอาหาร
                     </button>
                   </div>
-                  <div>
-                    {qrCode && (
-                      <QRCode
-                        value={`${import.meta.env.VITE_API_URL}/${
-                          tableinfo.table_id
-                        }`}
-                      />
-                    )}
-                  </div>
                 </>
+              </div>
+              <div>
+                {qrCode && (
+                  <QRCode
+                    value={`${import.meta.env.VITE_API_URL}/${
+                      tableinfo.table_id
+                    }`}
+                    className="white-container"
+                  />
+                )}
               </div>
               <div className="mb-1">
                 <h3 className="sarabun-extrabold">รายการอาหาร</h3>

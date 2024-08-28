@@ -3,6 +3,8 @@
   list-style: none;
   background: #ee8100;
   width: calc(100vw - 250px);
+  position: absolute;
+  bottom: 0;
 }
 .flex-end {
   justify-content: flex-end;

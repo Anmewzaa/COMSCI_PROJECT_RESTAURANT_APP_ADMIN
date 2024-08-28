@@ -1,16 +1,21 @@
 .header-box {
   width: calc(100vw - 250px);
+  height: 10vh;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 1rem 1rem;
   background: white;
 }
-.header-box h3 span {
-  color: #ee8100;
+.header-box .text-container {
+  text-align: end;
 }
-
-@media screen and (max-width: 600px) {
-  .header-box {
-    display: none;
-  }
+.header-box .text-container .welcome-text {
+  color: gray;
+  font-size: 14px;
+  margin-bottom: 0.2rem;
+}
+.header-box .text-container .name-text {
+  color: black;
+  font-size: 18px;
 }

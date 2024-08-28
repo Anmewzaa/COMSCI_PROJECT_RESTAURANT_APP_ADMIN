@@ -11,6 +11,8 @@ import AdminLayout from "./Admin/Pages/AdminLayout";
 import HomePage from "./Admin/Pages/HomePage";
 import TablePage from "./Admin/Pages/TablePage/TablePage";
 import TableInfoPage from "./Admin/Pages/TablePage/TableInfoPage";
+import EditTablePage from "./Admin/Pages/TablePage/EditTablePage";
+import CreateTablePage from "./Admin/Pages/TablePage/CreateTablePage";
 import KitchenPage from "./Admin/Pages/KitchenPage/KitchenPage";
 import MenuPage from "./Admin/Pages/MenuPage/MenuPage";
 import MenuInfo from "./Admin/Pages/MenuPage/MenuInfo";
@@ -36,19 +38,11 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: (
-              <>
-                <HomePage />
-              </>
-            ),
+            element: <HomePage />,
           },
           {
             path: "table",
-            element: (
-              <>
-                <TablePage />
-              </>
-            ),
+            element: <TablePage />,
             children: [
               {
                 path: "",
@@ -68,116 +62,68 @@ const router = createBrowserRouter([
             ],
           },
           {
+            path: "table/create",
+            element: <CreateTablePage />,
+          },
+          {
+            path: "table/edit/:id",
+            element: <EditTablePage />,
+          },
+          {
             path: "kitchen",
-            element: (
-              <>
-                <KitchenPage />
-              </>
-            ),
+            element: <KitchenPage />,
           },
           {
             path: "menu",
-            element: (
-              <>
-                <MenuPage />
-              </>
-            ),
+            element: <MenuPage />,
           },
           {
             path: "menu/create",
-            element: (
-              <>
-                <CreateMenuPage />
-              </>
-            ),
+            element: <CreateMenuPage />,
           },
           {
             path: "menu/:id",
-            element: (
-              <>
-                <MenuInfo />
-              </>
-            ),
+            element: <MenuInfo />,
           },
           {
             path: "menu/edit/:id",
-            element: (
-              <>
-                <EditMenuInfoPage />
-              </>
-            ),
+            element: <EditMenuInfoPage />,
           },
           {
             path: "menu/categories",
-            element: (
-              <>
-                <CategoriesPage />
-              </>
-            ),
+            element: <CategoriesPage />,
           },
           {
             path: "menu/categories/create",
-            element: (
-              <>
-                <CreateCategoriesPage />
-              </>
-            ),
+            element: <CreateCategoriesPage />,
           },
           {
             path: "menu/categories/edit/:id",
-            element: (
-              <>
-                <EditCategoriesPage />
-              </>
-            ),
+            element: <EditCategoriesPage />,
           },
           {
             path: "menu/option",
-            element: (
-              <>
-                <OptionPage />
-              </>
-            ),
+            element: <OptionPage />,
           },
           {
             path: "menu/option/create",
-            element: (
-              <>
-                <CreateOptionPage />
-              </>
-            ),
+            element: <CreateOptionPage />,
           },
           {
             path: "menu/option/edit/:id",
-            element: (
-              <>
-                <EditOptionPage />
-              </>
-            ),
+            element: <EditOptionPage />,
           },
           {
             path: "employee",
-            element: (
-              <>
-                <EmployeePage />
-              </>
-            ),
+            element: <EmployeePage />,
           },
           {
             path: "employee/create",
-            element: (
-              <>
-                <CreateEmployeePage />
-              </>
-            ),
+            element: <CreateEmployeePage />,
           },
           {
             path: "employee/edit/:id",
-            element: (
-              <>
-                <EditEmployeePage />
-              </>
-            ),
+            element: <EditEmployeePage />,
           },
         ],
       },

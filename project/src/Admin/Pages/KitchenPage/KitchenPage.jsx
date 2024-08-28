@@ -4,20 +4,22 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const KitchenPage = () => {
-  const [data, setData] = useState([]);
+  const [newOrders, setNewOrders] = useState([]);
+  const [cookingOrders, setCookingOrders] = useState([]);
+  const [finishOrders, setFinishOrders] = useState([]);
   const fetchAPI = async () => {
-    await axios.get(`${import.meta.env.VITE_API_URL}/menu/get`).then((data) => {
-      setData(data.data.response);
-    });
+    await axios
+      .get(`${import.meta.env.VITE_API_URL}/table/get`)
+      .then((data) => {
+        const item = data.data.response;
+
+        console.log(item);
+      });
   };
   useEffect(() => {
     fetchAPI();
   }, []);
-  return (
-    <>
-      <div>{JSON.stringify(data)}</div>
-    </>
-  );
+  return <>{JSON.stringify(newOrders)}</>;
 };
 
 export default KitchenPage;

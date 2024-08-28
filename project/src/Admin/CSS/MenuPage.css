@@ -8,47 +8,6 @@ tr td ul li {
   list-style: none;
 }
 
-.btn {
-  border-radius: 5px;
-  padding: 0.8rem 1.6rem;
-  color: white;
-  border: none;
-  margin-right: 0.4rem;
-}
-.btn-full {
-  border-radius: 5px;
-  padding: 0.8rem 1.6rem;
-  color: white;
-  border: none;
-  margin-right: 0.4rem;
-  width: 100%;
-}
-.btn-yellow {
-  background: #ffd43b;
-}
-.btn-red {
-  background: #f03e3e;
-}
-.btn-green {
-  background: #23952e;
-}
-.btn-blue {
-  background: #4dabf7;
-}
-.btn a {
-  text-decoration: none;
-  color: white;
-}
-.btn-add-sub {
-  width: 100%;
-  border-radius: 5px;
-  padding: 0.8rem 1.6rem;
-  color: white;
-  border: none;
-  background: #23952e;
-  margin-bottom: 1rem;
-}
-
 .form {
   padding: 1rem;
 }
@@ -128,4 +87,13 @@ tr:hover {
 
 .table-border {
   border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 600px) {
+  .form-menu-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
 }

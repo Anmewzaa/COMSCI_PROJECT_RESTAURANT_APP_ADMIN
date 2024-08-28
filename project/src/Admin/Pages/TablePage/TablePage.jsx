@@ -1,15 +1,19 @@
 // Axios
 import axios from "axios";
 // React Hook
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 // CSS
 import "../../CSS/TablePage.css";
 // Componentes
 import TableBox from "../../Components/TableBox";
 // React Router Dom
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+// Context
+import { UserContext } from "../AdminLayout";
 
 const TablePage = () => {
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
   const [table, setTable] = useState([]);
   const fetchAPI = async () => {
     await axios
@@ -29,9 +33,14 @@ const TablePage = () => {
             <div className="table-select-box">
               <div className="table-container-box">
                 <h3 className="sarabun-extrabold">โต๊ะทั้งหมด</h3>
-                <button className="btn btn-green sarabun-extrabold cursor">
-                  สร้างโต๊ะ
-                </button>
+                {user.user_access_rights === "Admin" && (
+                  <button
+                    className="btn btn-green sarabun-extrabold cursor"
+                    onClick={() => navigate("/admin/table/create")}
+                  >
+                    สร้างโต๊ะ
+                  </button>
+                )}
               </div>
               <div className="white-container table-box-grid">
                 {table &&

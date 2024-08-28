@@ -4,6 +4,8 @@ import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
 // Axios
 import axios from "axios";
+// CSS
+import "../CSS/LoginPage.css";
 
 const LoginPage = () => {
   useEffect(() => {
@@ -58,23 +60,37 @@ const LoginPage = () => {
 
   return (
     <>
-      <div className="box">
-        <h2>Paradise Steak House</h2>
-        <form onSubmit={submitForm}>
-          <input
-            type="text"
-            placeholder="username"
-            value={state.username}
-            onChange={inputValue("username")}
-          />
-          <input
-            type="password"
-            placeholder="password"
-            value={state.password}
-            onChange={inputValue("password")}
-          />
-          <button type="submit">Sign In</button>
-        </form>
+      <div className="login-page-container">
+        <div className="container-box">
+          <div className="container-image">
+            <h3>Need some Pizza, yo?</h3>
+            <p>
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Esse aut
+              consectetur modi possimus ducimus? Obcaecati, dignissimos? Eius
+              dolores deserunt accusamus?
+            </p>
+          </div>
+          <form onSubmit={submitForm} className="container-form">
+            <h3 className="mb-1 sarabun-bold">Paradise Steak House</h3>
+            <input
+              type="text"
+              placeholder="username"
+              value={state.username}
+              onChange={inputValue("username")}
+              className="input-text sarabun-regular"
+            />
+            <input
+              type="password"
+              placeholder="password"
+              value={state.password}
+              onChange={inputValue("password")}
+              className="input-text sarabun-regular mb-2"
+            />
+            <button type="submit" className="btn-full cursor sarabun-semibold">
+              Sign In
+            </button>
+          </form>
+        </div>
       </div>
     </>
   );

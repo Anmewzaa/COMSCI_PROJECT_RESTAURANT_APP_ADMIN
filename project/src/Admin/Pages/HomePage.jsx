@@ -20,11 +20,7 @@ const HomePage = () => {
     ],
   };
 
-  return (
-    <div>
-      <CanvasJSChart options={options} />
-    </div>
-  );
+  return <div>{/* <CanvasJSChart options={options} /> */}</div>;
 };
 
 export default HomePage;

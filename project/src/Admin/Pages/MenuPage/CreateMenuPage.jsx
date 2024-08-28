@@ -118,7 +118,7 @@ const CreateMenuPage = () => {
               placeholder="ชื่ออาหารภาษาไทย"
               value={menu.name_thai}
               onChange={inputValue("name_thai")}
-              className="sarabun-regular"
+              className="sarabun-regular cursor"
               required
             />
           </div>
@@ -129,7 +129,7 @@ const CreateMenuPage = () => {
               placeholder="ชื่ออาหารภาษาอังกฤษ"
               value={menu.name_english}
               onChange={inputValue("name_english")}
-              className="sarabun-regular"
+              className="sarabun-regular cursor"
               required
             />
           </div>
@@ -140,7 +140,7 @@ const CreateMenuPage = () => {
               placeholder="คำอธิบายภาษาไทย"
               value={menu.describe_thai}
               onChange={inputValue("describe_thai")}
-              className="sarabun-regular"
+              className="sarabun-regular cursor"
               required
             />
           </div>
@@ -151,7 +151,7 @@ const CreateMenuPage = () => {
               placeholder="คำอธิบายภาษาอังกฤษ"
               value={menu.describe_english}
               onChange={inputValue("describe_english")}
-              className="sarabun-regular"
+              className="sarabun-regular cursor"
               required
             />
           </div>
@@ -162,7 +162,7 @@ const CreateMenuPage = () => {
               placeholder="ราคาอาหาร"
               value={menu.price}
               onChange={inputValue("price")}
-              className="sarabun-regular"
+              className="sarabun-regular cursor"
               required
             />
           </div>
@@ -173,7 +173,7 @@ const CreateMenuPage = () => {
               placeholder="ราคาต้นทุนอาหาร"
               value={menu.menu_cost}
               onChange={inputValue("menu_cost")}
-              className="sarabun-regular"
+              className="sarabun-regular cursor"
               required
             />
           </div>
@@ -182,7 +182,7 @@ const CreateMenuPage = () => {
             <select
               value={menu.option_id}
               onChange={inputValue("option_id")}
-              className="sarabun-regular"
+              className="sarabun-regular cursor"
             >
               <option value="">เลือกตัวเลือก</option>
               {options.map((option) => (
@@ -197,7 +197,7 @@ const CreateMenuPage = () => {
             <select
               value={menu.category_id}
               onChange={inputValue("category_id")}
-              className="sarabun-regular"
+              className="sarabun-regular cursor"
             >
               <option value="">เลือกตัวเลือก</option>
               {categories.map((category) => (

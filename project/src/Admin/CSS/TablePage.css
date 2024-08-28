@@ -1,4 +1,5 @@
 .table-container {
+  width: 80vw;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
 }
@@ -21,7 +22,6 @@
   padding: 1rem;
   border-radius: 5px;
   margin-top: 1rem;
-  /* overflow-y: scroll; */
 }
 .table-box-grid {
   display: grid;
@@ -56,4 +56,25 @@
 }
 .checkbill-text {
   font-weight: 100;
+}
+
+@media screen and (max-width: 600px) {
+  .table-container {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .table-select-box {
+    grid-column: span 1;
+    margin: 1rem;
+    margin-right: 0;
+  }
+  .table-info-box {
+    grid-column: span 1;
+    margin: 1rem;
+  }
+  .table-box-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
 }
