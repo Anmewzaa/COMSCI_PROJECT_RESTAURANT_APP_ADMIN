@@ -11,10 +11,12 @@ import "../CSS/AdminLayout.css";
 // Componentes
 import NavBarComponent from "../Components/NavBarComponent";
 import HeaderCoponent from "../Components/HeaderComponent";
+// AntD
+import { Flex, Layout } from "antd";
+const { Header, Footer, Sider, Content } = Layout;
 
 const AdminLayout = () => {
   const [user, setUser] = useState([]);
-
   const checkJWT = () => {
     const jwt_token = localStorage.getItem("PARADISE_LOGIN_TOKEN");
     if (jwt_token) {
@@ -33,6 +35,7 @@ const AdminLayout = () => {
       checkJWT();
     }
   }, []);
+
   return (
     <UserContext.Provider value={{ user }}>
       <div className="admin-home-page">

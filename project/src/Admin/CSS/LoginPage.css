@@ -1,10 +1,7 @@
-body {
-  height: 100vh;
-  background: linear-gradient(to bottom, #ff922b, #fab005);
-}
 .login-page-container {
   height: 100vh;
   position: relative;
+  background: linear-gradient(to bottom, #fd7e14, #fcc419);
 }
 .login-page-container .container-box {
   position: absolute;

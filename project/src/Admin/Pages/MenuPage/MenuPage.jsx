@@ -1,15 +1,17 @@
 // React Hook
 import { createContext, useState, useEffect } from "react";
 // Components
-import CategoriesComponent from "../../Components/CategoriesComponent";
 import CardComponent from "../../Components/CardComponent";
-import MenuFooter from "../../Components/MenuFooter";
 // Context
 export const SearchContext = createContext(null);
 // Axios
 import axios from "axios";
 // CSS
 import "../../CSS/MenuPage.css";
+// React Router Dom
+import { Link } from "react-router-dom";
+// Antd
+import { Skeleton } from "antd";
 
 const MenuPage = () => {
   const [search, setSearch] = useState("");
@@ -33,15 +35,29 @@ const MenuPage = () => {
       .toLowerCase()
       .includes(search.toLowerCase());
   });
+
   return (
     <SearchContext.Provider value={{ search, setSearch }}>
-      <CategoriesComponent />
+      <div className="form-input-container">
+        <input
+          type="text"
+          placeholder="ค้นหารายการอาหาร"
+          className="cursor sarabun-semibold"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <Link to={"create"} className="sarabun-semibold">
+          เพิ่มรายการอาหาร
+        </Link>
+      </div>
       <div>
-        {loading ? (
-          <>Loading...</>
+        {loading && loading ? (
+          <div className="loading-container">
+            <Skeleton />
+          </div>
         ) : (
           <div className="card-box">
-            {menu.length === 0 ? (
+            {menu && menu.length === 0 ? (
               <>Empty</>
             ) : (
               <>
@@ -53,7 +69,6 @@ const MenuPage = () => {
           </div>
         )}
       </div>
-      <MenuFooter />
     </SearchContext.Provider>
   );
 };

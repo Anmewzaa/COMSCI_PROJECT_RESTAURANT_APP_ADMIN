@@ -2,8 +2,6 @@
 import axios from "axios";
 // React Hook
 import { useState, useEffect } from "react";
-// Components
-import BackFooter from "../../Components/BackFooter";
 // React Router Dom
 import { Link } from "react-router-dom";
 // Components
@@ -85,7 +83,6 @@ const CategoriesPage = () => {
           </tbody>
         </table>
       </div>
-      <BackFooter props={"/admin/menu"} />
     </>
   );
 };

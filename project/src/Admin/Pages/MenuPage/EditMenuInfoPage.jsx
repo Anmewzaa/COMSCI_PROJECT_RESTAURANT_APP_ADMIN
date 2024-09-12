@@ -222,7 +222,7 @@ const EditMenuInfoPage = () => {
               อัพเดทรายการอาหาร
             </button>
           </form>
-          <BackFooter props={`/admin/menu/${id}`} />
+          <BackFooter props={`/admin/menu`} />
         </>
       ) : (
         <>Empty</>

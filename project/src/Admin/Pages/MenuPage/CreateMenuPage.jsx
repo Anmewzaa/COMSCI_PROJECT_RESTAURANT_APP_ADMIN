@@ -5,7 +5,9 @@ import Swal from "sweetalert2";
 // Axios
 import axios from "axios";
 // Components
-import BackFooter from "../../Components/BackFooter";
+
+// Antd
+import { Image } from "antd";
 
 const CreateMenuPage = () => {
   const [menu, setMenu] = useState({
@@ -19,8 +21,10 @@ const CreateMenuPage = () => {
     option_id: "",
   });
   const [selectedFile, setSelectedFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
   const onImageChange = (e) => {
     setSelectedFile(e.target.files[0]);
+    setPreviewImage(URL.createObjectURL(e.target.files[0]));
   };
   const [categories, setCategories] = useState([]);
   const [options, setOptions] = useState([]);
@@ -53,8 +57,7 @@ const CreateMenuPage = () => {
         menu.price &&
         menu.menu_cost &&
         menu.category_id &&
-        menu.option_id &&
-        selectedFile
+        menu.option_id
       )
     ) {
       return;
@@ -96,6 +99,7 @@ const CreateMenuPage = () => {
         }
       });
   };
+
   return (
     <>
       <form
@@ -103,13 +107,6 @@ const CreateMenuPage = () => {
         encType="multipart/form-data"
         className="form"
       >
-        <input
-          className="sarabun-semibold"
-          type="file"
-          accept="image/*"
-          onChange={onImageChange}
-          required
-        />
         <div className="form-menu-container">
           <div>
             <label className="sarabun-semibold">ชื่ออาหารภาษาไทย</label>
@@ -207,6 +204,29 @@ const CreateMenuPage = () => {
               ))}
             </select>
           </div>
+          <div className="file-input">
+            <label className="sarabun-semibold">รูปภาพอาหาร</label>
+            <div className="file-container">
+              {selectedFile && (
+                <div className="file-box">
+                  <Image width={100} src={previewImage} />
+                </div>
+              )}
+              <div>
+                <label htmlFor="file-upload" className="custom-file-upload">
+                  เลือกรูปภาพ
+                </label>
+                <input
+                  id="file-upload"
+                  className="sarabun-semibold"
+                  type="file"
+                  accept="image/*"
+                  onChange={onImageChange}
+                  required
+                />
+              </div>
+            </div>
+          </div>
         </div>
         <button
           type="submit"
@@ -215,7 +235,6 @@ const CreateMenuPage = () => {
           สร้างรายการอาหาร
         </button>
       </form>
-      <BackFooter props={"/admin/menu"} />
     </>
   );
 };

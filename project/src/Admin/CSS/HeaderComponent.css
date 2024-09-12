@@ -9,6 +9,7 @@
 }
 .header-box .text-container {
   text-align: end;
+  margin-right: 1rem;
 }
 .header-box .text-container .welcome-text {
   color: gray;
@@ -18,4 +19,8 @@
 .header-box .text-container .name-text {
   color: black;
   font-size: 18px;
+}
+.profile {
+  display: flex;
+  align-items: center;
 }

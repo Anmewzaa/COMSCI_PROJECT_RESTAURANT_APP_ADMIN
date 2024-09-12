@@ -10,12 +10,10 @@ import LoginPage from "./Admin/Pages/LoginPage";
 import AdminLayout from "./Admin/Pages/AdminLayout";
 import HomePage from "./Admin/Pages/HomePage";
 import TablePage from "./Admin/Pages/TablePage/TablePage";
-import TableInfoPage from "./Admin/Pages/TablePage/TableInfoPage";
 import EditTablePage from "./Admin/Pages/TablePage/EditTablePage";
 import CreateTablePage from "./Admin/Pages/TablePage/CreateTablePage";
 import KitchenPage from "./Admin/Pages/KitchenPage/KitchenPage";
 import MenuPage from "./Admin/Pages/MenuPage/MenuPage";
-import MenuInfo from "./Admin/Pages/MenuPage/MenuInfo";
 import EditMenuInfoPage from "./Admin/Pages/MenuPage/EditMenuInfoPage";
 import CreateMenuPage from "./Admin/Pages/MenuPage/CreateMenuPage";
 import CategoriesPage from "./Admin/Pages/CategoryPage/CategoriesPage";
@@ -27,10 +25,12 @@ import EditOptionPage from "./Admin/Pages/OptionPage/EditOptionPage";
 import EmployeePage from "./Admin/Pages/EmployeePage/EmployeePage";
 import CreateEmployeePage from "./Admin/Pages/EmployeePage/CreateEmployeePage";
 import EditEmployeePage from "./Admin/Pages/EmployeePage/EditEmployeePage";
+// Antd
+import { ConfigProvider } from "antd";
 
 const router = createBrowserRouter([
   {
-    path: "admin",
+    path: "/",
     children: [
       {
         path: "",
@@ -43,23 +43,6 @@ const router = createBrowserRouter([
           {
             path: "table",
             element: <TablePage />,
-            children: [
-              {
-                path: "",
-                element: (
-                  <div>
-                    <h3>รายละเอียดโต๊ะ</h3>
-                    <div className="full-height flex-center white-container">
-                      กรุณาเลือกโต๊ะ
-                    </div>
-                  </div>
-                ),
-              },
-              {
-                path: ":id",
-                element: <TableInfoPage />,
-              },
-            ],
           },
           {
             path: "table/create",
@@ -80,10 +63,6 @@ const router = createBrowserRouter([
           {
             path: "menu/create",
             element: <CreateMenuPage />,
-          },
-          {
-            path: "menu/:id",
-            element: <MenuInfo />,
           },
           {
             path: "menu/edit/:id",
@@ -137,6 +116,20 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ConfigProvider
+      theme={{
+        components: {
+          Menu: {
+            colorPrimary: "#0000",
+            colorPrimaryBg: "#ffffff",
+            borderRadius: 5,
+            fontFamily: "Sarabun",
+            algorithm: true, // Enable algorithm
+          },
+        },
+      }}
+    >
+      <RouterProvider router={router} />
+    </ConfigProvider>
   </React.StrictMode>
 );

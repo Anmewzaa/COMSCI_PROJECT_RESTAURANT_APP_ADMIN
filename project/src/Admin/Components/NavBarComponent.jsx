@@ -1,120 +1,177 @@
 // React Router Dom
-import { Link } from "react-router-dom";
-// React
-import { useContext, useState } from "react";
-// Context
-import { UserContext } from "../Pages/AdminLayout";
+import { useNavigate } from "react-router-dom";
 // Logo
 import AppLogo from "../../images/app-logo.png";
 // CSS
 import "../CSS/NavBarComponent.css";
-// SWAL
+// Swal
 import Swal from "sweetalert2";
-// Icon
+// React
+import { useContext } from "react";
+// Context
+import { UserContext } from "../Pages/AdminLayout";
+// Antd
 import {
-  AiOutlineHome,
-  AiOutlineAppstore,
-  AiOutlineMenu,
-  AiOutlineTeam,
-  AiOutlineLinux,
-  AiOutlineLeft,
-} from "react-icons/ai";
-
-const navItem = [
+  HomeOutlined,
+  AppstoreOutlined,
+  UserOutlined,
+  RestOutlined,
+  ShopOutlined,
+} from "@ant-design/icons";
+import { Menu } from "antd";
+const navitems = [
   {
-    number: 1,
-    name: "หน้าหลัก",
-    link: "",
-    access_role: "",
-    icon: <AiOutlineHome />,
+    key: "group1",
+    label: "พนักงาน",
+    type: "group",
+    children: [
+      {
+        key: "home",
+        label: "หน้าหลัก",
+        icon: <HomeOutlined />,
+        link: "/",
+      },
+      {
+        key: "table-management",
+        label: "จัดการโต๊ะ",
+        icon: <AppstoreOutlined />,
+        children: [
+          {
+            key: "table",
+            label: "โต๊ะทั้งหมด",
+            link: "/table",
+          },
+          {
+            key: "table-manage",
+            label: "จัดการโซน",
+            link: "/table",
+          },
+        ],
+      },
+      {
+        key: "kitchen",
+        label: "จัดการครัว",
+        icon: <ShopOutlined />,
+        link: "/kitchen",
+      },
+      {
+        key: "menu",
+        label: "รายการอาหาร",
+        icon: <RestOutlined />,
+        link: "/menu",
+        children: [
+          {
+            key: "manage-food",
+            label: "จัดการรายการอาหาร",
+            link: "/menu",
+          },
+          {
+            key: "manage-category",
+            label: "จัดการหมวดหมู่อาหาร",
+            link: "/menu/categories",
+            access_role: "Admin",
+          },
+          {
+            key: "manage-addons",
+            label: "จัดการส่วนเสริมอาหาร",
+            link: "/menu/option",
+            access_role: "Admin",
+          },
+        ],
+      },
+    ],
   },
   {
-    number: 2,
-    name: "จัดการโต๊ะ",
-    link: "table",
-    access_role: "",
-    icon: <AiOutlineAppstore />,
+    type: "divider",
   },
   {
-    number: 3,
-    name: "จัดการครัว",
-    link: "kitchen",
-    access_role: "",
-    icon: <AiOutlineMenu />,
-  },
-  {
-    number: 4,
-    name: "รายการอาหาร",
-    link: "menu",
-    access_role: "",
-    icon: <AiOutlineLinux />,
-  },
-  {
-    number: 5,
-    name: "จัดการบัญชีพนักงาน",
-    link: "employee",
-    access_role: "Admin",
-    icon: <AiOutlineTeam />,
+    key: "group2",
+    label: "ผู้จัดการ",
+    type: "group",
+    children: [
+      {
+        key: "manage-staff",
+        label: "จัดการบัญชีพนักงาน",
+        icon: <UserOutlined />,
+        link: "/employee",
+      },
+    ],
   },
 ];
 
 const NavBarComponent = () => {
   const { user } = useContext(UserContext);
-  const [open, setOpen] = useState(true);
+  const navigate = useNavigate();
 
-  const logout = () => {
-    Swal.fire({
-      title: "ต้องการออกจากระบบใช่หรือไม่?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        localStorage.removeItem("PARADISE_LOGIN_TOKEN");
-        window.location.replace("/admin/login");
+  const handleMenuClick = (e) => {
+    const findLink = (items) => {
+      for (const item of items) {
+        if (item.key === e.key) {
+          if (
+            item.access_role &&
+            item.access_role !== user.user_access_rights
+          ) {
+            Swal.fire({
+              title: "Access Denied",
+              text: "You do not have permission to access this page.",
+              icon: "error",
+              confirmButtonColor: "#3085d6",
+            });
+            return null;
+          }
+          return item.link;
+        }
+        if (item.children) {
+          const childLink = findLink(item.children);
+          if (childLink) return childLink;
+        }
       }
-    });
+      return null;
+    };
+
+    const link = findLink(navitems);
+    if (link) {
+      navigate(link);
+    }
   };
+
+  const filterNavItems = (items) => {
+    return items
+      .filter((item) => {
+        return (
+          !item.access_role || item.access_role === user.user_access_rights
+        );
+      })
+      .map((item) => {
+        if (item.children) {
+          return {
+            ...item,
+            children: filterNavItems(item.children),
+          };
+        }
+        return item;
+      });
+  };
+
+  const filteredNavItems = filterNavItems(navitems);
 
   return (
     <div className="navigation-box">
-      <div className="navigation-flex">
+      <div>
         <div className="logo-container">
           <img src={AppLogo} alt="website-logo" className="image cursor" />
           <h2 className="sarabun-extrabold cursor">Paradise Steak House</h2>
         </div>
-        <ul className={`navigation-item ${open && "close"} cursor`}>
-          {navItem.map((item) => {
-            if (
-              item.access_role === "" ||
-              item.access_role === user.user_access_rights
-            )
-              return (
-                <li
-                  key={item.number}
-                  className={`sarabun-medium`}
-                  onClick={() => setOpen(true)}
-                >
-                  <div className="svg-icon">{item.icon}</div>
-                  <Link to={item.link} className={`font-white`}>
-                    {item.name}
-                  </Link>
-                </li>
-              );
-          })}
-        </ul>
-      </div>
-      <div className="exit-btn cursor">
-        <AiOutlineLeft className="svg-icon" />
-        <button
-          className="logout-btn sarabun-medium cursor"
-          onClick={() => logout()}
-        >
-          ออกจากระบบ
-        </button>
+        <Menu
+          style={{
+            background: "#0000",
+          }}
+          onClick={handleMenuClick}
+          defaultSelectedKeys={["home"]}
+          defaultOpenKeys={["group1"]}
+          mode="inline"
+          items={filteredNavItems}
+        />
       </div>
     </div>
   );

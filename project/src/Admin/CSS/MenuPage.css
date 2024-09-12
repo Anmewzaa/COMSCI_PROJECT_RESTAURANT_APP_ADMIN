@@ -1,6 +1,7 @@
 .card-box {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   margin: 1rem;
 }
 
@@ -87,6 +88,37 @@ tr:hover {
 
 .table-border {
   border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.file-input .file-container {
+  display: flex;
+}
+.file-input .file-container .file-box {
+  margin-right: 1rem;
+}
+.file-input label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+.file-input input[type="file"] {
+  display: none;
+}
+.file-input .custom-file-upload {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: 1px dashed gray;
+  color: gray;
+  border-radius: 5px;
+  font-size: 12px;
+  transition: background-color 0.3s ease;
+  width: 100px;
+  height: 100px;
+}
+.loading-container {
+  margin: 1rem;
 }
 
 @media screen and (max-width: 600px) {
