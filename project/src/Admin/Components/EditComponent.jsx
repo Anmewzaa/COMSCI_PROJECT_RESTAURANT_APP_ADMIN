@@ -1,17 +1,16 @@
 // React Router Dom
 import { useNavigate } from "react-router-dom";
+// Antd
+import { Button } from "antd";
 
 // eslint-disable-next-line react/prop-types
 const EditComponent = ({ id }) => {
   const navigate = useNavigate();
   return (
     <>
-      <button
-        className="btn btn-yellow cursor sarabun-semibold"
-        onClick={() => navigate(`edit/${id}`)}
-      >
+      <Button onClick={() => navigate(`edit/${id}`)} className="">
         แก้ไข
-      </button>
+      </Button>
     </>
   );
 };

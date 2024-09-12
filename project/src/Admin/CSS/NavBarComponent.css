@@ -1,5 +1,5 @@
 .navigation-box {
-  height: 100vh;
+  height: auto;
   min-width: 10vw;
   background: linear-gradient(to bottom, #fd7e14, #fcc419);
   z-index: 100;

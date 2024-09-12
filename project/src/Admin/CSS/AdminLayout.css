@@ -1,6 +1,7 @@
 .admin-home-page {
   display: flex;
   background: #f8f9fa;
+  height: 100vh;
 }
 
 table {

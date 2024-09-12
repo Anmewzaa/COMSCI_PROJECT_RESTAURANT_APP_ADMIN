@@ -7,6 +7,47 @@ import { Link } from "react-router-dom";
 // Components
 import EditComponent from "../../Components/EditComponent";
 import DeleteComponent from "../../Components/DeleteComponent";
+// Antd
+import { Table, Tag, Space, Button, Input } from "antd";
+
+const columns = [
+  {
+    title: "ชื่อ",
+    dataIndex: "category_name",
+    key: "name",
+    render: (item) => <>{`${item.thai} (${item.english})`}</>,
+  },
+  {
+    title: "วันที่สร้าง",
+    key: "create_date",
+    dataIndex: "createdAt",
+    render: (text) => (
+      <>
+        <Tag color={"green"}>{new Date(text).toLocaleString()}</Tag>
+      </>
+    ),
+  },
+  {
+    title: "วันที่แก้ไขล่าสุด",
+    key: "update_date",
+    dataIndex: "updatedAt",
+    render: (text) => (
+      <>
+        <Tag color={"geekblue"}>{new Date(text).toLocaleString()}</Tag>
+      </>
+    ),
+  },
+  {
+    title: "",
+    key: "action",
+    render: (item) => (
+      <Space size="middle">
+        <EditComponent id={item?.category_id} />
+        <DeleteComponent id={item?.category_id} name={"category"} />
+      </Space>
+    ),
+  },
+];
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
@@ -33,55 +74,26 @@ const CategoriesPage = () => {
   return (
     <>
       <div className="form-input-container">
-        <input
+        <Input
           type="text"
-          placeholder="ค้นหาหมวดหมู่อาหาร"
-          className="cursor sarabun-semibold"
+          placeholder="ค้นหาพนักงาน"
+          className="cursor sarabun-semibold mr-1"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Link to={"create"} className="sarabun-semibold">
-          เพิ่มหมวดหมู่
-        </Link>
+        <Button>
+          <Link to={"create"} className="sarabun-semibold">
+            เพิ่มพนักงาน
+          </Link>
+        </Button>
       </div>
-      <div className="form-table-container">
-        <table>
-          <thead>
-            <tr className="sarabun-semibold">
-              <th>#</th>
-              <th>ชื่อ</th>
-              <th>วันที่สร้าง</th>
-              <th>วันที่อัพเดทล่าสุด</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {searchFilter &&
-              searchFilter.map((item, index) => {
-                const formattedCreateDate = new Date(
-                  item?.createdAt
-                ).toLocaleString();
-                const formattedLastUpdateDate = new Date(
-                  item?.updatedAt
-                ).toLocaleString();
-                return (
-                  <tr key={item?.category_id} className="sarabun-regular">
-                    <td>{index + 1}</td>
-                    <td>{`${item?.category_name?.thai} (${item?.category_name?.english})`}</td>
-                    <td>{formattedCreateDate}</td>
-                    <td>{formattedLastUpdateDate}</td>
-                    <td className="action-btn-container">
-                      <EditComponent id={item?.category_id} />
-                      <DeleteComponent
-                        id={item?.category_id}
-                        name={"category"}
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+      <div>
+        <Table
+          columns={columns}
+          dataSource={searchFilter}
+          className="form-table-container"
+          loading={false}
+        />
       </div>
     </>
   );
