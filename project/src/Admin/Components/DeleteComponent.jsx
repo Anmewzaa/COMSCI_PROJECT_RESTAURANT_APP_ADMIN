@@ -2,6 +2,8 @@
 import axios from "axios";
 // SWAL
 import Swal from "sweetalert2";
+// Antd
+import { Button } from "antd";
 
 // eslint-disable-next-line react/prop-types
 const DeleteComponent = ({ name, id }) => {
@@ -29,7 +31,7 @@ const DeleteComponent = ({ name, id }) => {
               text: "Your file has been deleted.",
               icon: "success",
             });
-            window.location.replace(`/admin/menu/${name}`);
+            window.location.replace(`/menu/${name}`);
           });
       }
     });
@@ -37,9 +39,9 @@ const DeleteComponent = ({ name, id }) => {
 
   return (
     <>
-      <button onClick={formSubmit} className="btn btn-red cursor">
+      <Button onClick={formSubmit} className="">
         ลบ
-      </button>
+      </Button>
     </>
   );
 };

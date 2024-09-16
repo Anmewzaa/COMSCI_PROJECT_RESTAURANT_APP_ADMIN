@@ -16,6 +16,12 @@
 .mb-1 {
   margin-bottom: 1rem;
 }
+.mr-1 {
+  margin-right: 0.5rem;
+}
+.inline {
+  display: flex;
+}
 
 .full-height {
   height: 70vh;
@@ -25,4 +31,170 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.sarabun-thin {
+  font-family: "Sarabun", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.sarabun-extralight {
+  font-family: "Sarabun", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.sarabun-light {
+  font-family: "Sarabun", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.sarabun-regular {
+  font-family: "Sarabun", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.sarabun-medium {
+  font-family: "Sarabun", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.sarabun-semibold {
+  font-family: "Sarabun", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.sarabun-bold {
+  font-family: "Sarabun", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.sarabun-extrabold {
+  font-family: "Sarabun", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.sarabun-thin-italic {
+  font-family: "Sarabun", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.sarabun-extralight-italic {
+  font-family: "Sarabun", sans-serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.sarabun-light-italic {
+  font-family: "Sarabun", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.sarabun-regular-italic {
+  font-family: "Sarabun", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.sarabun-medium-italic {
+  font-family: "Sarabun", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.sarabun-semibold-italic {
+  font-family: "Sarabun", sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.sarabun-bold-italic {
+  font-family: "Sarabun", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.sarabun-extrabold-italic {
+  font-family: "Sarabun", sans-serif;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.btn {
+  border-radius: 5px;
+  padding: 0.8rem 1.6rem;
+  color: white;
+  border: none;
+  margin-right: 0.4rem;
+}
+.btn-full {
+  border-radius: 5px;
+  padding: 0.8rem 1.6rem;
+  color: white;
+  border: none;
+  margin-right: 0.4rem;
+  width: 100%;
+}
+
+.btn-yellow {
+  background: #fcc419;
+}
+.btn-yellow:hover {
+  background: #fab005;
+}
+.btn-yellow:active {
+  background: #f59f00;
+}
+
+.btn-red {
+  background: #f03e3e;
+}
+.btn-red:hover {
+  background: #e03131;
+}
+.btn-red:active {
+  background: #c92a2a;
+}
+
+.btn-green {
+  background: #37b24d;
+}
+.btn-green:hover {
+  background: #2f9e44;
+}
+.btn-green:active {
+  background: #2b8a3e;
+}
+
+.btn-blue {
+  background: #4dabf7;
+}
+.btn-blue:hover {
+  background: #339af0;
+}
+.btn-blue:active {
+  background: #228be6;
+}
+
+.btn a {
+  text-decoration: none;
+  color: white;
+}
+.btn-add-sub {
+  width: 100%;
+  border-radius: 5px;
+  padding: 0.8rem 1.6rem;
+  color: white;
+  border: none;
+  background: #23952e;
+  margin-bottom: 1rem;
 }

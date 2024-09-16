@@ -81,24 +81,31 @@ const EditCategoriesPage = () => {
       <form onSubmit={submitForm} className="form">
         <div className="form-menu-container">
           <div>
-            <label>ชื่อหมวดหมู่ภาษาไทย</label>
+            <label className="sarabun-semibold">ชื่อหมวดหมู่ภาษาไทย</label>
             <input
               type="text"
               value={categories.thai}
               placeholder="ชื่อหมวดหมู่ภาษาไทย"
               onChange={inputValue("thai")}
+              className="sarabun-regular cursor"
             />
           </div>
           <div>
-            <label>ชื่อหมวดหมู่ภาษาอังกฤษ</label>
+            <label className="sarabun-semibold">ชื่อหมวดหมู่ภาษาอังกฤษ</label>
             <input
               type="text"
               value={categories.english}
               onChange={inputValue("english")}
+              className="sarabun-regular cursor"
             />
           </div>
         </div>
-        <button type="submit">อัพเดทหมวดหมู่อาหาร</button>
+        <button
+          type="submit"
+          className="btn-full btn-yellow cursor sarabun-semibold"
+        >
+          อัพเดทหมวดหมู่อาหาร
+        </button>
       </form>
       <BackFooter props={"/admin/menu/categories"} />
     </>

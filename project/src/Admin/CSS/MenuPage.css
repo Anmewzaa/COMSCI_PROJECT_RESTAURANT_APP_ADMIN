@@ -1,90 +1,14 @@
 .card-box {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   margin: 1rem;
-}
-
-.footer-box {
-  display: flex;
-  list-style: none;
-  background: #ee8100;
-  position: absolute;
-  bottom: 0%;
-  width: calc(100vw - 250px);
-}
-.flex-end {
-  justify-content: flex-end;
-}
-.footer-box a {
-  text-decoration: none;
-  color: white;
-  border: 1px solid white;
-  padding: 1rem;
-  border-radius: 5px;
-}
-.footer-box .item {
-  margin: 2rem 0;
-  margin-right: 1rem;
-}
-.footer-box .back-item {
-  margin: 2rem 0;
-  margin-left: 1rem;
 }
 
 tr td ul li {
   list-style: none;
 }
 
-.btn {
-  border-radius: 5px;
-  padding: 0.8rem 1.6rem;
-  color: white;
-  border: none;
-  margin-right: 0.4rem;
-}
-.btn-yellow {
-  background: #ffd43b;
-}
-.btn-red {
-  background: #f03e3e;
-}
-.btn-green {
-  background: #23952e;
-}
-.btn-blue {
-  background: #4dabf7;
-}
-.btn a {
-  text-decoration: none;
-  color: white;
-}
-.btn-add-sub {
-  width: 100%;
-  border-radius: 5px;
-  padding: 0.8rem 1.6rem;
-  color: white;
-  border: none;
-  background: #23952e;
-  margin-bottom: 1rem;
-}
-
-.menu-info-box {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-.menu-info-image {
-  margin: 1rem;
-  border-radius: 5px;
-}
-.menu-infomation {
-  margin: 1rem;
-}
-.menu-infomation span {
-  font-weight: bold;
-}
-.menu-infomation p {
-  margin-bottom: 1rem;
-}
 .form {
   padding: 1rem;
 }
@@ -110,4 +34,86 @@ tr td ul li {
   padding: 1rem;
   appearance: none;
   border: none;
+}
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+th {
+  background: #ee8100;
+  color: white;
+  border: none;
+  padding: 1rem 1rem;
+}
+td {
+  border: none;
+  padding: 0.4rem 1rem;
+}
+tr:hover {
+  background-color: #ddd;
+}
+.form-input-container {
+  margin: 1rem;
+  display: flex;
+}
+
+.form-table-container {
+  margin: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.form-table-container .action-btn-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.sub-container {
+  background: white;
+  padding-bottom: 3rem;
+}
+
+.table-border {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.file-input .file-container {
+  display: flex;
+}
+.file-input .file-container .file-box {
+  margin-right: 1rem;
+}
+.file-input label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+.file-input input[type="file"] {
+  display: none;
+}
+.file-input .custom-file-upload {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: 1px dashed gray;
+  color: gray;
+  border-radius: 5px;
+  font-size: 12px;
+  transition: background-color 0.3s ease;
+  width: 100px;
+  height: 100px;
+}
+.loading-container {
+  margin: 1rem;
+}
+
+.column-color {
+  background-color: red;
+  color: #333;
+}
+
+@media screen and (max-width: 600px) {
+  .form-menu-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
 }

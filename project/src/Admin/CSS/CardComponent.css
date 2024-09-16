@@ -1,25 +1,52 @@
 .card {
-  width: 250px;
+  width: 200px;
+  height: 275px;
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.card:hover {
+  transform: scale(1.03);
+  transition: ease-in-out 0.2s;
+  box-shadow: rgba(0, 0, 0, 0.32) 0px 6px 10px;
 }
 .card img {
   width: 100%;
   height: 200px;
   border-radius: 5px;
 }
-
 .card h2 {
-  padding: 0 0.8rem;
+  padding: 0.2rem 0.8rem;
+  font-size: 18px;
 }
-.card .container {
+.card p {
+  padding: 0.2rem 0.8rem;
+  font-size: 16px;
+}
+
+.relative {
+  position: relative;
+}
+
+.card-inactive {
+  background: rgba(0, 0, 0, 0.65);
+  position: absolute;
+  z-index: 10;
+  width: 200px;
+  height: 275px;
+  top: 0;
+  border-radius: 5px;
+  color: white;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
 }
-.card .container button {
-  border: none;
-  background: transparent;
-  text-decoration: underline;
-  color: #ee8100;
-  font-weight: bold;
+.modal-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+.modal-container img {
+  width: 100%;
+  border-radius: 5px;
 }

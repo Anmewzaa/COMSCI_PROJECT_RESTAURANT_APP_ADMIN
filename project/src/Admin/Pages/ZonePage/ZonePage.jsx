@@ -13,9 +13,9 @@ import { Table, Tag, Space, Button, Input } from "antd";
 const columns = [
   {
     title: "ชื่อ",
-    dataIndex: "category_name",
+    dataIndex: "zone_name",
     key: "name",
-    render: (item) => <>{`${item.thai} (${item.english})`}</>,
+    render: (item) => <>{item}</>,
   },
   {
     title: "วันที่สร้าง",
@@ -42,30 +42,32 @@ const columns = [
     key: "action",
     render: (item) => (
       <Space size="middle">
-        <EditComponent id={item?.category_id} />
-        <DeleteComponent id={item?.category_id} name={"category"} />
+        <EditComponent id={item?.zone_id} />
+        <DeleteComponent id={item?.zone_id} name={"zone"} />
       </Space>
     ),
   },
 ];
 
-const CategoriesPage = () => {
-  const [categories, setCategories] = useState([]);
+const ZonePage = () => {
+  const [zones, setZones] = useState([]);
   const [search, setSearch] = useState("");
-  const searchFilter = categories?.filter((item) => {
+  const searchFilter = zones?.filter((item) => {
     if (search === "") {
       return item;
     }
-    return (
-      item?.category_name?.thai.toLowerCase().includes(search.toLowerCase()) ||
-      item?.category_name?.english.toLowerCase().includes(search.toLowerCase())
-    );
+    return item?.zone_name.toLowerCase().includes(search.toLowerCase());
   });
   const fetchAPI = async () => {
+    const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
     await axios
-      .get(`${import.meta.env.VITE_API_URL}/category/get`)
+      .get(`${import.meta.env.VITE_API_URL}/zone/get`, {
+        headers: {
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      })
       .then((data) => {
-        setCategories(data.data.response);
+        setZones(data.data.response);
       });
   };
   useEffect(() => {
@@ -76,14 +78,14 @@ const CategoriesPage = () => {
       <div className="form-input-container">
         <Input
           type="text"
-          placeholder="ค้นหาหมวดหมู่อาหาร"
+          placeholder="ค้นหาโซนร้านอาหาร"
           className="cursor sarabun-semibold mr-1"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
         <Button>
           <Link to={"create"} className="sarabun-semibold">
-            เพิ่มหมวดหมู่อาหาร
+            เพิ่มโซนร้านอาหาร
           </Link>
         </Button>
       </div>
@@ -99,4 +101,4 @@ const CategoriesPage = () => {
   );
 };
 
-export default CategoriesPage;
+export default ZonePage;

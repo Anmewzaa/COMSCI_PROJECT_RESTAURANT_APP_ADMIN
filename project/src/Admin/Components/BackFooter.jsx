@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const BackFooter = ({ props }) => {
   return (
     <>
-      <ul className="footer-box">
+      <ul className="footer-box sarabun-semibold">
         <li className="back-item">
           <Link to={props}>ย้อนกลับ</Link>
         </li>

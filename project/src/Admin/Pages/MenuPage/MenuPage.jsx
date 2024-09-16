@@ -1,15 +1,17 @@
 // React Hook
 import { createContext, useState, useEffect } from "react";
 // Components
-import CategoriesComponent from "../../Components/CategoriesComponent";
 import CardComponent from "../../Components/CardComponent";
-import MenuFooter from "../../Components/MenuFooter";
 // Context
 export const SearchContext = createContext(null);
 // Axios
 import axios from "axios";
 // CSS
 import "../../CSS/MenuPage.css";
+// React Router Dom
+import { Link } from "react-router-dom";
+// Antd
+import { Skeleton } from "antd";
 
 const MenuPage = () => {
   const [search, setSearch] = useState("");
@@ -25,26 +27,48 @@ const MenuPage = () => {
   useEffect(() => {
     fetchAPI();
   }, []);
+  const searchFilter = menu?.filter((item) => {
+    if (search === "") {
+      return item;
+    }
+    return item?.menu_category_id[0]?.category_name?.thai
+      .toLowerCase()
+      .includes(search.toLowerCase());
+  });
 
   return (
     <SearchContext.Provider value={{ search, setSearch }}>
-      <CategoriesComponent />
-      {loading ? (
-        <>Loading...</>
-      ) : (
-        <div className="card-box">
-          {menu.length === 0 ? (
-            <>Empty</>
-          ) : (
-            <>
-              {menu.map((item) => {
-                return <CardComponent key={item.menu_id} menu={item} />;
-              })}
-            </>
-          )}
-        </div>
-      )}
-      <MenuFooter />
+      <div className="form-input-container">
+        <input
+          type="text"
+          placeholder="ค้นหารายการอาหาร"
+          className="cursor sarabun-semibold"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <Link to={"create"} className="sarabun-semibold">
+          เพิ่มรายการอาหาร
+        </Link>
+      </div>
+      <div>
+        {loading && loading ? (
+          <div className="loading-container">
+            <Skeleton />
+          </div>
+        ) : (
+          <div className="card-box">
+            {menu && menu.length === 0 ? (
+              <>Empty</>
+            ) : (
+              <>
+                {searchFilter.map((item) => {
+                  return <CardComponent key={item.menu_id} menu={item} />;
+                })}
+              </>
+            )}
+          </div>
+        )}
+      </div>
     </SearchContext.Provider>
   );
 };

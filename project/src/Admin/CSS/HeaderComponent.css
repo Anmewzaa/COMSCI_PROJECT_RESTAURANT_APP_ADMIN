@@ -1,0 +1,26 @@
+.header-box {
+  width: calc(100vw - 250px);
+  height: 10vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1rem;
+  background: white;
+}
+.header-box .text-container {
+  text-align: end;
+  margin-right: 1rem;
+}
+.header-box .text-container .welcome-text {
+  color: gray;
+  font-size: 14px;
+  margin-bottom: 0.2rem;
+}
+.header-box .text-container .name-text {
+  color: black;
+  font-size: 18px;
+}
+.profile {
+  display: flex;
+  align-items: center;
+}
