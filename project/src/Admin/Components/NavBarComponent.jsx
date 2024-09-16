@@ -44,7 +44,7 @@ const navitems = [
           {
             key: "table-manage",
             label: "จัดการโซน",
-            link: "/table",
+            link: "/zone",
           },
         ],
       },
@@ -162,16 +162,18 @@ const NavBarComponent = () => {
           <img src={AppLogo} alt="website-logo" className="image cursor" />
           <h2 className="sarabun-extrabold cursor">Paradise Steak House</h2>
         </div>
-        <Menu
-          style={{
-            background: "#0000",
-          }}
-          onClick={handleMenuClick}
-          defaultSelectedKeys={["home"]}
-          defaultOpenKeys={["group1"]}
-          mode="inline"
-          items={filteredNavItems}
-        />
+        <div className="nav-menu">
+          <Menu
+            style={{
+              background: "#0000",
+            }}
+            onClick={handleMenuClick}
+            defaultSelectedKeys={["home"]}
+            defaultOpenKeys={["group1"]}
+            mode="inline"
+            items={filteredNavItems}
+          />
+        </div>
       </div>
     </div>
   );

@@ -4,9 +4,6 @@
   background: white;
 }
 
-.categories-container {
-  /* background: gray; */
-}
 .categories-box {
   display: flex;
 }
@@ -31,14 +28,12 @@
   width: 100px;
   height: 100px;
   list-style: none;
-  border: 3px solid gray;
   padding: 0.4rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   border-radius: 5px;
-}
-.table-map-item:hover {
+  border: 3px solid gray;
 }
 .active {
   border: 4px solid green;
@@ -66,4 +61,23 @@
   margin-bottom: 1rem;
   display: flex;
   justify-content: space-between;
+}
+
+.action-drop-btn {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.qrcode-container {
+  display: flex;
+  justify-content: center;
+}
+
+.summary-price {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mb-05 {
+  margin-bottom: 0.5rem;
 }

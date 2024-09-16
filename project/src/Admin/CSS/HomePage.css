@@ -1,0 +1,35 @@
+.white-container {
+  background: white;
+  padding: 1rem;
+}
+
+.dashboard-layout {
+  display: grid;
+  grid-template-areas:
+    "a a a c"
+    "b b b b";
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.daily-container {
+  grid-area: a;
+  padding: 1rem;
+}
+.daily-data {
+  display: flex;
+  justify-content: space-between;
+  align-self: center;
+}
+.income-container {
+  grid-area: b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.food-container {
+  grid-area: c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

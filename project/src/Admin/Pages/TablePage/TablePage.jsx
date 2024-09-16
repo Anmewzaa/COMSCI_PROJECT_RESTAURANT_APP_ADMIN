@@ -9,6 +9,8 @@ import { useState, useEffect } from "react";
 import { Drawer, InputNumber, Select, Divider } from "antd";
 // Functions
 import { openTable } from "../../functions/TableFunction";
+// Componentes
+import OpenTableInfo from "../../Components/OpenTableInfo";
 
 const TablePage = () => {
   const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
@@ -91,7 +93,12 @@ const TablePage = () => {
           {table &&
             table.map((item, index) => (
               <div key={index}>
-                <li className="table-map-item cursor" onClick={showDrawer}>
+                <li
+                  className={`table-map-item cursor ${
+                    item.table_status === "open" && "active"
+                  }`}
+                  onClick={showDrawer}
+                >
                   <h2 className="table-number">{item.table_number}</h2>
                   <p className="table-zone">{item.table_zone[0].zone_name}</p>
                   <p className="table-sear">{item.table_seat} ที่นั่ง</p>
@@ -110,19 +117,7 @@ const TablePage = () => {
                     </div>
                     {item && item.table_status !== "close" ? (
                       <>
-                        <div className="menuinfo-infotable">
-                          <div className="text-container">
-                            <h4>พนักงานประจำโต๊ะ</h4>
-                            <p>
-                              {item && item.table_employee[0].user_fullname}
-                            </p>
-                          </div>
-                          <div className="text-container">
-                            <h4>จำนวนลูกค้า</h4>
-                            <p>{item && item.table_customer_amount}</p>
-                          </div>
-                          <Divider />
-                        </div>
+                        <OpenTableInfo item={item} />
                       </>
                     ) : (
                       <>

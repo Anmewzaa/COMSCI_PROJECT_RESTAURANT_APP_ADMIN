@@ -1,32 +1,43 @@
 // React
 import React from "react";
 import ReactDOM from "react-dom/client";
+// Antd
+import { ConfigProvider } from "antd";
 // CSS
 import "./global.css";
 // React Router Dom
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-// Admin Pages
-import LoginPage from "./Admin/Pages/LoginPage";
+
+// ------- Admin Pages -------
+
 import AdminLayout from "./Admin/Pages/AdminLayout";
 import HomePage from "./Admin/Pages/HomePage";
+// Login Page
+import LoginPage from "./Admin/Pages/LoginPage";
+// Table Page
 import TablePage from "./Admin/Pages/TablePage/TablePage";
 import EditTablePage from "./Admin/Pages/TablePage/EditTablePage";
 import CreateTablePage from "./Admin/Pages/TablePage/CreateTablePage";
+// Kitchen Page
 import KitchenPage from "./Admin/Pages/KitchenPage/KitchenPage";
+// Menu Page
 import MenuPage from "./Admin/Pages/MenuPage/MenuPage";
 import EditMenuInfoPage from "./Admin/Pages/MenuPage/EditMenuInfoPage";
 import CreateMenuPage from "./Admin/Pages/MenuPage/CreateMenuPage";
+// Categories Page
 import CategoriesPage from "./Admin/Pages/CategoryPage/CategoriesPage";
 import CreateCategoriesPage from "./Admin/Pages/CategoryPage/CreateCategoriesPage";
 import EditCategoriesPage from "./Admin/Pages/CategoryPage/EditCategoriesPage";
+// Option Page
 import OptionPage from "./Admin/Pages/OptionPage/OptionPage";
 import CreateOptionPage from "./Admin/Pages/OptionPage/CreateOptionPage";
 import EditOptionPage from "./Admin/Pages/OptionPage/EditOptionPage";
+// Employee Page
 import EmployeePage from "./Admin/Pages/EmployeePage/EmployeePage";
 import CreateEmployeePage from "./Admin/Pages/EmployeePage/CreateEmployeePage";
 import EditEmployeePage from "./Admin/Pages/EmployeePage/EditEmployeePage";
-// Antd
-import { ConfigProvider } from "antd";
+// Zone Page
+import ZonePage from "./Admin/Pages/ZonePage/ZonePage";
 
 const router = createBrowserRouter([
   {
@@ -103,6 +114,10 @@ const router = createBrowserRouter([
           {
             path: "employee/edit/:id",
             element: <EditEmployeePage />,
+          },
+          {
+            path: "zone",
+            element: <ZonePage />,
           },
         ],
       },

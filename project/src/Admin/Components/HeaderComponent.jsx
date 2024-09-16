@@ -10,7 +10,9 @@ import { useLocation } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Popover, Button } from "antd";
 
-const text = <span>ตั้งค่า</span>;
+const text = (
+  <span>{`เว็บไซต์เวอร์ชั่น ${import.meta.env.VITE_API_WEBSITE_VERSION}`}</span>
+);
 
 const content = (
   <div>
@@ -23,17 +25,20 @@ const HeaderComponent = () => {
   const location = useLocation();
 
   const renderHeader = () => {
-    if (location.pathname.includes("/admin/table")) {
+    if (!location) {
+      return "loading...";
+    }
+    if (location.pathname.includes("/table")) {
       return "หน้าจัดการโต๊ะ";
-    } else if (location.pathname.includes("/admin/kitchen")) {
+    } else if (location.pathname.includes("/kitchen")) {
       return "หน้าจัดการครัว";
-    } else if (location.pathname.includes("/admin/menu/categories")) {
+    } else if (location.pathname.includes("/menu/categories")) {
       return "หน้าจัดการหมวดหมู่อาหาร";
-    } else if (location.pathname.includes("/admin/menu/option")) {
+    } else if (location.pathname.includes("/menu/option")) {
       return "หน้าจัดการส่วนเสริมอาหาร";
-    } else if (location.pathname.includes("/admin/menu")) {
+    } else if (location.pathname.includes("/menu")) {
       return "หน้าจัดการรายการอาหาร";
-    } else if (location.pathname.includes("/admin/employee")) {
+    } else if (location.pathname.includes("/employee")) {
       return "หน้าจัดการบัญชีพนักงาน";
     } else {
       return "หน้าหลัก";
