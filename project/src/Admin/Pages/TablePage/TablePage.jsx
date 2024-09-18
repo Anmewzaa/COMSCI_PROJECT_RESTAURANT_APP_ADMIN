@@ -32,7 +32,11 @@ const TablePage = () => {
   const [table, setTable] = useState([]);
   const fetchTables = async () => {
     await axios
-      .get(`${import.meta.env.VITE_API_URL}/table/get`)
+      .get(`${import.meta.env.VITE_API_URL}/authen/table/get`, {
+        headers: {
+          Authorization: `Bearer ${JWT_TOKEN}`,
+        },
+      })
       .then((data) => {
         setTable(data.data.response);
       });
