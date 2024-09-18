@@ -94,6 +94,7 @@ const EmployeePage = () => {
   return (
     <>
       <div className="form-input-container">
+        {JSON.stringify()}
         <Input
           type="text"
           placeholder="ค้นหาพนักงาน"
