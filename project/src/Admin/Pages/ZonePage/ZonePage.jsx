@@ -61,7 +61,7 @@ const ZonePage = () => {
   const fetchAPI = async () => {
     const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
     await axios
-      .get(`${import.meta.env.VITE_API_URL}/zone/get`, {
+      .get(`${import.meta.env.VITE_API_URL}/authen/zone/get`, {
         headers: {
           Authorization: `Bearer ${JWT_TOKEN}`,
         },

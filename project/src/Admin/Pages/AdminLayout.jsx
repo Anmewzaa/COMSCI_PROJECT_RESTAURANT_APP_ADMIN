@@ -13,7 +13,6 @@ import NavBarComponent from "../Components/NavBarComponent";
 import HeaderCoponent from "../Components/HeaderComponent";
 // AntD
 import { Flex, Layout } from "antd";
-const { Header, Footer, Sider, Content } = Layout;
 
 const AdminLayout = () => {
   const [user, setUser] = useState([]);
@@ -30,7 +29,7 @@ const AdminLayout = () => {
   };
   useEffect(() => {
     if (!localStorage.getItem("PARADISE_LOGIN_TOKEN")) {
-      return (window.location.href = "/admin/login");
+      return (window.location.href = "/login");
     } else {
       checkJWT();
     }

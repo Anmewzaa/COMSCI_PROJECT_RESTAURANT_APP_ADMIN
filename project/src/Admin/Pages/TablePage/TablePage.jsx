@@ -14,11 +14,14 @@ import OpenTableInfo from "../../Components/OpenTableInfo";
 
 const TablePage = () => {
   const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
+  const [currentItem, setCurrentItem] = useState(null);
   const [open, setOpen] = useState(false);
-  const showDrawer = () => {
+  const showDrawer = (item) => {
+    setCurrentItem(item);
     setOpen(true);
   };
   const hideDrawer = () => {
+    setCurrentItem(null);
     setOpen(false);
   };
   const [categories, setCategories] = useState([]);
@@ -44,7 +47,7 @@ const TablePage = () => {
   const [employee, setEmployee] = useState([]);
   const fetchEmployee = async () => {
     await axios
-      .get(`${import.meta.env.VITE_API_URL}/user/get`, {
+      .get(`${import.meta.env.VITE_API_URL}/authen/user/get`, {
         headers: {
           Authorization: `Bearer ${JWT_TOKEN}`,
         },
@@ -55,7 +58,7 @@ const TablePage = () => {
   };
   const [search, setSearch] = useState("");
   const [selectEmployee, setSelectEmployee] = useState("");
-  const [selectCustomerAmount, setSelectCustomerAmount] = useState("");
+  const [selectCustomerAmount, setSelectCustomerAmount] = useState(0);
   useEffect(() => {
     fetchCategories();
     fetchTables();
@@ -101,84 +104,86 @@ const TablePage = () => {
                   className={`table-map-item cursor ${
                     item.table_status === "open" && "active"
                   }`}
-                  onClick={showDrawer}
+                  onClick={() => showDrawer(item)}
                 >
                   <h2 className="table-number">{item.table_number}</h2>
                   <p className="table-zone">{item.table_zone[0].zone_name}</p>
                   <p className="table-sear">{item.table_seat} ที่นั่ง</p>
                 </li>
-                <Drawer
-                  title="รายละเอียดโต๊ะ"
-                  onClose={hideDrawer}
-                  open={open}
-                  loading={false}
-                  size="large"
-                >
-                  <div>
-                    <div className="menuinfo-main-text">
-                      <h2>โต๊ะที่ {item.table_number}</h2>
-                      <p>{`(เหมาะสำหรับ ${item.table_seat} ที่นั่ง)`}</p>
-                    </div>
-                    {item && item.table_status !== "close" ? (
-                      <>
-                        <OpenTableInfo item={item} />
-                      </>
-                    ) : (
-                      <>
-                        <div className="menuinfo-opentable">
-                          <div className="mb-1">
-                            <label>พนักงาน</label>
-                            <Select
-                              showSearch
-                              placeholder="เลือกพนักงานประจำโต๊ะ"
-                              optionFilterProp="label"
-                              style={{
-                                width: "100%",
-                              }}
-                              options={employee.map((item) => ({
-                                value: item._id,
-                                label: item.user_fullname,
-                              }))}
-                              onChange={(value) => setSelectEmployee(value)}
-                            />
-                          </div>
-                          <div className="mb-1">
-                            <label>จำนวนลูกค้า</label>
-                            <InputNumber
-                              min={1}
-                              max={10}
-                              defaultValue={0}
-                              style={{
-                                width: "100%",
-                              }}
-                              onChange={(value) =>
-                                setSelectCustomerAmount(value)
-                              }
-                              value={selectCustomerAmount}
-                            />
-                          </div>
-                          <button
-                            className="btn-full btn-green cursor"
-                            onClick={() =>
-                              openTable(
-                                item._id,
-                                selectEmployee,
-                                selectCustomerAmount
-                              )
-                            }
-                          >
-                            เปิดโต๊ะ
-                          </button>
-                          <Divider />
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </Drawer>
               </div>
             ))}
         </ul>
       </div>
+      <Drawer
+        title="รายละเอียดโต๊ะ"
+        onClose={hideDrawer}
+        open={open}
+        loading={false}
+        size="large"
+      >
+        {currentItem && (
+          <>
+            <div>
+              <div className="menuinfo-main-text">
+                <h2>โต๊ะที่ {currentItem.table_number}</h2>
+                <p>{`(เหมาะสำหรับ ${currentItem.table_seat} ที่นั่ง)`}</p>
+              </div>
+              {currentItem && currentItem.table_status !== "close" ? (
+                <>
+                  <OpenTableInfo item={currentItem} />
+                </>
+              ) : (
+                <>
+                  <div className="menuinfo-opentable">
+                    <div className="mb-1">
+                      <label>พนักงาน</label>
+                      <Select
+                        showSearch
+                        placeholder="เลือกพนักงานประจำโต๊ะ"
+                        optionFilterProp="label"
+                        style={{
+                          width: "100%",
+                        }}
+                        options={employee.map((item) => ({
+                          value: item._id,
+                          label: item.user_fullname,
+                        }))}
+                        onChange={(value) => setSelectEmployee(value)}
+                      />
+                    </div>
+                    <div className="mb-1">
+                      <label>จำนวนลูกค้า</label>
+                      <InputNumber
+                        min={1}
+                        max={10}
+                        defaultValue={0}
+                        style={{
+                          width: "100%",
+                        }}
+                        onChange={(value) => setSelectCustomerAmount(value)}
+                        value={selectCustomerAmount}
+                      />
+                    </div>
+                    <button
+                      className="btn-full btn-green cursor"
+                      onClick={() =>
+                        openTable(
+                          currentItem._id,
+                          selectEmployee,
+                          selectCustomerAmount
+                        )
+                      }
+                    >
+                      เปิดโต๊ะ
+                    </button>
+                    <Divider />
+                  </div>
+                </>
+              )}
+            </div>
+          </>
+        )}
+      </Drawer>
     </>
   );
 };

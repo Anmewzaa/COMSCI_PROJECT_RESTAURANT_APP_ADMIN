@@ -22,19 +22,19 @@ tr td ul li {
   display: block;
   margin-bottom: 0.4rem;
 }
-.form-menu-container input {
+/* .form-menu-container input {
   width: 100%;
   padding: 1rem;
   border-radius: 5px;
   border: none;
-}
-.form-menu-container select {
+} */
+/* .form-menu-container select {
   width: 100%;
   border-radius: 5px;
   padding: 1rem;
   appearance: none;
   border: none;
-}
+} */
 tr:nth-child(even) {
   background-color: #f2f2f2;
 }

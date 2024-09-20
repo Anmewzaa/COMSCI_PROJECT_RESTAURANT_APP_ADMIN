@@ -1,11 +1,11 @@
 // React Hook
-import { useState, useEffect } from "react";
+import { useState } from "react";
 // SWAL
 import Swal from "sweetalert2";
 // Axios
 import axios from "axios";
-// Components
-import BackFooter from "../../Components/BackFooter";
+// Antd
+import { Select, Input, Button } from "antd";
 
 const CreateEmployeePage = () => {
   const [userinfo, setUserInfo] = useState({
@@ -65,93 +65,114 @@ const CreateEmployeePage = () => {
         <div className="form-menu-container">
           <div>
             <label className="sarabun-semibold">ชื่อพนักงาน</label>
-            <input
-              type="text"
+            <Input
               placeholder="ชื่อพนักงาน"
-              value={userinfo.user_fullname}
               onChange={inputValue("user_fullname")}
               className="sarabun-regular"
+              size={"large"}
               required
             />
           </div>
           <div>
             <label className="sarabun-semibold">ชื่อเล่นพนักงาน</label>
-            <input
-              type="text"
+            <Input
               placeholder="ชื่อเล่นพนักงาน"
-              value={userinfo.user_nickname}
               onChange={inputValue("user_nickname")}
               className="sarabun-regular"
+              size={"large"}
               required
             />
           </div>
           <div>
             <label className="sarabun-semibold">เบอร์พนักงาน</label>
-            <input
-              type="text"
+            <Input
               placeholder="เบอร์พนักงาน"
-              value={userinfo.user_telnum}
               onChange={inputValue("user_telnum")}
               className="sarabun-regular"
+              size={"large"}
               required
             />
           </div>
           <div>
             <label className="sarabun-semibold">ตำแหน่ง</label>
-            <select
+            <Select
+              size={"large"}
+              style={{ width: "100%" }}
+              showSearch
+              placeholder="เลือกตำแหน่ง"
+              filterOption={(input, option) =>
+                (option?.label ?? "")
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
+              options={[
+                { value: "ผู้จัดการ", label: "ผู้จัดการ" },
+                { value: "พนักงานเสิร์ฟ", label: "พนักงานเสิร์ฟ" },
+                { value: "พนักงานครัว", label: "พนักงานครัว" },
+              ]}
               value={userinfo.user_role}
-              onChange={inputValue("user_role")}
-              className="sarabun-regular"
-            >
-              <option value="">เลือกตัวเลือก</option>
-              <option value="ผู้จัดการ">ผู้จัดการ</option>
-              <option value="พนักงานเสิร์ฟ">พนักงานเสิร์ฟ</option>
-              <option value="พนักงานครัว">พนักงานครัว</option>
-            </select>
+              onChange={(value) =>
+                setUserInfo({ ...userinfo, user_role: value })
+              }
+            />
           </div>
           <div>
             <label className="sarabun-semibold">สิทธิการเข้าถึงพนักงาน</label>
-            <select
+            <Select
+              size={"large"}
+              style={{ width: "100%" }}
+              showSearch
+              placeholder="เลือกตำแหน่ง"
+              filterOption={(input, option) =>
+                (option?.label ?? "")
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
+              options={[
+                { value: "Employee", label: "ธรรมดา" },
+                { value: "Admin", label: "แอดมิน" },
+              ]}
               value={userinfo.user_access_rights}
-              onChange={inputValue("user_access_rights")}
-              className="sarabun-regular"
-            >
-              <option value="">เลือกตัวเลือก</option>
-              <option value="Employee">Employee</option>
-              <option value="Admin">Admin</option>
-            </select>
+              onChange={(value) =>
+                setUserInfo({ ...userinfo, user_access_rights: value })
+              }
+            />
           </div>
           <div>
-            <label className="sarabun-semibold">username</label>
-            <input
-              type="text"
-              placeholder="username"
-              value={userinfo.account_username}
+            <label className="sarabun-semibold">ชื่อเข้าสู่ระบบ</label>
+            <Input
+              placeholder="ชื่อเข้าสู่ระบบ"
               onChange={inputValue("account_username")}
               className="sarabun-regular"
+              size={"large"}
               required
             />
           </div>
           <div>
-            <label className="sarabun-semibold">password</label>
-            <input
-              type="text"
-              placeholder="password"
-              value={userinfo.account_password}
+            <label className="sarabun-semibold">รหัสผ่าน</label>
+            <Input
+              placeholder="รหัสผ่าน"
               onChange={inputValue("account_password")}
               className="sarabun-regular"
+              size={"large"}
               required
             />
           </div>
         </div>
-        <button
-          type="submit"
-          className="btn-full btn-green cursor sarabun-semibold"
+        <Button
+          className="sarabun-semibold"
+          block
+          htmlType="submit"
+          size={"large"}
+          style={{
+            background: "linear-gradient(45deg, #00C853 0%, #00C853 100%)",
+            color: "#fff",
+            border: "none",
+          }}
         >
           เพิ่มพนักงาน
-        </button>
+        </Button>
       </form>
-      <BackFooter props={"/admin/employee"} />
     </>
   );
 };

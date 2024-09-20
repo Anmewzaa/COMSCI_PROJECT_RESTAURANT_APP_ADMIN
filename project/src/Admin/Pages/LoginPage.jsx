@@ -10,7 +10,7 @@ import "../CSS/LoginPage.css";
 const LoginPage = () => {
   useEffect(() => {
     if (localStorage.getItem("PARADISE_LOGIN_TOKEN")) {
-      return (window.location.href = "/admin/");
+      return (window.location.href = "/");
     }
   }, []);
   const [state, setState] = useState({

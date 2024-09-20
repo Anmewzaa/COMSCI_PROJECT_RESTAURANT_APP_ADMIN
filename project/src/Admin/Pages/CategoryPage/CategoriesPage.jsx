@@ -43,7 +43,7 @@ const columns = [
     render: (item) => (
       <Space size="middle">
         <EditComponent id={item?.category_id} />
-        <DeleteComponent id={item?.category_id} name={"category"} />
+        <DeleteComponent id={item?.category_id} name={"categories"} />
       </Space>
     ),
   },
@@ -63,7 +63,7 @@ const CategoriesPage = () => {
   });
   const fetchAPI = async () => {
     await axios
-      .get(`${import.meta.env.VITE_API_URL}/category/get`)
+      .get(`${import.meta.env.VITE_API_URL}/categories/get`)
       .then((data) => {
         setCategories(data.data.response);
       });
@@ -92,7 +92,6 @@ const CategoriesPage = () => {
           columns={columns}
           dataSource={searchFilter}
           className="form-table-container"
-          loading={false}
         />
       </div>
     </>

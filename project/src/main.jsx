@@ -38,6 +38,7 @@ import CreateEmployeePage from "./Admin/Pages/EmployeePage/CreateEmployeePage";
 import EditEmployeePage from "./Admin/Pages/EmployeePage/EditEmployeePage";
 // Zone Page
 import ZonePage from "./Admin/Pages/ZonePage/ZonePage";
+import CreateZonePage from "./Admin/Pages/ZonePage/CreateZonePage";
 
 const router = createBrowserRouter([
   {
@@ -118,6 +119,10 @@ const router = createBrowserRouter([
           {
             path: "zone",
             element: <ZonePage />,
+          },
+          {
+            path: "zone/create",
+            element: <CreateZonePage />,
           },
         ],
       },

@@ -79,7 +79,7 @@ const EmployeePage = () => {
   const fetchAPI = async () => {
     const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
     await axios
-      .get(`${import.meta.env.VITE_API_URL}/user/get`, {
+      .get(`${import.meta.env.VITE_API_URL}/authen/user/get`, {
         headers: {
           Authorization: `Bearer ${JWT_TOKEN}`,
         },

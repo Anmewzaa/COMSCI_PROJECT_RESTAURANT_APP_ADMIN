@@ -50,22 +50,26 @@ const OpenTableInfo = ({ item }) => {
       width: "25%",
       render: (text, record) => (
         <Space size="middle">
-          <Button
-            onClick={() => {
-              changeOrderStatus(item._id, "1", record._id);
-            }}
-          >
-            ส่งรายการ
-          </Button>
-          <Button
-            danger
-            onClick={() => {
-              deleteOrder(item._id, record._id);
-            }}
-          >
-            <DeleteOutlined />
-            ลบ
-          </Button>
+          {current != 2 && (
+            <>
+              <Button
+                onClick={() => {
+                  changeOrderStatus(item._id, current + 2, record._id);
+                }}
+              >
+                ส่งรายการ
+              </Button>
+              <Button
+                danger
+                onClick={() => {
+                  deleteOrder(item._id, record._id);
+                }}
+              >
+                <DeleteOutlined />
+                ลบ
+              </Button>
+            </>
+          )}
         </Space>
       ),
     },
@@ -211,7 +215,9 @@ const OpenTableInfo = ({ item }) => {
             <div className="qrcode-container ">
               <QRCode
                 errorLevel="H"
-                value="https://google.com/"
+                value={`${import.meta.env.VITE_API_CUSTOMER_URL}/order?id=${
+                  item.table_id
+                }`}
                 icon={AppLogo}
                 size={250}
                 iconSize={250 / 4}

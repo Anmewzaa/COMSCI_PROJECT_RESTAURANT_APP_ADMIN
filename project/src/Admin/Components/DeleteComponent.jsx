@@ -20,11 +20,14 @@ const DeleteComponent = ({ name, id }) => {
       if (result.isConfirmed) {
         const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
         axios
-          .delete(`${import.meta.env.VITE_API_URL}/${name}/delete/${id}`, {
-            headers: {
-              Authorization: `Bearer ${JWT_TOKEN}`,
-            },
-          })
+          .delete(
+            `${import.meta.env.VITE_API_URL}/authen/${name}/delete/${id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${JWT_TOKEN}`,
+              },
+            }
+          )
           .then(() => {
             Swal.fire({
               title: "Deleted!",

@@ -13,7 +13,7 @@ const HomePage = () => {
   const [weeklyData, setWeeklyData] = useState([]);
   const fetchAPI = async () => {
     await axios
-      .get(`${import.meta.env.VITE_API_URL}/shop/get`, {
+      .get(`${import.meta.env.VITE_API_URL}/authen/shop/get`, {
         headers: {
           Authorization: `Bearer ${JWT_TOKEN}`,
         },

@@ -18,7 +18,7 @@ export const openTable = async (id, table_employee, table_customer_amount) => {
     if (result.isConfirmed) {
       axios
         .put(
-          `${import.meta.env.VITE_API_URL}/table/open/${id}`,
+          `${import.meta.env.VITE_API_URL}/authen/table/open/${id}`,
           {
             table_employee: table_employee,
             table_customer_amount: table_customer_amount,
@@ -58,7 +58,7 @@ export const closeTable = async (id) => {
     if (result.isConfirmed) {
       axios
         .put(
-          `${import.meta.env.VITE_API_URL}/table/close/${id}`,
+          `${import.meta.env.VITE_API_URL}/authen/table/close/${id}`,
           {},
           {
             headers: {
@@ -95,7 +95,7 @@ export const checkbill = async (id) => {
     if (result.isConfirmed) {
       axios
         .put(
-          `${import.meta.env.VITE_API_URL}/table/checkbill/${id}`,
+          `${import.meta.env.VITE_API_URL}/authen/table/checkbill/${id}`,
           {},
           {
             headers: {
@@ -132,7 +132,7 @@ export const changeOrderStatus = async (id, status, menu_id) => {
     if (result.isConfirmed) {
       axios
         .put(
-          `${import.meta.env.VITE_API_URL}/table/change_status/${id}`,
+          `${import.meta.env.VITE_API_URL}/authen/table/change_status/${id}`,
           {
             order_ids: [menu_id],
             new_status: status,

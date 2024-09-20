@@ -6,11 +6,21 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 // SWAL
 import Swal from "sweetalert2";
-// Components
-import BackFooter from "../../Components/BackFooter";
+// Antd
+import { Input, Button, Table, Modal } from "antd";
 
 const EditOptionPage = () => {
   const { id } = useParams();
+  const [open, setOpen] = useState(false);
+  const showModal = () => {
+    setOpen(true);
+  };
+  const handleOk = () => {
+    setOpen(false);
+  };
+  const handleCancel = () => {
+    setOpen(false);
+  };
   const [option, setOption] = useState({
     thai: "",
     english: "",
@@ -20,6 +30,29 @@ const EditOptionPage = () => {
     thai: "",
     english: "",
   });
+  const columns = [
+    {
+      title: "ชื่อรายการย่อยภาษาไทย",
+      dataIndex: ["sub_option_name", "thai"],
+    },
+    {
+      title: "ชื่อรายการย่อยภาษาไทย",
+      dataIndex: ["sub_option_name", "english"],
+    },
+    {
+      title: "Action",
+      dataIndex: "",
+      render: (_, __, index) => (
+        <Button
+          onClick={() => {
+            deleteSubOption(index);
+          }}
+        >
+          ลบรายการย่อย
+        </Button>
+      ),
+    },
+  ];
   const fetchAPI = async () => {
     await axios
       .get(`${import.meta.env.VITE_API_URL}/option/get/${id}`)
@@ -42,11 +75,12 @@ const EditOptionPage = () => {
     setSubOption({ ...subOption, [name]: event.target.value });
   };
   const submitForm = async (e) => {
+    console.log(id);
     e.preventDefault();
     const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
     await axios
       .put(
-        `${import.meta.env.VITE_API_URL}/option/update/${id}`,
+        `${import.meta.env.VITE_API_URL}/authen/option/update/${id}`,
         {
           option_name_thai: option.thai,
           option_name_english: option.english,
@@ -71,9 +105,12 @@ const EditOptionPage = () => {
             title: "อัพเดทรายการอาหารเสร็จสมบูรณ์",
             text: "...",
           }).then(() => {
-            window.location.href = "/admin/menu/option";
+            window.location.href = "/menu/option";
           });
         }
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
   const addSubOption = async () => {
@@ -93,6 +130,7 @@ const EditOptionPage = () => {
       ],
     }));
     setSubOption({ ...subOption, ["thai"]: "", ["english"]: "" });
+    setOpen(false);
   };
   const deleteSubOption = async (indexToRemove) => {
     setOption((prevOption) => ({
@@ -111,92 +149,85 @@ const EditOptionPage = () => {
         <div className="form-menu-container">
           <div>
             <label>ชื่อส่วนเสริมอาหารภาษาไทย</label>
-            <input
-              type="text"
-              placeholder="ชื่อส่วนเสริมอาหารภาษาไทย"
+            <Input
               value={option.thai}
+              placeholder="ชื่อส่วนเสริมอาหารภาษาไทย"
               onChange={inputValue("thai")}
+              className="sarabun-regular"
+              size={"large"}
               required
             />
           </div>
           <div>
             <label>ชื่อส่วนเสริมอาหารภาษาอังกฤษ</label>
-            <input
-              type="text"
-              placeholder="ชื่อส่วนเสริมอาหารภาษาอังกฤษ"
+            <Input
               value={option.english}
+              placeholder="ชื่อส่วนเสริมอาหารภาษาอังกฤษ"
               onChange={inputValue("english")}
+              className="sarabun-regular"
+              size={"large"}
               required
             />
           </div>
         </div>
-        <div className="mb-1">
-          <div className="form-menu-container">
-            <div>
-              <label>ชื่อส่วนเสริมอาหารย่อยภาษาไทย</label>
-              <input
-                type="text"
-                value={subOption.thai}
-                placeholder="ชื่อส่วนเสริมอาหารย่อยภาษาไทย"
-                onChange={inputSubOptionValue("thai")}
-              />
-            </div>
-            <div>
-              <label>ชื่อส่วนเสริมอาหารย่อยภาษาอังกฤษ</label>
-              <input
-                type="text"
-                value={subOption.english}
-                placeholder="ชื่อส่วนเสริมอาหารย่อยภาษาอังกฤษ"
-                onChange={inputSubOptionValue("english")}
-              />
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={() => addSubOption()}
-            className="btn-add-sub"
+        <div>
+          <Table
+            columns={columns}
+            dataSource={option.sub_option}
+            bordered
+            pagination={{ pageSize: 3 }}
+            title={() => (
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <Button onClick={showModal}>เพิ่มรายการย่อย</Button>
+              </div>
+            )}
+            rowKey={(record, index) => index}
+          />
+          <Modal
+            open={open}
+            title="เพิ่มรายการอาหารย่อย"
+            onOk={handleOk}
+            onCancel={handleCancel}
+            footer={(_, { OkBtn }) => (
+              <>
+                <Button onClick={() => addSubOption()}>เพิ่มรายการย่อย</Button>
+              </>
+            )}
           >
-            เพิ่มรายการย่อย
-          </button>
-          <table className="sub-box">
-            <thead>
-              <tr>
-                <th>ชื่อรายการย่อยภาษาไทย</th>
-                <th>ชื่อรายการย่อยภาษาอังกฤษ</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {option.sub_option &&
-                option.sub_option.map((item, index) => {
-                  return (
-                    <tr key={index}>
-                      <td>
-                        <>{item.sub_option_name.thai}</>
-                      </td>
-                      <td>{item.sub_option_name.english}</td>
-                      <td>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            deleteSubOption(index);
-                          }}
-                          className="btn btn-red"
-                        >
-                          ลบรายการย่อย
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </table>
+            <>
+              <div className="mb-1">
+                <label>รายการย่อยภาษาไทย</label>
+                <Input
+                  block
+                  value={subOption.thai}
+                  onChange={inputSubOptionValue("thai")}
+                ></Input>
+              </div>
+              <div className="mb-1">
+                <label>รายการย่อยภาษาอังกฤษ</label>
+                <Input
+                  block
+                  value={subOption.english}
+                  onChange={inputSubOptionValue("english")}
+                ></Input>
+              </div>
+            </>
+          </Modal>
         </div>
-        <button type="submit" className="btn-add-sub">
-          อัพเดทเสริมอาหาร
-        </button>
+        <Button
+          className="sarabun-semibold"
+          block
+          htmlType="submit"
+          size={"large"}
+          style={{
+            background: "linear-gradient(45deg, #00C853 0%, #00C853 100%)",
+            color: "#fff",
+            border: "none",
+          }}
+        >
+          อัพเดทส่วนเสริมอาหาร
+        </Button>
       </form>
-      <BackFooter props={"/admin/menu/option"} />
     </>
   );
 };

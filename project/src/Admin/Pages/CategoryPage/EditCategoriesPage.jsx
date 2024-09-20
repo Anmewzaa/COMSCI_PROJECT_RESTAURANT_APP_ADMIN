@@ -6,8 +6,8 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 // SWAL
 import Swal from "sweetalert2";
-// Components
-import BackFooter from "../../Components/BackFooter";
+// Antd
+import { Input, Button } from "antd";
 
 const EditCategoriesPage = () => {
   const { id } = useParams();
@@ -17,7 +17,7 @@ const EditCategoriesPage = () => {
   });
   const fetchAPI = async () => {
     await axios
-      .get(`${import.meta.env.VITE_API_URL}/category/get/${id}`)
+      .get(`${import.meta.env.VITE_API_URL}/categories/get/${id}`)
       .then((data) => {
         setInitialValue("thai", data.data.response.category_name.thai);
         setInitialValue("english", data.data.response.category_name.english);
@@ -47,7 +47,7 @@ const EditCategoriesPage = () => {
     const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
     await axios
       .put(
-        `${import.meta.env.VITE_API_URL}/category/update/${id}`,
+        `${import.meta.env.VITE_API_URL}/authen/categories/update/${id}`,
         {
           category_name_thai: categories.thai,
           category_name_english: categories.english,
@@ -82,32 +82,41 @@ const EditCategoriesPage = () => {
         <div className="form-menu-container">
           <div>
             <label className="sarabun-semibold">ชื่อหมวดหมู่ภาษาไทย</label>
-            <input
-              type="text"
+            <Input
               value={categories.thai}
               placeholder="ชื่อหมวดหมู่ภาษาไทย"
               onChange={inputValue("thai")}
-              className="sarabun-regular cursor"
+              className="sarabun-regular"
+              size={"large"}
+              required
             />
           </div>
           <div>
             <label className="sarabun-semibold">ชื่อหมวดหมู่ภาษาอังกฤษ</label>
-            <input
-              type="text"
+            <Input
               value={categories.english}
+              placeholder="ชื่อหมวดหมู่ภาษาอังกฤษ"
               onChange={inputValue("english")}
-              className="sarabun-regular cursor"
+              className="sarabun-regular"
+              size={"large"}
+              required
             />
           </div>
         </div>
-        <button
-          type="submit"
-          className="btn-full btn-yellow cursor sarabun-semibold"
+        <Button
+          className="sarabun-semibold"
+          block
+          htmlType="submit"
+          size={"large"}
+          style={{
+            background: "linear-gradient(45deg, #00C853 0%, #00C853 100%)",
+            color: "#fff",
+            border: "none",
+          }}
         >
           อัพเดทหมวดหมู่อาหาร
-        </button>
+        </Button>
       </form>
-      <BackFooter props={"/admin/menu/categories"} />
     </>
   );
 };
