@@ -1,6 +1,6 @@
 .navigation-box {
   height: auto;
-  min-width: 10vw;
+  min-width: 250px;
   background: linear-gradient(to bottom, #fd7e14, #fcc419);
   z-index: 100;
   display: flex;
@@ -18,6 +18,9 @@
   justify-content: center;
   align-items: center;
   margin: 1rem;
+}
+.logo-container .open-mobile {
+  display: none;
 }
 .navigation-box img {
   width: 100px;
@@ -74,7 +77,36 @@
   color: white;
   font-size: 16px;
 }
-
 .nav-menu {
   margin: 0 1rem;
+  transition: all 0.5s;
+}
+@media screen and (max-width: 900px) {
+  .navigation-box {
+    width: 100%;
+    background: linear-gradient(to right, #fd7e14, #fcc419);
+    position: relative;
+  }
+  .logo-container img {
+    display: none;
+  }
+  .logo-container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .nav-menu {
+    padding: 1rem 0;
+    margin: 0;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background: white;
+    left: -1000px;
+  }
+  .logo-container .open-mobile {
+    display: block;
+  }
+  .nav-active {
+    left: 0px;
+  }
 }

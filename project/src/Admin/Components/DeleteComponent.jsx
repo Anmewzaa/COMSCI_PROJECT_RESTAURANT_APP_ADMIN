@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import { Button } from "antd";
 
 // eslint-disable-next-line react/prop-types
-const DeleteComponent = ({ name, id }) => {
+const DeleteComponent = ({ name, id, destination }) => {
   const formSubmit = () => {
     Swal.fire({
       title: "ต้องการลบใช่ไหม?",
@@ -34,7 +34,7 @@ const DeleteComponent = ({ name, id }) => {
               text: "Your file has been deleted.",
               icon: "success",
             });
-            window.location.replace(`/menu/${name}`);
+            window.location.replace(`${destination}`);
           });
       }
     });

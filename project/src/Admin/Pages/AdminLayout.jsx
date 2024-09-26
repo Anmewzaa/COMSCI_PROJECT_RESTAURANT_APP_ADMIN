@@ -11,8 +11,6 @@ import "../CSS/AdminLayout.css";
 // Componentes
 import NavBarComponent from "../Components/NavBarComponent";
 import HeaderCoponent from "../Components/HeaderComponent";
-// AntD
-import { Flex, Layout } from "antd";
 
 const AdminLayout = () => {
   const [user, setUser] = useState([]);

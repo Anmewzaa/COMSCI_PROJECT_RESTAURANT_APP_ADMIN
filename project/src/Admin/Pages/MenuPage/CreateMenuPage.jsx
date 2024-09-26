@@ -4,8 +4,6 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 // Axios
 import axios from "axios";
-// Components
-
 // Antd
 import { Image } from "antd";
 

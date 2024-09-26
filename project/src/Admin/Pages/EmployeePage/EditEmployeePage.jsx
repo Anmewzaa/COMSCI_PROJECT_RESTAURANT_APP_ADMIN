@@ -6,8 +6,6 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 // SWAL
 import Swal from "sweetalert2";
-// Components
-import BackFooter from "../../Components/BackFooter";
 // Antd
 import { Select, Input, Button } from "antd";
 

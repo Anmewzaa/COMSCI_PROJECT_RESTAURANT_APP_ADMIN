@@ -1,14 +1,12 @@
 // Axios
 import axios from "axios";
 // React Hook
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 // React Router Dom
 import { Link } from "react-router-dom";
 // Components
 import EditComponent from "../../Components/EditComponent";
 import DeleteComponent from "../../Components/DeleteComponent";
-// SWAL
-import Swal from "sweetalert2";
 // Antd
 import { Table, Tag, Space, Button, Input } from "antd";
 
@@ -56,15 +54,24 @@ const columns = [
     render: (item) => (
       <Space size="middle">
         <EditComponent id={item?.user_id} />
-        <DeleteComponent id={item?.user_id} name={"user"} />
+        <DeleteComponent
+          id={item?.user_id}
+          name={"user"}
+          destination={"employee"}
+        />
       </Space>
     ),
   },
 ];
 
 const EmployeePage = () => {
+  const [loadingStatus, setLoadingStatus] = useState(true);
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
+  const handleResize = () => {
+    setIsMobile(window.innerWidth < 900);
+  };
   const searchFilter = users?.filter((item) => {
     if (search === "") {
       return item;
@@ -86,10 +93,15 @@ const EmployeePage = () => {
       })
       .then((data) => {
         setUsers(data.data.response);
+        setLoadingStatus(false);
       });
   };
   useEffect(() => {
+    window.addEventListener("resize", handleResize);
     fetchAPI();
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
   return (
     <>
@@ -113,7 +125,8 @@ const EmployeePage = () => {
           columns={columns}
           dataSource={searchFilter}
           className="form-table-container"
-          loading={false}
+          loading={loadingStatus}
+          scroll={isMobile ? { x: 900 } : null}
         />
       </div>
     </>

@@ -59,15 +59,24 @@ const columns = [
     render: (item) => (
       <Space size="middle">
         <EditComponent id={item?.option_id} />
-        <DeleteComponent id={item?.option_id} name={"option"} />
+        <DeleteComponent
+          id={item?.option_id}
+          name={"option"}
+          destination={"menu/option"}
+        />
       </Space>
     ),
   },
 ];
 
 const OptionPage = () => {
+  const [loadingStatus, setLoadingStatus] = useState(true);
   const [option, setOption] = useState([]);
   const [search, setSearch] = useState("");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
+  const handleResize = () => {
+    setIsMobile(window.innerWidth < 900);
+  };
   const searchFilter = option?.filter((item) => {
     if (search === "") {
       return item;
@@ -82,10 +91,15 @@ const OptionPage = () => {
       .get(`${import.meta.env.VITE_API_URL}/option/get`)
       .then((data) => {
         setOption(data.data.response);
+        setLoadingStatus(false);
       });
   };
   useEffect(() => {
+    window.addEventListener("resize", handleResize);
     fetchAPI();
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
   return (
     <>
@@ -108,7 +122,8 @@ const OptionPage = () => {
           columns={columns}
           dataSource={searchFilter}
           className="form-table-container"
-          loading={false}
+          loading={loadingStatus}
+          scroll={isMobile ? { x: 900 } : null}
         />
       </div>
     </>

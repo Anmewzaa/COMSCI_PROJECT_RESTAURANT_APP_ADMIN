@@ -43,15 +43,24 @@ const columns = [
     render: (item) => (
       <Space size="middle">
         <EditComponent id={item?.zone_id} />
-        <DeleteComponent id={item?.zone_id} name={"zone"} />
+        <DeleteComponent
+          id={item?.zone_id}
+          name={"zone"}
+          destination={"zone"}
+        />
       </Space>
     ),
   },
 ];
 
 const ZonePage = () => {
+  const [loadingStatus, setLoadingStatus] = useState(true);
   const [zones, setZones] = useState([]);
   const [search, setSearch] = useState("");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
+  const handleResize = () => {
+    setIsMobile(window.innerWidth < 900);
+  };
   const searchFilter = zones?.filter((item) => {
     if (search === "") {
       return item;
@@ -68,10 +77,15 @@ const ZonePage = () => {
       })
       .then((data) => {
         setZones(data.data.response);
+        setLoadingStatus(false);
       });
   };
   useEffect(() => {
+    window.addEventListener("resize", handleResize);
     fetchAPI();
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
   return (
     <>
@@ -94,7 +108,8 @@ const ZonePage = () => {
           columns={columns}
           dataSource={searchFilter}
           className="form-table-container"
-          loading={false}
+          loading={loadingStatus}
+          scroll={isMobile ? { x: 900 } : null}
         />
       </div>
     </>

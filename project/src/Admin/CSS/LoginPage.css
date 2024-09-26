@@ -1,75 +1,8 @@
-.login-page-container {
+.login-container {
+  width: 100%;
   height: 100vh;
-  position: relative;
-  background: linear-gradient(to bottom, #fd7e14, #fcc419);
 }
-.login-page-container .container-box {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border: 1px solid white;
-}
-.login-page-container .container-box .container-image {
-  background: linear-gradient(rgb(33, 37, 41, 0.1), rgb(33, 37, 41, 0.8)),
-    url("https://plus.unsplash.com/premium_photo-1673439304183-8840bd0dc1bf?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 500px;
-  height: 500px;
-
-  position: absolute;
-  transform: translate(-50%, -50%);
-  left: -100px;
-  z-index: 1;
-
-  box-shadow: 0px 10px 20px 5px rgba(0, 0, 0, 0.4);
-}
-.login-page-container .container-box .container-image h3 {
-  color: white;
-  position: relative;
-  top: 55%;
-  left: 40px;
-  font-size: 32px;
-  width: 150px;
-  margin-bottom: 1rem;
-}
-.login-page-container .container-box .container-image p {
-  color: white;
-  position: relative;
-  top: 55%;
-  left: 40px;
-  font-size: 16px;
-  width: 250px;
-  margin-bottom: 1rem;
-}
-
-.login-page-container .container-box .container-form {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  left: 150px;
-  background: white;
-  padding: 3rem 2rem;
-  border-radius: 5px;
-
-  z-index: 4;
-
-  box-shadow: 0px 10px 20px 5px rgba(0, 0, 0, 0.2);
-}
-
-.input-text {
-  border: none;
-  border-bottom: 1px solid gray;
-  width: 300px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-
-.mb-2 {
-  margin-bottom: 2rem;
-}
-
-button {
-  background: #ff922b;
+.login-container .images-box img {
+  width: 100%;
+  height: 100%;
 }

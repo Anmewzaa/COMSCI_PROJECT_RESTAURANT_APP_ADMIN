@@ -59,109 +59,116 @@ const CardComponent = ({ menu }) => {
 
   return (
     <>
-      <div className="card cursor relative">
-        <div
-          onClick={() => {
-            showModal();
-          }}
-        >
-          <img
-            src={`${import.meta.env.VITE_API_URL}/images/${menu.menu_image}`}
-            alt=""
-          />
-          <h2 className="sarabun-semibold">{menu.menu_name.thai}</h2>
-          <p className="sarabun-regular">{menu.menu_price} บาท</p>
-        </div>
-        {menu && menu.menu_status === false && (
-          <div className="card-inactive sarabun-semibold">สินค้าหมด</div>
-        )}
-        <Modal
-          open={open}
-          title={`ข้อมูลรายการอาหาร`}
-          onOk={closeModal}
-          onCancel={closeModal}
-          width={800}
-          footer={(_, { OkBtn }) => (
-            <div>
-              {user && user.user_access_rights === "Admin" ? (
-                <>
-                  <Button
-                    className="mr-1"
-                    onClick={() => editMenuInfo(menu.menu_id)}
-                  >
-                    แก้ไขเมนู
-                  </Button>
-                  <Button
-                    className="mr-1"
-                    onClick={() => deleteMenuInfo(menu.menu_id)}
-                  >
-                    ลบเมนู
-                  </Button>
-                </>
-              ) : (
-                <></>
-              )}
-              <Button className="mr-1">แจ้งเมนูหมด</Button>
-              <OkBtn />
-            </div>
-          )}
-        >
-          <div className="modal-container">
-            <div>
+      {menu && (
+        <>
+          <div className="card cursor relative">
+            <div
+              onClick={() => {
+                showModal();
+              }}
+            >
               <img
                 src={`${import.meta.env.VITE_API_URL}/images/${
                   menu.menu_image
                 }`}
-                alt="menu images"
-                className=""
+                alt=""
               />
+              <h2 className="sarabun-semibold">{menu.menu_name.thai}</h2>
+              <p className="sarabun-regular">{menu.menu_price} บาท</p>
             </div>
-            <div className="menu-infomation">
-              <h2 className="name-text sarabun-extrabold">
-                {menu?.menu_name?.thai} ({menu?.menu_name?.english})
-              </h2>
-              <div className="mb-1 inline">
-                <span className="sarabun-bold mr-1">ราคา</span>
-                <p className="sarabun-light">{menu?.menu_price} บาท</p>
-              </div>
-              {user && user.user_access_rights === "Admin" ? (
-                <>
-                  <div className="mb-1 inline">
-                    <span className="sarabun-bold mr-1">ราคาต้นทุน</span>{" "}
-                    <p className="sarabun-light">{menu?.menu_cost} บาท</p>
-                  </div>
-                </>
-              ) : (
-                <></>
+            {menu && menu.menu_status === false && (
+              <div className="card-inactive sarabun-semibold">สินค้าหมด</div>
+            )}
+            <Modal
+              open={open}
+              title={`ข้อมูลรายการอาหาร`}
+              onOk={closeModal}
+              onCancel={closeModal}
+              width={800}
+              footer={(_, { OkBtn }) => (
+                <div>
+                  {user && user.user_access_rights === "Admin" ? (
+                    <>
+                      <Button
+                        className="mr-1"
+                        onClick={() => editMenuInfo(menu.menu_id)}
+                      >
+                        แก้ไขเมนู
+                      </Button>
+                      <Button
+                        className="mr-1"
+                        onClick={() => deleteMenuInfo(menu.menu_id)}
+                      >
+                        ลบเมนู
+                      </Button>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                  <Button className="mr-1">แจ้งเมนูหมด</Button>
+                  <OkBtn />
+                </div>
               )}
-              <div className="mb-1">
-                <span className="sarabun-bold mr-1">คำอธิบาย</span>
-                <p className="sarabun-light">
-                  {menu?.menu_describe?.thai} ({menu?.menu_describe?.english})
-                </p>
+            >
+              <div className="modal-container">
+                <div>
+                  <img
+                    src={`${import.meta.env.VITE_API_URL}/images/${
+                      menu.menu_image
+                    }`}
+                    alt="menu images"
+                    className=""
+                  />
+                </div>
+                <div className="menu-infomation">
+                  <h2 className="name-text sarabun-extrabold">
+                    {menu?.menu_name?.thai} ({menu?.menu_name?.english})
+                  </h2>
+                  <div className="mb-1 inline">
+                    <span className="sarabun-bold mr-1">ราคา</span>
+                    <p className="sarabun-light">{menu?.menu_price} บาท</p>
+                  </div>
+                  {user && user.user_access_rights === "Admin" ? (
+                    <>
+                      <div className="mb-1 inline">
+                        <span className="sarabun-bold mr-1">ราคาต้นทุน</span>{" "}
+                        <p className="sarabun-light">{menu?.menu_cost} บาท</p>
+                      </div>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                  <div className="mb-1">
+                    <span className="sarabun-bold mr-1">คำอธิบาย</span>
+                    <p className="sarabun-light">
+                      {menu?.menu_describe?.thai} (
+                      {menu?.menu_describe?.english})
+                    </p>
+                  </div>
+                  <div className="mb-1">
+                    <span className="sarabun-bold mr-1">ส่วนเสริม</span>
+                    {menu.menu_option_id ? (
+                      <>
+                        {menu.menu_option_id &&
+                          menu.menu_option_id.map((item) => {
+                            return (
+                              <div key={item._id} className="sarabun-light">
+                                - {item.option_name.thai} (
+                                {item.option_name.english})
+                              </div>
+                            );
+                          })}
+                      </>
+                    ) : (
+                      <>Empty</>
+                    )}
+                  </div>
+                </div>
               </div>
-              <div className="mb-1">
-                <span className="sarabun-bold mr-1">ส่วนเสริม</span>
-                {menu.menu_option_id ? (
-                  <>
-                    {menu.menu_option_id &&
-                      menu.menu_option_id.map((item) => {
-                        return (
-                          <div key={item._id} className="sarabun-light">
-                            - {item.option_name.thai} (
-                            {item.option_name.english})
-                          </div>
-                        );
-                      })}
-                  </>
-                ) : (
-                  <>Empty</>
-                )}
-              </div>
-            </div>
+            </Modal>
           </div>
-        </Modal>
-      </div>
+        </>
+      )}
     </>
   );
 };

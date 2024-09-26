@@ -1,8 +1,8 @@
 .card-box {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 1rem;
   margin: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, min(200px));
+  gap: 1rem;
 }
 
 tr td ul li {
@@ -14,27 +14,15 @@ tr td ul li {
 }
 .form-menu-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   margin-bottom: 1rem;
 }
+
 .form-menu-container label {
   display: block;
   margin-bottom: 0.4rem;
 }
-/* .form-menu-container input {
-  width: 100%;
-  padding: 1rem;
-  border-radius: 5px;
-  border: none;
-} */
-/* .form-menu-container select {
-  width: 100%;
-  border-radius: 5px;
-  padding: 1rem;
-  appearance: none;
-  border: none;
-} */
 tr:nth-child(even) {
   background-color: #f2f2f2;
 }
@@ -62,7 +50,7 @@ tr:hover {
 }
 .form-table-container .action-btn-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
 }
 .sub-container {
   background: white;
@@ -108,12 +96,24 @@ tr:hover {
   background-color: red;
   color: #333;
 }
-
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1300px) {
+  .card-box {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media screen and (max-width: 1000px) {
+  .card-box {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media screen and (max-width: 900px) {
   .form-menu-container {
-    display: grid;
     grid-template-columns: 1fr;
-    gap: 1rem;
-    margin-bottom: 1rem;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .card-box {
+    grid-template-columns: repeat(2, 1fr);
   }
 }

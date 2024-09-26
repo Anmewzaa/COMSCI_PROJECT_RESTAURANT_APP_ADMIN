@@ -1,3 +1,5 @@
+// React
+import { useState } from "react";
 // React Router Dom
 import { useNavigate } from "react-router-dom";
 // Logo
@@ -11,12 +13,15 @@ import { useContext } from "react";
 // Context
 import { UserContext } from "../Pages/AdminLayout";
 // Antd
+import { Button } from "antd";
 import {
   HomeOutlined,
   AppstoreOutlined,
   UserOutlined,
   RestOutlined,
   ShopOutlined,
+  MenuOutlined,
+  CloseOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 const navitems = [
@@ -100,10 +105,12 @@ const navitems = [
 ];
 
 const NavBarComponent = () => {
+  const [open, setOpen] = useState(false);
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleMenuClick = (e) => {
+    setOpen(false);
     const findLink = (items) => {
       for (const item of items) {
         if (item.key === e.key) {
@@ -161,8 +168,19 @@ const NavBarComponent = () => {
         <div className="logo-container">
           <img src={AppLogo} alt="website-logo" className="image cursor" />
           <h2 className="sarabun-extrabold cursor">Paradise Steak House</h2>
+          <Button className="open-mobile" onClick={() => setOpen(!open)}>
+            {open ? (
+              <>
+                <CloseOutlined />
+              </>
+            ) : (
+              <>
+                <MenuOutlined />
+              </>
+            )}
+          </Button>
         </div>
-        <div className="nav-menu">
+        <div className={`nav-menu ${open && "nav-active"}`}>
           <Menu
             style={{
               background: "#0000",

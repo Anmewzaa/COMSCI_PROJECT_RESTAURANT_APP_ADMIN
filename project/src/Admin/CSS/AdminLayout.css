@@ -17,7 +17,7 @@ th {
   padding: 8px;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 900px) {
   .admin-home-page {
     display: flex;
     flex-direction: column;

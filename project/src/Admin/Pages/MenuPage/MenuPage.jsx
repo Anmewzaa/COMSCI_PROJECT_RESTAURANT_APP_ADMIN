@@ -11,7 +11,7 @@ import "../../CSS/MenuPage.css";
 // React Router Dom
 import { Link } from "react-router-dom";
 // Antd
-import { Skeleton } from "antd";
+import { Input, Skeleton, Button } from "antd";
 
 const MenuPage = () => {
   const [search, setSearch] = useState("");
@@ -39,16 +39,18 @@ const MenuPage = () => {
   return (
     <SearchContext.Provider value={{ search, setSearch }}>
       <div className="form-input-container">
-        <input
-          type="text"
+        <Input
           placeholder="ค้นหารายการอาหาร"
-          className="cursor sarabun-semibold"
-          value={search}
           onChange={(e) => setSearch(e.target.value)}
+          className="cursor sarabun-semibold mr-1"
+          size={"middle"}
+          value={search}
         />
-        <Link to={"create"} className="sarabun-semibold">
-          เพิ่มรายการอาหาร
-        </Link>
+        <Button>
+          <Link to={"create"} className="sarabun-semibold">
+            เพิ่มรายการอาหาร
+          </Link>
+        </Button>
       </div>
       <div>
         {loading && loading ? (

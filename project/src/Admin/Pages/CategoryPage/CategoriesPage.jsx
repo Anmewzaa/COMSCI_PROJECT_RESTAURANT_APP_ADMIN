@@ -43,15 +43,24 @@ const columns = [
     render: (item) => (
       <Space size="middle">
         <EditComponent id={item?.category_id} />
-        <DeleteComponent id={item?.category_id} name={"categories"} />
+        <DeleteComponent
+          id={item?.category_id}
+          name={"categories"}
+          destination={"menu/categories"}
+        />
       </Space>
     ),
   },
 ];
 
 const CategoriesPage = () => {
+  const [loadingStatus, setLoadingStatus] = useState(true);
   const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
+  const handleResize = () => {
+    setIsMobile(window.innerWidth < 900);
+  };
   const searchFilter = categories?.filter((item) => {
     if (search === "") {
       return item;
@@ -66,10 +75,15 @@ const CategoriesPage = () => {
       .get(`${import.meta.env.VITE_API_URL}/categories/get`)
       .then((data) => {
         setCategories(data.data.response);
+        setLoadingStatus(false);
       });
   };
   useEffect(() => {
+    window.addEventListener("resize", handleResize);
     fetchAPI();
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
   return (
     <>
@@ -92,6 +106,8 @@ const CategoriesPage = () => {
           columns={columns}
           dataSource={searchFilter}
           className="form-table-container"
+          loading={loadingStatus}
+          scroll={isMobile ? { x: 900 } : null}
         />
       </div>
     </>
