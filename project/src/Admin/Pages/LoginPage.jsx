@@ -56,7 +56,7 @@ const LoginPage = () => {
             title: "Sign In Success",
             text: "...",
           }).then(() => {
-            window.location.href = "/admin/";
+            window.location.href = "/";
           });
         }
         setState({ username: "", password: "" });
@@ -64,8 +64,8 @@ const LoginPage = () => {
   };
 
   return (
-    <>
-      {/* <input
+    <form onSubmit={submitForm}>
+      <input
         type="text"
         placeholder="username"
         value={state.username}
@@ -81,13 +81,8 @@ const LoginPage = () => {
       />
       <button type="submit" className="btn-full cursor sarabun-semibold">
         Sign In
-      </button> */}
-      <div className="login-container">
-        <div className="images-box">
-          <img src={Home04} alt="" />
-        </div>
-      </div>
-    </>
+      </button>
+    </form>
   );
 };
 

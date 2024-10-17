@@ -48,13 +48,13 @@ const CardComponent = ({ menu }) => {
               text: "Your file has been deleted.",
               icon: "success",
             });
-            window.location.replace(`/admin/menu`);
+            window.location.replace(`/menu`);
           });
       }
     });
   };
   const editMenuInfo = (id) => {
-    navigate(`/admin/menu/edit/${id}`);
+    navigate(`/menu/edit/${id}`);
   };
 
   return (
