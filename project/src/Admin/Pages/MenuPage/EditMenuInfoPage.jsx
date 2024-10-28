@@ -7,7 +7,7 @@ import axios from "axios";
 // SWAL
 import Swal from "sweetalert2";
 // Antd
-import { Input, Select, Button } from "antd";
+import { Input, Select, TreeSelect } from "antd";
 
 const EditMenuInfoPage = () => {
   const { id } = useParams();
@@ -19,7 +19,7 @@ const EditMenuInfoPage = () => {
     price: "",
     menu_cost: "",
     category_id: "",
-    option_id: "",
+    option_id: [],
   });
   const [categories, setCategories] = useState([]);
   const [options, setOptions] = useState([]);
@@ -71,49 +71,75 @@ const EditMenuInfoPage = () => {
         );
         setInitialValue(
           "option_id",
-          data?.data?.response?.menu_option_id[0]?._id
+          data?.data?.response?.menu_option_id.map((option) => option._id)
         );
       });
   };
   const formSubmit = async (e) => {
     e.preventDefault();
-    const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
-    await axios
-      .put(
-        `${import.meta.env.VITE_API_URL}/menu/update/${id}`,
-        {
-          menu_name_thai: menu.name_thai,
-          menu_name_english: menu.name_english,
-          menu_describe_thai: menu.describe_thai,
-          menu_describe_english: menu.describe_english,
-          menu_price: menu.price,
-          menu_category_id: [`${menu.category_id}`],
-          menu_option_id: [`${menu.option_id}`],
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${JWT_TOKEN}`,
-          },
-        }
+    if (
+      !(
+        menu.name_thai &&
+        menu.name_english &&
+        menu.describe_thai &&
+        menu.describe_english &&
+        menu.price &&
+        menu.menu_cost &&
+        menu.category_id &&
+        menu.option_id.length > 0
       )
-      .then((result) => {
-        if (result.data.error) {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: result.data.error,
-          });
-        } else {
-          Swal.fire({
-            icon: "success",
-            title: "อัพเดทรายการอาหารเสร็จสมบูรณ์",
-            text: "...",
-          }).then(() => {
-            window.location.href = "/admin/menu";
-          });
-        }
+    ) {
+      return;
+    }
+
+    try {
+      const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
+      await axios
+        .put(
+          `${import.meta.env.VITE_API_URL}/authen/menu/update/${id}`,
+          {
+            menu_name_thai: menu.name_thai,
+            menu_name_english: menu.name_english,
+            menu_describe_thai: menu.describe_thai,
+            menu_describe_english: menu.describe_english,
+            menu_price: menu.price,
+            menu_cost: menu.menu_cost,
+            menu_category_id: menu.category_id,
+            menu_option_id: menu.option_id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${JWT_TOKEN}`,
+            },
+          }
+        )
+        .then((result) => {
+          if (result.data.error) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: result.data.error,
+            });
+          } else {
+            Swal.fire({
+              icon: "success",
+              title: "อัพเดทรายการอาหารเสร็จสมบูรณ์",
+              text: "...",
+            }).then(() => {
+              window.location.href = "/menu";
+            });
+          }
+        });
+    } catch (err) {
+      console.error("Error:", err);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "มีบางอย่างผิดพลาด กรุณาลองใหม่",
       });
+    }
   };
+
   useEffect(() => {
     fetchCategories();
     fetchOption();
@@ -193,19 +219,16 @@ const EditMenuInfoPage = () => {
               </div>
               <div>
                 <label className="sarabun-bold">ตัวเลือกส่วนเสริม</label>
-                <Select
+                <TreeSelect
+                  treeCheckable
+                  showCheckedStrategy={TreeSelect.SHOW_PARENT}
                   size={"large"}
                   style={{ width: "100%" }}
-                  showSearch
                   placeholder="เลือกตัวเลือก"
-                  filterOption={(input, option) =>
-                    (option?.label ?? "")
-                      .toLowerCase()
-                      .includes(input.toLowerCase())
-                  }
-                  options={options.map((option) => ({
+                  treeData={options.map((option) => ({
+                    title: option.option_name.thai,
                     value: option._id,
-                    label: option.option_name.thai,
+                    key: option._id,
                   }))}
                   value={menu.option_id}
                   onChange={(value) => setMenu({ ...menu, option_id: value })}

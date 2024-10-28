@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 // Axios
 import axios from "axios";
 // Antd
-import { Image, Select, Input, Button } from "antd";
+import { Image, Select, Input, TreeSelect } from "antd";
 
 const CreateMenuPage = () => {
   const [menu, setMenu] = useState({
@@ -16,7 +16,7 @@ const CreateMenuPage = () => {
     price: "",
     menu_cost: "",
     category_id: "",
-    option_id: "",
+    option_id: [],
   });
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -47,6 +47,7 @@ const CreateMenuPage = () => {
     fetchCategories();
     fetchOptions();
   }, []);
+
   const submitForm = async (e) => {
     e.preventDefault();
     if (
@@ -58,10 +59,10 @@ const CreateMenuPage = () => {
         menu.price &&
         menu.menu_cost &&
         menu.category_id &&
-        menu.option_id
+        menu.option_id.length > 0
       )
     ) {
-      return;
+      return alert("INPUT REQUIRED NOT PASS");
     }
     const form = new FormData();
     form.append("menu_name_thai", menu.name_thai);
@@ -71,12 +72,14 @@ const CreateMenuPage = () => {
     form.append("menu_price", menu.price);
     form.append("menu_cost", menu.menu_cost);
     form.append("menu_category_id", menu.category_id);
-    form.append("menu_option_id", menu.option_id);
+    menu.option_id.forEach((optionId) => {
+      form.append("menu_option_id", optionId);
+    });
     form.append("menu_image", selectedFile);
 
     const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
     await axios
-      .post(`${import.meta.env.VITE_API_URL}/menu/create`, form, {
+      .post(`${import.meta.env.VITE_API_URL}/authen/menu/create`, form, {
         headers: {
           Authorization: `Bearer ${JWT_TOKEN}`,
         },
@@ -95,7 +98,7 @@ const CreateMenuPage = () => {
             title: "สร้างรายการอาหารเสร็จสมบูรณ์",
             text: "...",
           }).then(() => {
-            window.location.href = "/admin/menu";
+            window.location.href = "/menu";
           });
         }
       });
@@ -177,23 +180,21 @@ const CreateMenuPage = () => {
           </div>
           <div>
             <label className="sarabun-semibold">ตัวเลือกส่วนเสริม</label>
-            <Select
+            <TreeSelect
+              treeCheckable
+              showCheckedStrategy={TreeSelect.SHOW_PARENT}
               size={"large"}
               style={{ width: "100%" }}
-              showSearch
               placeholder="เลือกตัวเลือก"
-              filterOption={(input, option) =>
-                (option?.label ?? "")
-                  .toLowerCase()
-                  .includes(input.toLowerCase())
-              }
-              options={options.map((option) => ({
+              treeData={options.map((option) => ({
+                title: option.option_name.thai,
                 value: option._id,
-                label: option.option_name.thai,
+                key: option._id,
               }))}
               value={menu.option_id}
               onChange={(value) => setMenu({ ...menu, option_id: value })}
             />
+            {JSON.stringify(menu.option_id)}
           </div>
           <div>
             <label className="sarabun-semibold">ตัวเลือกหมวดหมู่อาหาร</label>
