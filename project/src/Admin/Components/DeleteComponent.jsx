@@ -42,7 +42,7 @@ const DeleteComponent = ({ name, id, destination }) => {
 
   return (
     <>
-      <Button onClick={formSubmit} className="">
+      <Button onClick={formSubmit} className="prompt-semibold">
         ลบ
       </Button>
     </>

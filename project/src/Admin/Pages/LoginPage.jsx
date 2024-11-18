@@ -6,11 +6,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 // CSS
 import "../CSS/LoginPage.css";
-// Image
-import Home01 from "../../images/home-1.jpg";
-import Home02 from "../../images/home-2.jpg";
-import Home03 from "../../images/home-3.jpg";
-import Home04 from "../../images/home-4.jpg";
+// Antd
+import { Button, Input } from "antd";
+// Picture
+import logo from "../../images/app-logo.png";
 
 const LoginPage = () => {
   useEffect(() => {
@@ -25,8 +24,7 @@ const LoginPage = () => {
   const inputValue = (name) => (event) => {
     setState({ ...state, [name]: event.target.value });
   };
-  const submitForm = (e) => {
-    e.preventDefault();
+  const submitForm = () => {
     if (!(state.username && state.password)) {
       return Swal.fire({
         icon: "error",
@@ -53,8 +51,8 @@ const LoginPage = () => {
           );
           Swal.fire({
             icon: "success",
-            title: "Sign In Success",
-            text: "...",
+            title: "เข้าสู่ระบบสำเร็จ",
+            text: "ยินดีต้อนรับเข้าสู่ระบบจัดการร้านอาหารพาราไดซ์",
           }).then(() => {
             window.location.href = "/";
           });
@@ -64,25 +62,54 @@ const LoginPage = () => {
   };
 
   return (
-    <form onSubmit={submitForm}>
-      <input
-        type="text"
-        placeholder="username"
-        value={state.username}
-        onChange={inputValue("username")}
-        className="input-text sarabun-regular"
-      />
-      <input
-        type="password"
-        placeholder="password"
-        value={state.password}
-        onChange={inputValue("password")}
-        className="input-text sarabun-regular mb-2"
-      />
-      <button type="submit" className="btn-full cursor sarabun-semibold">
-        Sign In
-      </button>
-    </form>
+    <>
+      <div className="login-container-desktop">
+        <div className="login-box">
+          <img src={logo} alt="website-logo" />
+          <div>
+            <h4 className="mb-1 prompt-bold">ลงชื่อเข้าใช้งาน</h4>
+            <Input
+              type="text"
+              placeholder="ชื่อผู้ใช้"
+              size="large"
+              value={state.username}
+              onChange={inputValue("username")}
+              className="cursor mr-1 prompt-semibold mb-1"
+            />
+            <Input
+              type="password"
+              placeholder="รหัสผ่าน"
+              size="large"
+              value={state.password}
+              onChange={inputValue("password")}
+              className="cursor mr-1 prompt-semibold mb-1"
+            />
+            <Button
+              onClick={() => submitForm()}
+              block
+              size="large"
+              className="prompt-bold btn-login-desktop"
+            >
+              เข้าสู่ระบบ
+            </Button>
+            <Button
+              className="prompt-semibold btn-login-mobile"
+              block
+              htmlType="submit"
+              size={"large"}
+              style={{
+                background:
+                  "linear-gradient(45deg, rgb(253, 126, 20) 0%, rgb(251, 195, 24))",
+                color: "#fff",
+                border: "none",
+              }}
+            >
+              เข้าสู่ระบบ
+            </Button>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

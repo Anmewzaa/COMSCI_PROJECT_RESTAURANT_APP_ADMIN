@@ -7,9 +7,10 @@ import { useParams } from "react-router-dom";
 // SWAL
 import Swal from "sweetalert2";
 // Antd
-import { Select, Input, Button } from "antd";
+import { Select, Input, Button, Spin } from "antd";
 
 const EditEmployeePage = () => {
+  const [spinning, setSpinning] = useState(true);
   const { id } = useParams();
   const [userinfo, setUserInfo] = useState({
     user_fullname: "",
@@ -35,6 +36,7 @@ const EditEmployeePage = () => {
           "user_access_rights",
           data.data.response.user_access_rights
         );
+        setSpinning(false);
       });
   };
   const setInitialValue = (name, value) => {
@@ -88,47 +90,49 @@ const EditEmployeePage = () => {
   };
   return (
     <>
+      <Spin fullscreen spinning={spinning} />
       <form onSubmit={submitForm} className="form">
         <div className="form-menu-container">
           <div>
-            <label className="sarabun-semibold">ชื่อพนักงาน</label>
+            <label className="prompt-semibold">ชื่อพนักงาน</label>
             <Input
               value={userinfo.user_fullname}
               placeholder="ชื่อพนักงาน"
               onChange={inputValue("user_fullname")}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
           <div>
-            <label className="sarabun-semibold">ชื่อเล่นพนักงาน</label>
+            <label className="prompt-semibold">ชื่อเล่นพนักงาน</label>
             <Input
               value={userinfo.user_nickname}
               placeholder="ชื่อเล่นพนักงาน"
               onChange={inputValue("user_nickname")}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
           <div>
-            <label className="sarabun-semibold">เบอร์พนักงาน</label>
+            <label className="prompt-semibold">เบอร์พนักงาน</label>
             <Input
               value={userinfo.user_telnum}
               placeholder="เบอร์พนักงาน"
               onChange={inputValue("user_telnum")}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
           <div>
-            <label className="sarabun-semibold">ตำแหน่งพนักงาน</label>
+            <label className="prompt-semibold">ตำแหน่งพนักงาน</label>
             <Select
               size={"large"}
               style={{ width: "100%" }}
               showSearch
+              className="prompt-regular"
               placeholder="เลือกตำแหน่ง"
               filterOption={(input, option) =>
                 (option?.label ?? "")
@@ -147,8 +151,9 @@ const EditEmployeePage = () => {
             />
           </div>
           <div>
-            <label className="sarabun-semibold">สิทธิการเข้าถึงพนักงาน</label>
+            <label className="prompt-semibold">สิทธิการเข้าถึงพนักงาน</label>
             <Select
+              className="prompt-regular"
               size={"large"}
               style={{ width: "100%" }}
               showSearch
@@ -159,8 +164,8 @@ const EditEmployeePage = () => {
                   .includes(input.toLowerCase())
               }
               options={[
-                { value: "Employee", label: "Employee" },
-                { value: "Admin", label: "Admin" },
+                { value: "Employee", label: "พนักงาน" },
+                { value: "Admin", label: "แอดมิน" },
               ]}
               value={userinfo.user_access_rights}
               onChange={(value) =>
@@ -170,7 +175,7 @@ const EditEmployeePage = () => {
           </div>
         </div>
         <Button
-          className="sarabun-semibold"
+          className=""
           block
           htmlType="submit"
           size={"large"}

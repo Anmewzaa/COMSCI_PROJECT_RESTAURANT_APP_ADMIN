@@ -1,0 +1,9 @@
+.history-page-container {
+  background: red;
+  margin: 1rem;
+}
+
+.timeline-container-header {
+  display: flex;
+  justify-content: space-between;
+}

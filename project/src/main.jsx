@@ -40,6 +40,8 @@ import EditEmployeePage from "./Admin/Pages/EmployeePage/EditEmployeePage";
 import ZonePage from "./Admin/Pages/ZonePage/ZonePage";
 import CreateZonePage from "./Admin/Pages/ZonePage/CreateZonePage";
 import EditZonePage from "./Admin/Pages/ZonePage/EditZonePage";
+// History
+import HistoryPage from "./Admin/Pages/HistoryPage";
 
 const router = createBrowserRouter([
   {
@@ -128,6 +130,10 @@ const router = createBrowserRouter([
           {
             path: "zone/edit/:id",
             element: <EditZonePage />,
+          },
+          {
+            path: "history",
+            element: <HistoryPage />,
           },
         ],
       },

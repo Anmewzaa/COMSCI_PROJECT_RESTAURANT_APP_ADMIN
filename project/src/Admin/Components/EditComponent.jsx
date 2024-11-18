@@ -8,7 +8,10 @@ const EditComponent = ({ id }) => {
   const navigate = useNavigate();
   return (
     <>
-      <Button onClick={() => navigate(`edit/${id}`)} className="">
+      <Button
+        onClick={() => navigate(`edit/${id}`)}
+        className="prompt-semibold"
+      >
         แก้ไข
       </Button>
     </>

@@ -5,9 +5,10 @@ import Swal from "sweetalert2";
 // Axios
 import axios from "axios";
 // Antd
-import { Image, Select, Input, TreeSelect } from "antd";
+import { Image, Select, Input, TreeSelect, Spin, Button } from "antd";
 
 const CreateMenuPage = () => {
+  const [spinning, setSpinning] = useState(true);
   const [menu, setMenu] = useState({
     name_thai: "",
     name_english: "",
@@ -41,6 +42,7 @@ const CreateMenuPage = () => {
       .get(`${import.meta.env.VITE_API_URL}/option/get`)
       .then((data) => {
         setOptions(data.data.response);
+        setSpinning(false);
       });
   };
   useEffect(() => {
@@ -106,6 +108,7 @@ const CreateMenuPage = () => {
 
   return (
     <>
+      <Spin fullscreen spinning={spinning} />
       <form
         onSubmit={submitForm}
         encType="multipart/form-data"
@@ -113,74 +116,75 @@ const CreateMenuPage = () => {
       >
         <div className="form-menu-container">
           <div>
-            <label className="sarabun-semibold">ชื่ออาหารภาษาไทย</label>
+            <label className="prompt-semibold">ชื่ออาหารภาษาไทย</label>
             <Input
               placeholder="ชื่ออาหารภาษาไทย"
               onChange={inputValue("name_thai")}
               value={menu.name_thai}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
           <div>
-            <label className="sarabun-semibold">ชื่ออาหารภาษาอังกฤษ</label>
+            <label className="prompt-semibold">ชื่ออาหารภาษาอังกฤษ</label>
             <Input
               placeholder="ชื่ออาหารภาษาอังกฤษ"
               onChange={inputValue("name_english")}
               value={menu.name_english}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
           <div>
-            <label className="sarabun-semibold">คำอธิบายภาษาไทย</label>
+            <label className="prompt-semibold">คำอธิบายภาษาไทย</label>
             <Input
               placeholder="คำอธิบายภาษาไทย"
               onChange={inputValue("describe_thai")}
               value={menu.describe_thai}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
           <div>
-            <label className="sarabun-semibold">คำอธิบายภาษาอังกฤษ</label>
+            <label className="prompt-semibold">คำอธิบายภาษาอังกฤษ</label>
             <Input
               placeholder="คำอธิบายภาษาอังกฤษ"
               onChange={inputValue("describe_english")}
               value={menu.describe_english}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
           <div>
-            <label className="sarabun-semibold">ราคาอาหาร</label>
+            <label className="prompt-semibold">ราคาอาหาร</label>
             <Input
               placeholder="ราคาอาหาร"
               onChange={inputValue("price")}
               value={menu.price}
-              className="sarabun-regular"
+              className=""
               size={"large"}
               required
             />
           </div>
           <div>
-            <label className="sarabun-semibold">ราคาต้นทุนอาหาร</label>
+            <label className="prompt-semibold">ราคาต้นทุนอาหาร</label>
             <Input
               placeholder="ราคาต้นทุนอาหาร"
               onChange={inputValue("menu_cost")}
               value={menu.menu_cost}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
           <div>
-            <label className="sarabun-semibold">ตัวเลือกส่วนเสริม</label>
+            <label className="prompt-semibold">ตัวเลือกส่วนเสริม</label>
             <TreeSelect
+              className="prompt-regular"
               treeCheckable
               showCheckedStrategy={TreeSelect.SHOW_PARENT}
               size={"large"}
@@ -194,11 +198,11 @@ const CreateMenuPage = () => {
               value={menu.option_id}
               onChange={(value) => setMenu({ ...menu, option_id: value })}
             />
-            {JSON.stringify(menu.option_id)}
           </div>
           <div>
-            <label className="sarabun-semibold">ตัวเลือกหมวดหมู่อาหาร</label>
+            <label className="prompt-semibold">ตัวเลือกหมวดหมู่อาหาร</label>
             <Select
+              className="prompt-regular"
               size={"large"}
               style={{ width: "100%" }}
               showSearch
@@ -217,7 +221,7 @@ const CreateMenuPage = () => {
             />
           </div>
           <div className="file-input">
-            <label className="sarabun-semibold">รูปภาพอาหาร</label>
+            <label className="prompt-semibold">รูปภาพอาหาร</label>
             <div className="file-container">
               {selectedFile && (
                 <div className="file-box">
@@ -225,12 +229,15 @@ const CreateMenuPage = () => {
                 </div>
               )}
               <div>
-                <label htmlFor="file-upload" className="custom-file-upload">
+                <label
+                  htmlFor="file-upload"
+                  className="custom-file-upload prompt-regular"
+                >
                   เลือกรูปภาพ
                 </label>
                 <input
                   id="file-upload"
-                  className="sarabun-semibold"
+                  className=""
                   type="file"
                   accept="image/*"
                   onChange={onImageChange}
@@ -240,12 +247,19 @@ const CreateMenuPage = () => {
             </div>
           </div>
         </div>
-        <button
-          type="submit"
-          className="btn-full btn-green cursor sarabun-semibold"
+        <Button
+          className="prompt-semibold"
+          block
+          htmlType="submit"
+          size={"large"}
+          style={{
+            background: "linear-gradient(45deg, #00C853 0%, #00C853 100%)",
+            color: "#fff",
+            border: "none",
+          }}
         >
           สร้างรายการอาหาร
-        </button>
+        </Button>
       </form>
     </>
   );

@@ -37,41 +37,43 @@ const MenuPage = () => {
   });
 
   return (
-    <SearchContext.Provider value={{ search, setSearch }}>
-      <div className="form-input-container">
-        <Input
-          placeholder="ค้นหารายการอาหาร"
-          onChange={(e) => setSearch(e.target.value)}
-          className="cursor sarabun-semibold mr-1"
-          size={"middle"}
-          value={search}
-        />
-        <Button>
-          <Link to={"create"} className="sarabun-semibold">
-            เพิ่มรายการอาหาร
-          </Link>
-        </Button>
-      </div>
-      <div>
-        {loading && loading ? (
-          <div className="loading-container">
-            <Skeleton />
-          </div>
-        ) : (
-          <div className="card-box">
-            {menu && menu.length === 0 ? (
-              <>Empty</>
-            ) : (
-              <>
-                {searchFilter.map((item) => {
-                  return <CardComponent key={item.menu_id} menu={item} />;
-                })}
-              </>
-            )}
-          </div>
-        )}
-      </div>
-    </SearchContext.Provider>
+    <>
+      <SearchContext.Provider value={{ search, setSearch }}>
+        <div className="form-input-container">
+          <Input
+            placeholder="ค้นหารายการอาหาร"
+            onChange={(e) => setSearch(e.target.value)}
+            className="cursor mr-1 prompt-semibold"
+            size={"large"}
+            value={search}
+          />
+          <Button size={"large"}>
+            <Link to={"create"} className="prompt-semibold">
+              เพิ่มรายการอาหาร
+            </Link>
+          </Button>
+        </div>
+        <div>
+          {loading && loading ? (
+            <div className="loading-container">
+              <Skeleton />
+            </div>
+          ) : (
+            <div className="card-box">
+              {menu && menu.length === 0 ? (
+                <>Empty</>
+              ) : (
+                <>
+                  {searchFilter.map((item) => {
+                    return <CardComponent key={item.menu_id} menu={item} />;
+                  })}
+                </>
+              )}
+            </div>
+          )}
+        </div>
+      </SearchContext.Provider>
+    </>
   );
 };
 

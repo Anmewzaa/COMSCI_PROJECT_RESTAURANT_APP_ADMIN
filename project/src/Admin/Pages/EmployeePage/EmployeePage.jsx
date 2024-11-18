@@ -1,7 +1,7 @@
 // Axios
 import axios from "axios";
 // React Hook
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 // React Router Dom
 import { Link } from "react-router-dom";
 // Components
@@ -15,27 +15,30 @@ const columns = [
     title: "ชื่อ",
     dataIndex: "user_fullname",
     key: "name",
+    render: (item) => <div className="prompt-medium">{`${item}`}</div>,
   },
   {
     title: "ชื่อเล่น",
     dataIndex: "user_nickname",
     key: "nickname",
+    render: (item) => <div className="prompt-medium">{`${item}`}</div>,
   },
   {
     title: "เบอร์โทร",
     dataIndex: "user_telnum",
     key: "telnum",
+    render: (item) => <div className="prompt-medium">{`${item}`}</div>,
   },
   {
     title: "หน้าที่",
     key: "user_role",
     dataIndex: "user_role",
     render: (text) => (
-      <>
+      <div className="prompt-extrabold">
         <Tag color={`${text === "ผู้จัดการ" ? "geekblue" : "green"}`}>
           {text}
         </Tag>
-      </>
+      </div>
     ),
   },
   {
@@ -43,13 +46,13 @@ const columns = [
     key: "user_access_rights",
     dataIndex: "user_access_rights",
     render: (text) => (
-      <>
+      <div className="prompt-extrabold">
         <Tag color={`${text === "Admin" ? "volcano" : "green"}`}>{text}</Tag>
-      </>
+      </div>
     ),
   },
   {
-    title: "",
+    title: "คำสั่ง",
     key: "action",
     render: (item) => (
       <Space size="middle">
@@ -106,16 +109,16 @@ const EmployeePage = () => {
   return (
     <>
       <div className="form-input-container">
-        {JSON.stringify()}
         <Input
           type="text"
           placeholder="ค้นหาพนักงาน"
-          className="cursor sarabun-semibold mr-1"
+          className="cursor mr-1 prompt-semibold"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          size="large"
         />
-        <Button>
-          <Link to={"create"} className="sarabun-semibold">
+        <Button size="large">
+          <Link to={"create"} className="prompt-semibold">
             เพิ่มพนักงาน
           </Link>
         </Button>

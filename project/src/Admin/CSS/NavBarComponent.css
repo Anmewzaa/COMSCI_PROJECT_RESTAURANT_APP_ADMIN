@@ -28,7 +28,7 @@
 }
 .navigation-box h2 {
   color: white;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .navigation-box ul {
@@ -81,6 +81,7 @@
   margin: 0 1rem;
   transition: all 0.5s;
 }
+
 @media screen and (max-width: 900px) {
   .navigation-box {
     width: 100%;

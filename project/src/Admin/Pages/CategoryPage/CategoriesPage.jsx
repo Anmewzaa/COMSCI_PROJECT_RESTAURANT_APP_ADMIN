@@ -12,33 +12,29 @@ import { Table, Tag, Space, Button, Input } from "antd";
 
 const columns = [
   {
-    title: "ชื่อ",
+    title: "ชื่อภาษาไทย",
     dataIndex: "category_name",
     key: "name",
-    render: (item) => <>{`${item.thai} (${item.english})`}</>,
+    render: (item) => <div className="prompt-medium">{`${item.thai}`}</div>,
   },
   {
-    title: "วันที่สร้าง",
-    key: "create_date",
-    dataIndex: "createdAt",
-    render: (text) => (
-      <>
-        <Tag color={"green"}>{new Date(text).toLocaleString()}</Tag>
-      </>
-    ),
+    title: "ชื่ออังกฤษ",
+    dataIndex: "category_name",
+    key: "name",
+    render: (item) => <div className="prompt-medium">{`${item.english}`}</div>,
   },
   {
     title: "วันที่แก้ไขล่าสุด",
     key: "update_date",
     dataIndex: "updatedAt",
     render: (text) => (
-      <>
+      <div className="prompt-extrabold">
         <Tag color={"geekblue"}>{new Date(text).toLocaleString()}</Tag>
-      </>
+      </div>
     ),
   },
   {
-    title: "",
+    title: "คำสั่ง",
     key: "action",
     render: (item) => (
       <Space size="middle">
@@ -91,12 +87,13 @@ const CategoriesPage = () => {
         <Input
           type="text"
           placeholder="ค้นหาหมวดหมู่อาหาร"
-          className="cursor sarabun-semibold mr-1"
+          className="cursor mr-1 prompt-semibold"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          size="large"
         />
-        <Button>
-          <Link to={"create"} className="sarabun-semibold">
+        <Button size="large">
+          <Link to={"create"} className="prompt-semibold">
             เพิ่มหมวดหมู่อาหาร
           </Link>
         </Button>

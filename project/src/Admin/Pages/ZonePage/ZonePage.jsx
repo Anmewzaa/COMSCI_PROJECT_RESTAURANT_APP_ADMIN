@@ -15,30 +15,20 @@ const columns = [
     title: "ชื่อ",
     dataIndex: "zone_name",
     key: "name",
-    render: (item) => <>{item}</>,
-  },
-  {
-    title: "วันที่สร้าง",
-    key: "create_date",
-    dataIndex: "createdAt",
-    render: (text) => (
-      <>
-        <Tag color={"green"}>{new Date(text).toLocaleString()}</Tag>
-      </>
-    ),
+    render: (item) => <div className="prompt-medium">{item}</div>,
   },
   {
     title: "วันที่แก้ไขล่าสุด",
     key: "update_date",
     dataIndex: "updatedAt",
     render: (text) => (
-      <>
+      <div className="prompt-extrabold">
         <Tag color={"geekblue"}>{new Date(text).toLocaleString()}</Tag>
-      </>
+      </div>
     ),
   },
   {
-    title: "",
+    title: "คำสั่ง",
     key: "action",
     render: (item) => (
       <Space size="middle">
@@ -93,12 +83,13 @@ const ZonePage = () => {
         <Input
           type="text"
           placeholder="ค้นหาโซนร้านอาหาร"
-          className="cursor sarabun-semibold mr-1"
+          className="cursor mr-1 prompt-semibold"
+          size="large"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Button>
-          <Link to={"create"} className="sarabun-semibold">
+        <Button size="large">
+          <Link to={"create"} className="prompt-semibold">
             เพิ่มโซนร้านอาหาร
           </Link>
         </Button>

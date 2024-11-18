@@ -24,6 +24,7 @@ import {
   CloseOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
+
 const navitems = [
   {
     key: "group1",
@@ -57,7 +58,18 @@ const navitems = [
         key: "kitchen",
         label: "จัดการครัว",
         icon: <ShopOutlined />,
-        link: "/kitchen",
+        children: [
+          {
+            key: "kitchen-manage",
+            label: "จัดการครัว",
+            link: "/kitchen",
+          },
+          {
+            key: "table-history",
+            label: "ประวัติครัว",
+            link: "/history",
+          },
+        ],
       },
       {
         key: "menu",
@@ -167,7 +179,7 @@ const NavBarComponent = () => {
       <div>
         <div className="logo-container">
           <img src={AppLogo} alt="website-logo" className="image cursor" />
-          <h2 className="sarabun-extrabold cursor">Paradise Steak House</h2>
+          <h2 className="cursor inter-extrabold">Paradise Steak House</h2>
           <Button className="open-mobile" onClick={() => setOpen(!open)}>
             {open ? (
               <>
@@ -180,7 +192,7 @@ const NavBarComponent = () => {
             )}
           </Button>
         </div>
-        <div className={`nav-menu ${open && "nav-active"}`}>
+        <div className={`nav-menu ${open && "nav-active"} prompt-semibold`}>
           <Menu
             style={{
               background: "#0000",

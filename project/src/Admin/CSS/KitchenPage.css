@@ -1,0 +1,42 @@
+.kitchen-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 1rem;
+  gap: 0.4rem;
+}
+.kitchen-box {
+  /* border: 1px solid #c6c6c6; */
+  min-height: 500px;
+}
+.kitchen-header {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  font: bold;
+  color: #ffffff;
+}
+.bg-red {
+  background: #f23e3e;
+}
+.bg-yellow {
+  background: #ffd43b;
+}
+.bg-green {
+  background: #a9e34b;
+}
+
+.kitchen-item .kitchen-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.kitchen-item .kitchen-card .table-number {
+  color: #ffffff;
+  background: linear-gradient(to right, #fd7e14, #fcc419);
+  padding: 0.4rem 1rem;
+}
+.kitchen-item .kitchen-card .table-option {
+  color: gray;
+}

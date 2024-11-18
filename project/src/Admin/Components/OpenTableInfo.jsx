@@ -36,7 +36,20 @@ const OpenTableInfo = ({ item }) => {
       dataIndex: ["option"],
       key: "price",
       width: "25%",
-      render: (item) => <>{JSON.stringify(item)}</>,
+      render: (item) => (
+        <>
+          {item.length > 0 ? (
+            <>
+              {item &&
+                item.map((item, index) => {
+                  return <div key={index}>- {item}</div>;
+                })}
+            </>
+          ) : (
+            <></>
+          )}
+        </>
+      ),
     },
     {
       title: "ราคา",
@@ -53,6 +66,7 @@ const OpenTableInfo = ({ item }) => {
           {current != 2 && (
             <>
               <Button
+                className="prompt-semibold"
                 onClick={() => {
                   changeOrderStatus(item._id, current + 2, record._id);
                 }}
@@ -60,6 +74,7 @@ const OpenTableInfo = ({ item }) => {
                 ส่งรายการ
               </Button>
               <Button
+                className="prompt-semibold"
                 danger
                 onClick={() => {
                   deleteOrder(item._id, record._id);
@@ -175,16 +190,20 @@ const OpenTableInfo = ({ item }) => {
     <>
       <div className="menuinfo-infotable">
         <div className="text-container">
-          <h4>พนักงานประจำโต๊ะ</h4>
-          <p>{item && item?.table_employee[0]?.user_fullname}</p>
+          <h4 className="prompt-bold">พนักงานประจำโต๊ะ</h4>
+          <p className="prompt-regular">
+            {item && item?.table_employee[0]?.user_fullname}
+          </p>
         </div>
         <div className="text-container">
-          <h4>จำนวนลูกค้า</h4>
-          <p>{item && item?.table_customer_amount}</p>
+          <h4 className="prompt-bold">จำนวนลูกค้า</h4>
+          <p className="prompt-regular">
+            {item && item?.table_customer_amount}
+          </p>
         </div>
         <div>
           <Dropdown.Button
-            className="action-drop-btn"
+            className="action-drop-btn "
             menu={{
               items: [
                 {
@@ -204,13 +223,14 @@ const OpenTableInfo = ({ item }) => {
               ],
             }}
           >
-            คำสั่ง
+            <p className="prompt-bold">คำสั่ง</p>
           </Dropdown.Button>
           <Modal
             title="QR CODE (ใช้สำหรับสแกนเข้าเว็บสั่งอาหาร)"
             open={isModalOpen}
             onOk={handleOk}
             onCancel={handleCancel}
+            className="prompt-regular"
           >
             <div className="qrcode-container ">
               <QRCode
@@ -219,7 +239,7 @@ const OpenTableInfo = ({ item }) => {
                   item.table_id
                 }`}
                 icon={AppLogo}
-                size={250}
+                size={400}
                 iconSize={250 / 4}
               />
             </div>
@@ -227,8 +247,13 @@ const OpenTableInfo = ({ item }) => {
         </div>
         <Divider />
         <div>
-          <Steps current={current} onChange={onChange} items={steps} />
-          {steps[current].content}
+          <Steps
+            current={current}
+            onChange={onChange}
+            items={steps}
+            className="prompt-bold"
+          />
+          <div className="prompt-regular">{steps[current].content}</div>
         </div>
       </div>
     </>

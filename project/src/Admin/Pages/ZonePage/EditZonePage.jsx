@@ -76,19 +76,19 @@ const EditZonePage = () => {
       <form onSubmit={submitForm} className="form">
         <div className="form-menu-container">
           <div>
-            <label className="sarabun-semibold">ชื่อโซน</label>
+            <label className="prompt-semibold">ชื่อโซน</label>
             <Input
               value={zone.zone_name}
               placeholder="ชื่อโซน"
               onChange={inputValue("zone_name")}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
         </div>
         <Button
-          className="sarabun-semibold"
+          className="prompt-semibold"
           block
           htmlType="submit"
           size={"large"}

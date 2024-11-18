@@ -4,20 +4,21 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 // Axios
 import axios from "axios";
-// Components
-import BackFooter from "../../Components/BackFooter";
+// Antd
+import { Select, Input, Button, InputNumber } from "antd";
 
 const CreateTablePage = () => {
   const [table, setTable] = useState({
-    table_number: "",
+    table_number: 0,
     table_seat: "",
     table_zone: "",
   });
+
   const [zones, setZones] = useState([]);
   const fetchAPI = async () => {
     const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
     await axios
-      .get(`${import.meta.env.VITE_API_URL}/zone/get`, {
+      .get(`${import.meta.env.VITE_API_URL}/authen/zone/get`, {
         headers: {
           Authorization: `Bearer ${JWT_TOKEN}`,
         },
@@ -37,9 +38,9 @@ const CreateTablePage = () => {
     const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
     await axios
       .post(
-        `${import.meta.env.VITE_API_URL}/table/create`,
+        `${import.meta.env.VITE_API_URL}/authen/table/create`,
         {
-          table_number: table.table_number,
+          table_number: `${table.table_number}`,
           table_seat: table.table_seat,
           table_zone: table.table_zone,
         },
@@ -62,7 +63,7 @@ const CreateTablePage = () => {
             title: "เพิ่มโต๊ะเสร็จสมบูรณ์",
             text: "...",
           }).then(() => {
-            window.location.href = "/admin/table";
+            window.location.href = "/table";
           });
         }
       });
@@ -72,51 +73,68 @@ const CreateTablePage = () => {
       <form onSubmit={submitForm} className="form">
         <div className="form-menu-container">
           <div>
-            <label className="sarabun-semibold">เลขโต๊ะ</label>
-            <input
-              type="text"
-              placeholder="เลขโต๊ะ"
+            <label className="prompt-semibold">เลขโต๊ะ</label>
+            <InputNumber
+              className="prompt-medium"
+              size="large"
+              min={1}
+              max={10}
+              defaultValue={0}
+              style={{
+                width: "100%",
+              }}
+              onChange={(value) => setTable({ ...table, table_number: value })}
               value={table.table_number}
-              onChange={inputValue("table_number")}
-              className="sarabun-regular cursor"
               required
             />
           </div>
           <div>
-            <label className="sarabun-semibold">จำนวนที่นั่ง</label>
-            <input
-              type="number"
-              placeholder="จำนวนที่นั่ง"
-              value={table.table_seat}
+            <label className="prompt-semibold">จำนวนที่นั่ง</label>
+            <Input
+              placeholder="เลขโต๊ะ"
               onChange={inputValue("table_seat")}
-              className="sarabun-regular cursor"
+              className="prompt-regular"
+              value={table.table_seat}
+              size={"large"}
               required
             />
           </div>
           <div>
-            <label className="sarabun-semibold">โซนที่นั่ง</label>
-            <select
-              value={table.table_zone}
-              onChange={inputValue("table_zone")}
-              className="sarabun-regular cursor"
-            >
-              <option value="">เลือกตัวเลือก</option>
-              {zones.map((zone) => (
-                <option key={zone.id} value={zone._id}>
-                  {zone.zone_name}
-                </option>
-              ))}
-            </select>
+            <label className="prompt-semibold">โซนที่นั่ง</label>
+            <Select
+              className="prompt-regular"
+              size={"large"}
+              style={{ width: "100%" }}
+              showSearch
+              placeholder="เลือกตัวเลือก"
+              filterOption={(input, option) =>
+                (option?.label ?? "")
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
+              options={zones.map((zone) => ({
+                value: zone._id,
+                label: zone.zone_name,
+              }))}
+              value={table.category_id}
+              onChange={(value) => setTable({ ...table, table_zone: value })}
+            />
           </div>
         </div>
-        <button
-          type="submit"
-          className="btn-full btn-green cursor sarabun-semibold"
+        <Button
+          className="prompt-semibold"
+          block
+          htmlType="submit"
+          size={"large"}
+          style={{
+            background: "linear-gradient(45deg, #00C853 0%, #00C853 100%)",
+            color: "#fff",
+            border: "none",
+          }}
         >
           เพิ่มโต๊ะ
-        </button>
+        </Button>
       </form>
-      <BackFooter props={"/admin/table"} />
     </>
   );
 };

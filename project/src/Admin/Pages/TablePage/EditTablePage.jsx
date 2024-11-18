@@ -6,13 +6,13 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 // SWAL
 import Swal from "sweetalert2";
-// Components
-import BackFooter from "../../Components/BackFooter";
+// Antd
+import { Select, Input, Button, InputNumber } from "antd";
 
 const EditTablePage = () => {
   const { id } = useParams();
   const [table, setTable] = useState({
-    table_number: "",
+    table_number: 0,
     table_seat: "",
     table_zone: "",
   });
@@ -29,7 +29,7 @@ const EditTablePage = () => {
   const fetchAPI = async () => {
     const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
     await axios
-      .get(`${import.meta.env.VITE_API_URL}/zone/get`, {
+      .get(`${import.meta.env.VITE_API_URL}/authen/zone/get`, {
         headers: {
           Authorization: `Bearer ${JWT_TOKEN}`,
         },
@@ -40,7 +40,12 @@ const EditTablePage = () => {
     await axios
       .get(`${import.meta.env.VITE_API_URL}/table/get/${id}`)
       .then((data) => {
-        setInitialValue("table_number", data?.data?.response?.table_number);
+        console.log(data);
+
+        setInitialValue(
+          "table_number",
+          `${data?.data?.response?.table_number}`
+        );
         setInitialValue("table_seat", data?.data?.response?.table_seat);
         setInitialValue("table_zone", data?.data?.response?.table_zone[0]?._id);
       });
@@ -51,15 +56,7 @@ const EditTablePage = () => {
     await axios
       .put(
         `${import.meta.env.VITE_API_URL}/menu/update/${id}`,
-        {
-          menu_name_thai: menu.name_thai,
-          menu_name_english: menu.name_english,
-          menu_describe_thai: menu.describe_thai,
-          menu_describe_english: menu.describe_english,
-          menu_price: menu.price,
-          menu_category_id: [`${menu.category_id}`],
-          menu_option_id: [`${menu.option_id}`],
-        },
+        {},
         {
           headers: {
             Authorization: `Bearer ${JWT_TOKEN}`,
@@ -79,7 +76,7 @@ const EditTablePage = () => {
             title: "อัพเดทรายการอาหารเสร็จสมบูรณ์",
             text: "...",
           }).then(() => {
-            window.location.href = "/admin/menu";
+            window.location.href = "/table";
           });
         }
       });
@@ -94,48 +91,71 @@ const EditTablePage = () => {
           <form className="form" onSubmit={formSubmit}>
             <div className="form-menu-container">
               <div>
-                <label className="sarabun-bold">เลขโต๊ะ</label>
-                <input
-                  type="text"
-                  placeholder="เลขโต๊ะ"
+                <label className="prompt-semibold">เลขโต๊ะ</label>
+                <InputNumber
+                  className="prompt-medium"
+                  size="large"
+                  min={1}
+                  max={10}
+                  defaultValue={0}
+                  style={{
+                    width: "100%",
+                  }}
+                  onChange={(value) =>
+                    setTable({ ...table, table_number: value })
+                  }
                   value={table.table_number}
-                  onChange={inputValue("table_number")}
-                  className="sarabun-light cursor"
-                  required
                 />
               </div>
               <div>
-                <label className="sarabun-bold">จำนวนที่นั่ง</label>
-                <input
-                  type="number"
-                  placeholder="จำนวนที่นั่ง"
-                  value={table.table_seat}
+                <label className="prompt-semibold">จำนวนที่นั่ง</label>
+                <Input
+                  placeholder="เลขโต๊ะ"
                   onChange={inputValue("table_seat")}
-                  className="sarabun-light cursor"
+                  className="prompt-regular"
+                  value={table.table_seat}
+                  size={"large"}
                   required
                 />
               </div>
               <div>
-                <label className="sarabun-semibold">โซนที่นั่ง</label>
-                <select
+                <label className="prompt-semibold">โซนที่นั่ง</label>
+                <Select
+                  className="prompt-regular"
+                  size={"large"}
+                  style={{ width: "100%" }}
+                  showSearch
+                  placeholder="เลือกตัวเลือก"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "")
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
+                  }
+                  options={zones.map((zone) => ({
+                    value: zone._id,
+                    label: zone.zone_name,
+                  }))}
                   value={table.table_zone}
-                  onChange={inputValue("table_zone")}
-                  className="sarabun-regular cursor"
-                >
-                  <option value="">เลือกตัวเลือก</option>
-                  {zones.map((zone, index) => (
-                    <option key={index} value={zone._id}>
-                      {zone.zone_name}
-                    </option>
-                  ))}
-                </select>
+                  onChange={(value) =>
+                    setTable({ ...table, table_zone: value })
+                  }
+                />
               </div>
             </div>
-            <button className="btn-full btn-yellow sarabun-semibold cursor">
-              อัพเดทรายการอาหาร
-            </button>
+            <Button
+              className="prompt-semibold"
+              block
+              htmlType="submit"
+              size={"large"}
+              style={{
+                background: "linear-gradient(45deg, #00C853 0%, #00C853 100%)",
+                color: "#fff",
+                border: "none",
+              }}
+            >
+              อัพเดทโต๊ะ
+            </Button>
           </form>
-          <BackFooter props={`/admin/table`} />
         </>
       ) : (
         <>Empty</>

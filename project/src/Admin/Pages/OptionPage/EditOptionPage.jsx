@@ -7,9 +7,10 @@ import { useParams } from "react-router-dom";
 // SWAL
 import Swal from "sweetalert2";
 // Antd
-import { Input, Button, Table, Modal } from "antd";
+import { Input, Button, Table, Modal, Spin } from "antd";
 
 const EditOptionPage = () => {
+  const [spinning, setSpinning] = useState(true);
   const { id } = useParams();
   const [open, setOpen] = useState(false);
   const showModal = () => {
@@ -34,16 +35,21 @@ const EditOptionPage = () => {
     {
       title: "ชื่อรายการย่อยภาษาไทย",
       dataIndex: ["sub_option_name", "thai"],
+      key: "option_name_thai",
+      render: (item) => <div className="prompt-medium">{item}</div>,
     },
     {
       title: "ชื่อรายการย่อยภาษาไทย",
       dataIndex: ["sub_option_name", "english"],
+      key: "option_name_english",
+      render: (item) => <div className="prompt-medium">{item}</div>,
     },
     {
-      title: "Action",
+      title: "คำสั่ง",
       dataIndex: "",
       render: (_, __, index) => (
         <Button
+          className="prompt-semibold"
           onClick={() => {
             deleteSubOption(index);
           }}
@@ -60,6 +66,7 @@ const EditOptionPage = () => {
         setInitialValue("thai", data.data.response.option_name.thai);
         setInitialValue("english", data.data.response.option_name.english);
         setInitialValue("sub_option", data.data.response.sub_option);
+        setSpinning(false);
       });
   };
   const setInitialValue = (name, value) => {
@@ -145,32 +152,35 @@ const EditOptionPage = () => {
   }, []);
   return (
     <>
+      <Spin fullscreen spinning={spinning} />
       <form onSubmit={submitForm} className="form">
         <div className="form-menu-container">
           <div>
-            <label>ชื่อส่วนเสริมอาหารภาษาไทย</label>
+            <label className="prompt-semibold">ชื่อส่วนเสริมอาหารภาษาไทย</label>
             <Input
               value={option.thai}
               placeholder="ชื่อส่วนเสริมอาหารภาษาไทย"
               onChange={inputValue("thai")}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
           <div>
-            <label>ชื่อส่วนเสริมอาหารภาษาอังกฤษ</label>
+            <label className="prompt-semibold">
+              ชื่อส่วนเสริมอาหารภาษาอังกฤษ
+            </label>
             <Input
               value={option.english}
               placeholder="ชื่อส่วนเสริมอาหารภาษาอังกฤษ"
               onChange={inputValue("english")}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
         </div>
-        <div>
+        <div className="mb-1">
           <Table
             columns={columns}
             dataSource={option.sub_option}
@@ -178,7 +188,9 @@ const EditOptionPage = () => {
             pagination={{ pageSize: 3 }}
             title={() => (
               <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <Button onClick={showModal}>เพิ่มรายการย่อย</Button>
+                <Button onClick={showModal} className="prompt-semibold">
+                  เพิ่มรายการย่อย
+                </Button>
               </div>
             )}
             rowKey={(record, index) => index}
@@ -190,32 +202,42 @@ const EditOptionPage = () => {
             onCancel={handleCancel}
             footer={(_, { OkBtn }) => (
               <>
-                <Button onClick={() => addSubOption()}>เพิ่มรายการย่อย</Button>
+                <Button
+                  block
+                  onClick={() => addSubOption()}
+                  className="prompt-semibold"
+                >
+                  เพิ่มรายการย่อย
+                </Button>
               </>
             )}
           >
             <>
               <div className="mb-1">
-                <label>รายการย่อยภาษาไทย</label>
+                <label className="prompt-semibold">รายการย่อยภาษาไทย</label>
                 <Input
+                  placeholder="รายการย่อยภาษาไทย"
                   block
                   value={subOption.thai}
                   onChange={inputSubOptionValue("thai")}
+                  className="prompt-regular"
                 ></Input>
               </div>
               <div className="mb-1">
-                <label>รายการย่อยภาษาอังกฤษ</label>
+                <label className="prompt-semibold">รายการย่อยภาษาอังกฤษ</label>
                 <Input
+                  placeholder="รายการย่อยภาษาอังกฤษ"
                   block
                   value={subOption.english}
                   onChange={inputSubOptionValue("english")}
+                  className="prompt-regular"
                 ></Input>
               </div>
             </>
           </Modal>
         </div>
         <Button
-          className="sarabun-semibold"
+          lassName="prompt-regular"
           block
           htmlType="submit"
           size={"large"}

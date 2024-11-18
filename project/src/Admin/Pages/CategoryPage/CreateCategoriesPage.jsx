@@ -65,29 +65,29 @@ const CreateCategoriesPage = () => {
       <form onSubmit={submitForm} className="form">
         <div className="form-menu-container">
           <div>
-            <label className="sarabun-semibold">ชื่อหมวดหมู่ภาษาไทย</label>
+            <label className="prompt-semibold">ชื่อหมวดหมู่ภาษาไทย</label>
             <Input
               value={categories.thai}
               placeholder="ชื่อหมวดหมู่ภาษาไทย"
               onChange={inputValue("thai")}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
           <div>
-            <label className="sarabun-semibold">ชื่อหมวดหมู่ภาษาอังกฤษ</label>
+            <label className="prompt-semibold">ชื่อหมวดหมู่ภาษาอังกฤษ</label>
             <Input
               value={categories.english}
               placeholder="ชื่อหมวดหมู่ภาษาอังกฤษ"
               onChange={inputValue("english")}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
           <div className="file-input">
-            <label className="sarabun-semibold">รูปภาพอาหาร</label>
+            <label className="prompt-semibold">รูปภาพอาหาร</label>
             <div className="file-container">
               {selectedFile && (
                 <div className="file-box">
@@ -95,12 +95,15 @@ const CreateCategoriesPage = () => {
                 </div>
               )}
               <div>
-                <label htmlFor="file-upload" className="custom-file-upload">
+                <label
+                  htmlFor="file-upload"
+                  className="custom-file-upload prompt-regular"
+                >
                   เลือกรูปภาพ
                 </label>
                 <input
                   id="file-upload"
-                  className="sarabun-semibold"
+                  className=""
                   type="file"
                   accept="image/*"
                   onChange={onImageChange}
@@ -111,7 +114,7 @@ const CreateCategoriesPage = () => {
           </div>
         </div>
         <Button
-          className="sarabun-semibold"
+          className="prompt-regular"
           block
           htmlType="submit"
           size={"large"}

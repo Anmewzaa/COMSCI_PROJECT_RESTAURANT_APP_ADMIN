@@ -42,6 +42,11 @@
   font-size: 12px;
 }
 
+.top-container {
+  display: flex;
+  justify-content: space-between;
+}
+
 .menuinfo-main-text {
   display: flex;
   align-items: center;

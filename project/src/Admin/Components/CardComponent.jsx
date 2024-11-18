@@ -37,7 +37,7 @@ const CardComponent = ({ menu }) => {
       if (result.isConfirmed) {
         const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
         axios
-          .delete(`${import.meta.env.VITE_API_URL}/menu/delete/${id}`, {
+          .delete(`${import.meta.env.VITE_API_URL}/authen/menu/delete/${id}`, {
             headers: {
               Authorization: `Bearer ${JWT_TOKEN}`,
             },
@@ -71,13 +71,13 @@ const CardComponent = ({ menu }) => {
                 src={`${import.meta.env.VITE_API_URL}/images/${
                   menu.menu_image
                 }`}
-                alt=""
+                alt="menu-image"
               />
-              <h2 className="sarabun-semibold">{menu.menu_name.thai}</h2>
-              <p className="sarabun-regular">{menu.menu_price} บาท</p>
+              <h2 className="prompt-semibold">{menu.menu_name.thai}</h2>
+              <p className="prompt-regular">{menu.menu_price} บาท</p>
             </div>
             {menu && menu.menu_status === false && (
-              <div className="card-inactive sarabun-semibold">สินค้าหมด</div>
+              <div className="card-inactive">สินค้าหมด</div>
             )}
             <Modal
               open={open}
@@ -90,13 +90,13 @@ const CardComponent = ({ menu }) => {
                   {user && user.user_access_rights === "Admin" ? (
                     <>
                       <Button
-                        className="mr-1"
+                        className="mr-1 prompt-semibold"
                         onClick={() => editMenuInfo(menu.menu_id)}
                       >
                         แก้ไขเมนู
                       </Button>
                       <Button
-                        className="mr-1"
+                        className="mr-1 prompt-semibold"
                         onClick={() => deleteMenuInfo(menu.menu_id)}
                       >
                         ลบเมนู
@@ -105,8 +105,7 @@ const CardComponent = ({ menu }) => {
                   ) : (
                     <></>
                   )}
-                  <Button className="mr-1">แจ้งเมนูหมด</Button>
-                  <OkBtn />
+                  <Button className="mr-1 prompt-semibold">แจ้งเมนูหมด</Button>
                 </div>
               )}
             >
@@ -121,38 +120,38 @@ const CardComponent = ({ menu }) => {
                   />
                 </div>
                 <div className="menu-infomation">
-                  <h2 className="name-text sarabun-extrabold">
+                  <h2 className="name-text prompt-semibold mb-1">
                     {menu?.menu_name?.thai} ({menu?.menu_name?.english})
                   </h2>
-                  <div className="mb-1 inline">
-                    <span className="sarabun-bold mr-1">ราคา</span>
-                    <p className="sarabun-light">{menu?.menu_price} บาท</p>
+                  <div className="inline prompt-regular">
+                    <span className="mr-1">ราคา</span>
+                    <p>{menu?.menu_price} บาท</p>
                   </div>
                   {user && user.user_access_rights === "Admin" ? (
                     <>
-                      <div className="mb-1 inline">
-                        <span className="sarabun-bold mr-1">ราคาต้นทุน</span>{" "}
-                        <p className="sarabun-light">{menu?.menu_cost} บาท</p>
+                      <div className="mb-1 inline prompt-regular">
+                        <span className="mr-1">ราคาต้นทุน</span>{" "}
+                        <p className="">{menu?.menu_cost} บาท</p>
                       </div>
                     </>
                   ) : (
                     <></>
                   )}
                   <div className="mb-1">
-                    <span className="sarabun-bold mr-1">คำอธิบาย</span>
-                    <p className="sarabun-light">
+                    <span className=" mr-1 prompt-medium">คำอธิบาย</span>
+                    <p className="prompt-regular">
                       {menu?.menu_describe?.thai} (
                       {menu?.menu_describe?.english})
                     </p>
                   </div>
                   <div className="mb-1">
-                    <span className="sarabun-bold mr-1">ส่วนเสริม</span>
+                    <span className=" mr-1 prompt-medium">ส่วนเสริม</span>
                     {menu.menu_option_id ? (
                       <>
                         {menu.menu_option_id &&
                           menu.menu_option_id.map((item) => {
                             return (
-                              <div key={item._id} className="sarabun-light">
+                              <div key={item._id} className="prompt-regular">
                                 - {item.option_name.thai} (
                                 {item.option_name.english})
                               </div>

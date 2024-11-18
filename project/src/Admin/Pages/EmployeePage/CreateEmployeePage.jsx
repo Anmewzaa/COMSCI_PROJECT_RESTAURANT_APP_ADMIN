@@ -64,38 +64,39 @@ const CreateEmployeePage = () => {
       <form onSubmit={submitForm} className="form">
         <div className="form-menu-container">
           <div>
-            <label className="sarabun-semibold">ชื่อพนักงาน</label>
+            <label className="prompt-semibold">ชื่อพนักงาน</label>
             <Input
               placeholder="ชื่อพนักงาน"
               onChange={inputValue("user_fullname")}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
           <div>
-            <label className="sarabun-semibold">ชื่อเล่นพนักงาน</label>
+            <label className="prompt-semibold">ชื่อเล่นพนักงาน</label>
             <Input
               placeholder="ชื่อเล่นพนักงาน"
               onChange={inputValue("user_nickname")}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
           <div>
-            <label className="sarabun-semibold">เบอร์พนักงาน</label>
+            <label className="prompt-semibold">เบอร์พนักงาน</label>
             <Input
               placeholder="เบอร์พนักงาน"
               onChange={inputValue("user_telnum")}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
           <div>
-            <label className="sarabun-semibold">ตำแหน่ง</label>
+            <label className="prompt-semibold">ตำแหน่ง</label>
             <Select
+              className="prompt-regular"
               size={"large"}
               style={{ width: "100%" }}
               showSearch
@@ -117,8 +118,9 @@ const CreateEmployeePage = () => {
             />
           </div>
           <div>
-            <label className="sarabun-semibold">สิทธิการเข้าถึงพนักงาน</label>
+            <label className="prompt-semibold">สิทธิการเข้าถึงพนักงาน</label>
             <Select
+              className="prompt-regular"
               size={"large"}
               style={{ width: "100%" }}
               showSearch
@@ -139,28 +141,28 @@ const CreateEmployeePage = () => {
             />
           </div>
           <div>
-            <label className="sarabun-semibold">ชื่อเข้าสู่ระบบ</label>
+            <label className="prompt-semibold">ชื่อเข้าสู่ระบบ</label>
             <Input
               placeholder="ชื่อเข้าสู่ระบบ"
               onChange={inputValue("account_username")}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
           <div>
-            <label className="sarabun-semibold">รหัสผ่าน</label>
+            <label className="prompt-semibold">รหัสผ่าน</label>
             <Input
               placeholder="รหัสผ่าน"
               onChange={inputValue("account_password")}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
         </div>
         <Button
-          className="sarabun-semibold"
+          className="prompt-regular"
           block
           htmlType="submit"
           size={"large"}

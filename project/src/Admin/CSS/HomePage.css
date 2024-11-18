@@ -1,35 +1,32 @@
+.home-contianer {
+  padding: 1rem;
+}
+
+.home-btn-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
 .white-container {
+  padding: 1rem;
   background: white;
-  padding: 1rem;
+  border-radius: 5px;
 }
 
-.dashboard-layout {
+.static-container {
   display: grid;
-  grid-template-areas:
-    "a a a c"
-    "b b b b";
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  padding: 1rem;
 }
 
-.daily-container {
-  grid-area: a;
-  padding: 1rem;
+.chart-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 }
-.daily-data {
-  display: flex;
-  justify-content: space-between;
-  align-self: center;
-}
-.income-container {
-  grid-area: b;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.food-container {
-  grid-area: c;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+@media screen and (max-width: 900px) {
+  .chart-container {
+    grid-template-columns: 1fr;
+  }
 }

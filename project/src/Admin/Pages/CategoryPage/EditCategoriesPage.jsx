@@ -7,9 +7,10 @@ import { useParams } from "react-router-dom";
 // SWAL
 import Swal from "sweetalert2";
 // Antd
-import { Input, Button } from "antd";
+import { Input, Button, Spin } from "antd";
 
 const EditCategoriesPage = () => {
+  const [spinning, setSpinning] = useState(true);
   const { id } = useParams();
   const [categories, setCategories] = useState({
     thai: "",
@@ -21,6 +22,7 @@ const EditCategoriesPage = () => {
       .then((data) => {
         setInitialValue("thai", data.data.response.category_name.thai);
         setInitialValue("english", data.data.response.category_name.english);
+        setSpinning(false);
       });
   };
   const setInitialValue = (name, value) => {
@@ -78,33 +80,34 @@ const EditCategoriesPage = () => {
   };
   return (
     <>
+      <Spin fullscreen spinning={spinning} />
       <form onSubmit={submitForm} className="form">
         <div className="form-menu-container">
           <div>
-            <label className="sarabun-semibold">ชื่อหมวดหมู่ภาษาไทย</label>
+            <label className="prompt-semibold">ชื่อหมวดหมู่ภาษาไทย</label>
             <Input
               value={categories.thai}
               placeholder="ชื่อหมวดหมู่ภาษาไทย"
               onChange={inputValue("thai")}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
           <div>
-            <label className="sarabun-semibold">ชื่อหมวดหมู่ภาษาอังกฤษ</label>
+            <label className="prompt-semibold">ชื่อหมวดหมู่ภาษาอังกฤษ</label>
             <Input
               value={categories.english}
               placeholder="ชื่อหมวดหมู่ภาษาอังกฤษ"
               onChange={inputValue("english")}
-              className="sarabun-regular"
+              className="prompt-regular"
               size={"large"}
               required
             />
           </div>
         </div>
         <Button
-          className="sarabun-semibold"
+          className="prompt-regular"
           block
           htmlType="submit"
           size={"large"}
