@@ -111,56 +111,46 @@ const HistoryPage = () => {
               title: "วันที่",
               key: "date",
               dataIndex: "date",
+              width: "20%",
               render: (text) => (
-                <>{new Date(text).toLocaleDateString("th-TH")}</>
+                <div className="prompt-medium">
+                  {new Date(text).toLocaleDateString("th-TH")}
+                </div>
               ),
             },
             {
               title: "หมายเลขโต๊ะ",
               dataIndex: "table",
               key: "table",
+              width: "20%",
               render: (items) => (
-                <>
+                <div className="prompt-medium">
                   {items.map((item, index) => {
                     return <div key={index}>{item.table_number}</div>;
                   })}
-                </>
+                </div>
               ),
             },
             {
-              title: "จำนวนลูกค้า",
+              title: "จำนวนลูกค้า (คน)",
               dataIndex: "table",
               key: "table",
+              width: "20%",
               render: (items) => (
-                <>
+                <div className="prompt-medium">
                   {items.map((item, index) => {
-                    return (
-                      <div key={index}>{item.table_customer_amount} คน</div>
-                    );
+                    return <div key={index}>{item.table_customer_amount}</div>;
                   })}
-                </>
-              ),
-            },
-            {
-              title: "จำนวนลูกค้า",
-              dataIndex: "table",
-              key: "table",
-              render: (items) => (
-                <>
-                  {items.map((item, index) => {
-                    return (
-                      <div key={index}>{item.table_customer_amount} คน</div>
-                    );
-                  })}
-                </>
+                </div>
               ),
             },
             {
               title: "พนักงานดูแล",
               dataIndex: "table",
               key: "table",
+              width: "20%",
               render: (items) => (
-                <>
+                <div className="prompt-medium">
                   {items.map((item, index) => {
                     return (
                       <div key={index}>
@@ -168,17 +158,23 @@ const HistoryPage = () => {
                       </div>
                     );
                   })}
-                </>
+                </div>
               ),
             },
             {
-              title: "รายการอาหารที่สั่ง",
+              title: "",
               dataIndex: "table",
               key: "table",
+              width: "20%",
               render: (items) => (
-                <>
-                  <Button onClick={() => showDrawer(items)}>ดูเพิ่มเติม</Button>
-                </>
+                <div>
+                  <Button
+                    onClick={() => showDrawer(items)}
+                    className="prompt-semibold"
+                  >
+                    ดูข้อมูลเพิ่มเติม
+                  </Button>
+                </div>
               ),
             },
           ]}

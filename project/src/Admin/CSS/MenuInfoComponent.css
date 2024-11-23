@@ -1,0 +1,20 @@
+.menu-info-container .image-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+.menu-info-container img {
+  width: 70%;
+}
+.menu-info-container .info-container {
+  margin-bottom: 1rem;
+}
+.menu-info-container .info-container h2,
+p {
+  margin-bottom: 0.4rem;
+}
+
+.menu-info-container .btn-container {
+  display: flex;
+  justify-content: flex-end;
+}

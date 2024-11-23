@@ -12,37 +12,36 @@ import { Table, Tag, Space, Button, Input } from "antd";
 
 const columns = [
   {
-    title: "ชื่อภาษาไทย",
+    title: "ชื่อหมวดหมู่อาหาร",
     dataIndex: "category_name",
     key: "name",
-    render: (item) => <div className="prompt-medium">{`${item.thai}`}</div>,
-  },
-  {
-    title: "ชื่ออังกฤษ",
-    dataIndex: "category_name",
-    key: "name",
-    render: (item) => <div className="prompt-medium">{`${item.english}`}</div>,
+    width: "25%",
+    render: (item) => (
+      <div className="prompt-medium">{`${item.thai} (${item.english})`}</div>
+    ),
   },
   {
     title: "วันที่แก้ไขล่าสุด",
     key: "update_date",
     dataIndex: "updatedAt",
+    width: "25%",
     render: (text) => (
-      <div className="prompt-extrabold">
-        <Tag color={"geekblue"}>{new Date(text).toLocaleString()}</Tag>
+      <div className="prompt-bold">
+        <Tag>{new Date(text).toLocaleString()}</Tag>
       </div>
     ),
   },
   {
-    title: "คำสั่ง",
+    title: "",
     key: "action",
+    width: "25%",
     render: (item) => (
       <Space size="middle">
         <EditComponent id={item?.category_id} />
         <DeleteComponent
           id={item?.category_id}
           name={"categories"}
-          destination={"menu/categories"}
+          destination={"/categories"}
         />
       </Space>
     ),

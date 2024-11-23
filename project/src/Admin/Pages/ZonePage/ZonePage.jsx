@@ -12,24 +12,27 @@ import { Table, Tag, Space, Button, Input } from "antd";
 
 const columns = [
   {
-    title: "ชื่อ",
+    title: "ชื่อโซน",
     dataIndex: "zone_name",
     key: "name",
+    width: "33%",
     render: (item) => <div className="prompt-medium">{item}</div>,
   },
   {
     title: "วันที่แก้ไขล่าสุด",
     key: "update_date",
+    width: "33%",
     dataIndex: "updatedAt",
     render: (text) => (
-      <div className="prompt-extrabold">
-        <Tag color={"geekblue"}>{new Date(text).toLocaleString()}</Tag>
+      <div className="prompt-bold">
+        <Tag>{new Date(text).toLocaleString()}</Tag>
       </div>
     ),
   },
   {
-    title: "คำสั่ง",
+    title: "",
     key: "action",
+    width: "33%",
     render: (item) => (
       <Space size="middle">
         <EditComponent id={item?.zone_id} />
@@ -58,17 +61,21 @@ const ZonePage = () => {
     return item?.zone_name.toLowerCase().includes(search.toLowerCase());
   });
   const fetchAPI = async () => {
-    const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
-    await axios
-      .get(`${import.meta.env.VITE_API_URL}/authen/zone/get`, {
-        headers: {
-          Authorization: `Bearer ${JWT_TOKEN}`,
-        },
-      })
-      .then((data) => {
-        setZones(data.data.response);
-        setLoadingStatus(false);
-      });
+    try {
+      const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
+      await axios
+        .get(`${import.meta.env.VITE_API_URL}/authen/zone/get`, {
+          headers: {
+            Authorization: `Bearer ${JWT_TOKEN}`,
+          },
+        })
+        .then((data) => {
+          setZones(data.data.response);
+          setLoadingStatus(false);
+        });
+    } catch (err) {
+      console.log(err);
+    }
   };
   useEffect(() => {
     window.addEventListener("resize", handleResize);

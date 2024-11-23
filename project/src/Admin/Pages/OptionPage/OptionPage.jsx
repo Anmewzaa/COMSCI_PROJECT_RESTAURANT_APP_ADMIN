@@ -15,15 +15,13 @@ const columns = [
     title: "ชื่อภาษาไทย",
     dataIndex: "option_name",
     key: "name",
-    render: (item) => <div className="prompt-semibold">{`${item.thai}`}</div>,
+    render: (item) => <div className="prompt-medium">{`${item.thai}`}</div>,
   },
   {
     title: "ชื่อภาษาอังกฤษ",
     dataIndex: "option_name",
     key: "name",
-    render: (item) => (
-      <div className="prompt-semibold">{`${item.english}`}</div>
-    ),
+    render: (item) => <div className="prompt-medium">{`${item.english}`}</div>,
   },
   {
     title: "ส่วนเสริม",
@@ -33,8 +31,8 @@ const columns = [
       <>
         {items.map((item, index) => {
           return (
-            <div key={index} className="prompt-extrabold">
-              <Tag color="gold">{item.sub_option_name.thai}</Tag>
+            <div key={index} className="prompt-bold">
+              <Tag>{item.sub_option_name.thai}</Tag>
             </div>
           );
         })}
@@ -46,13 +44,13 @@ const columns = [
     key: "update_date",
     dataIndex: "updatedAt",
     render: (text) => (
-      <div className="prompt-extrabold">
-        <Tag color={"geekblue"}>{new Date(text).toLocaleString()}</Tag>
+      <div className="prompt-bold">
+        <Tag>{new Date(text).toLocaleString()}</Tag>
       </div>
     ),
   },
   {
-    title: "คำสั่ง",
+    title: "",
     key: "action",
     render: (item) => (
       <Space size="middle">

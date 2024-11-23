@@ -15,37 +15,41 @@ const CreateZonePage = () => {
     setZone({ ...zone, [name]: event.target.value });
   };
   const submitForm = async (e) => {
-    e.preventDefault();
-    const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
-    await axios
-      .post(
-        `${import.meta.env.VITE_API_URL}/authen/zone/create`,
-        {
-          zone_name: zone.zone_name,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${JWT_TOKEN}`,
+    try {
+      e.preventDefault();
+      const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
+      await axios
+        .post(
+          `${import.meta.env.VITE_API_URL}/authen/zone/create`,
+          {
+            zone_name: zone.zone_name,
           },
-        }
-      )
-      .then((result) => {
-        if (result.data.error) {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: result.data.error,
-          });
-        } else {
-          Swal.fire({
-            icon: "success",
-            title: "เพิ่มโซนเสร็จสมบูรณ์",
-            text: "...",
-          }).then(() => {
-            window.location.href = "/zone";
-          });
-        }
-      });
+          {
+            headers: {
+              Authorization: `Bearer ${JWT_TOKEN}`,
+            },
+          }
+        )
+        .then((result) => {
+          if (result.data.error) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: result.data.error,
+            });
+          } else {
+            Swal.fire({
+              icon: "success",
+              title: "เพิ่มโซนสำเร็จ",
+              text: "",
+            }).then(() => {
+              window.location.href = "/zone";
+            });
+          }
+        });
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <>

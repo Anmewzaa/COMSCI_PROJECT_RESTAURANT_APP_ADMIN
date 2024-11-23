@@ -172,7 +172,7 @@ export const deleteOrder = async (id, menu_id) => {
     if (result.isConfirmed) {
       axios
         .put(
-          `${import.meta.env.VITE_API_URL}/table/delete/${id}`,
+          `${import.meta.env.VITE_API_URL}/authen/table/delete/${id}`,
           {
             id: menu_id,
           },
@@ -188,7 +188,7 @@ export const deleteOrder = async (id, menu_id) => {
             text: "Your file has been deleted.",
             icon: "success",
           }).then(() => {
-            window.location.reload();
+            return true;
           });
         })
         .catch((err) => {

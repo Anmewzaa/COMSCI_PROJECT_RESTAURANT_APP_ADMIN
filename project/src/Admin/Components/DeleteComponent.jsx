@@ -10,12 +10,13 @@ const DeleteComponent = ({ name, id, destination }) => {
   const formSubmit = () => {
     Swal.fire({
       title: "ต้องการลบใช่ไหม?",
-      text: "You won't be able to revert this!",
+      text: "",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
+      confirmButtonText: "ตกลง",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "ยกเลิก",
     }).then((result) => {
       if (result.isConfirmed) {
         const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
@@ -34,6 +35,8 @@ const DeleteComponent = ({ name, id, destination }) => {
               text: "Your file has been deleted.",
               icon: "success",
             });
+          })
+          .then(() => {
             window.location.replace(`${destination}`);
           });
       }

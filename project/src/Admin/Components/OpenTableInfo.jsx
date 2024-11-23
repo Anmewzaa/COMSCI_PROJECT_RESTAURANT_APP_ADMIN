@@ -30,9 +30,10 @@ const OpenTableInfo = ({ item }) => {
       dataIndex: ["menu", "menu_name", "thai"],
       key: "name",
       width: "25%",
+      render: (item) => <div>{item}</div>,
     },
     {
-      title: "ระบุ",
+      title: "ตัวเลือกเสริม",
       dataIndex: ["option"],
       key: "price",
       width: "25%",
@@ -58,7 +59,7 @@ const OpenTableInfo = ({ item }) => {
       width: "25%",
     },
     {
-      title: "",
+      title: "คำสั่ง",
       key: "action",
       width: "25%",
       render: (text, record) => (
@@ -77,7 +78,9 @@ const OpenTableInfo = ({ item }) => {
                 className="prompt-semibold"
                 danger
                 onClick={() => {
-                  deleteOrder(item._id, record._id);
+                  deleteOrder(item._id, record._id).then((result) =>
+                    alert(result)
+                  );
                 }}
               >
                 <DeleteOutlined />
@@ -113,6 +116,7 @@ const OpenTableInfo = ({ item }) => {
     {
       title: "รายการอาหารใหม่",
       description: "ขั้นตอนที่ 1",
+      width: "100",
       content: (
         <div>
           <br />

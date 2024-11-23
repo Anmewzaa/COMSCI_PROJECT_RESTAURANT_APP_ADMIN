@@ -55,7 +55,7 @@ const EditTablePage = () => {
     const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
     await axios
       .put(
-        `${import.meta.env.VITE_API_URL}/menu/update/${id}`,
+        `${import.meta.env.VITE_API_URL}/authen/menu/update/${id}`,
         {},
         {
           headers: {

@@ -1,7 +1,7 @@
 // React Hook
 import { createContext, useState, useEffect } from "react";
 // Components
-import CardComponent from "../../Components/CardComponent";
+import MenuInfoComponent from "../../Components/MenuInfoComponent";
 // Context
 export const SearchContext = createContext(null);
 // Axios
@@ -11,12 +11,14 @@ import "../../CSS/MenuPage.css";
 // React Router Dom
 import { Link } from "react-router-dom";
 // Antd
-import { Input, Skeleton, Button } from "antd";
+import { Input, Button, Table } from "antd";
 
 const MenuPage = () => {
   const [search, setSearch] = useState("");
   const [menu, setMenu] = useState([]);
   const [loading, setLoading] = useState();
+  const [selectedMenuIds, setSelectedMenuIds] = useState([]);
+
   const fetchAPI = async () => {
     setLoading(true);
     await axios.get(`${import.meta.env.VITE_API_URL}/menu/get`).then((data) => {
@@ -35,6 +37,36 @@ const MenuPage = () => {
       .toLowerCase()
       .includes(search.toLowerCase());
   });
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      const menuIds = selectedRows.map((row) => row.menu_id);
+      setSelectedMenuIds(menuIds);
+    },
+    getCheckboxProps: (record) => ({
+      disabled: record.name === "Disabled User",
+      name: record.name,
+    }),
+  };
+  const changeMenuStatus = async (param) => {
+    try {
+      const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
+      axios
+        .put(
+          `${import.meta.env.VITE_API_URL}/authen/menu/changestatus`,
+          { menu_ids: selectedMenuIds, status: param },
+          {
+            headers: {
+              Authorization: `Bearer ${JWT_TOKEN}`,
+            },
+          }
+        )
+        .then(() => {
+          alert("PASS");
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -54,23 +86,91 @@ const MenuPage = () => {
           </Button>
         </div>
         <div>
-          {loading && loading ? (
-            <div className="loading-container">
-              <Skeleton />
-            </div>
-          ) : (
-            <div className="card-box">
-              {menu && menu.length === 0 ? (
-                <>Empty</>
-              ) : (
-                <>
-                  {searchFilter.map((item) => {
-                    return <CardComponent key={item.menu_id} menu={item} />;
-                  })}
-                </>
-              )}
-            </div>
-          )}
+          <Table
+            loading={loading}
+            rowSelection={{
+              type: "checkbox",
+              ...rowSelection,
+            }}
+            className="form-table-container"
+            title={() => (
+              <div className="left-side-container">
+                <Button
+                  className="prompt-semibold mr-1"
+                  onClick={() => changeMenuStatus(true)}
+                >
+                  แจ้งรายการมี
+                </Button>
+                <Button
+                  className="prompt-semibold"
+                  onClick={() => changeMenuStatus(false)}
+                >
+                  แจ้งรายการหมด
+                </Button>
+              </div>
+            )}
+            columns={[
+              {
+                title: "ชื่ออาหาร",
+                dataIndex: "menu_name",
+                width: "20%",
+                render: (text) => (
+                  <div className="prompt-medium">
+                    {text.thai} ({text.english})
+                  </div>
+                ),
+              },
+              {
+                title: "คำอธิบาย",
+                dataIndex: "menu_describe",
+                width: "20%",
+                render: (text) => (
+                  <div className="prompt-medium">
+                    {text.thai} ({text.english})
+                  </div>
+                ),
+              },
+              {
+                title: "ราคา (บาท)",
+                dataIndex: "menu_price",
+                width: "20%",
+                render: (text) => <div className="prompt-medium">{text}</div>,
+              },
+              {
+                title: "สถานะ",
+                dataIndex: "menu_status",
+                width: "20%",
+                render: (status) => (
+                  <div className="prompt-medium">
+                    <>{status ? "มี" : "หมด"}</>
+                  </div>
+                ),
+                filters: [
+                  {
+                    text: "มี",
+                    value: true,
+                  },
+                  {
+                    text: "หมด",
+                    value: false,
+                  },
+                ],
+                onFilter: (value, record) => record.menu_status === value,
+              },
+              {
+                title: "",
+                dataIndex: "command",
+                width: "15%",
+                render: (_, record) => (
+                  <div>
+                    <MenuInfoComponent menu={record} />
+                  </div>
+                ),
+              },
+            ]}
+            dataSource={searchFilter}
+            rowKey={(record) => record._id}
+          />
         </div>
       </SearchContext.Provider>
     </>

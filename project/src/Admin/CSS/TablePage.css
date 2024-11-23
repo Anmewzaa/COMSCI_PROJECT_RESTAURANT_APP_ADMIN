@@ -2,6 +2,11 @@
   margin: 1rem;
   padding: 1rem;
   background: white;
+  border-radius: 5px;
+}
+
+.table-page-contaner .zone-name {
+  margin-bottom: 1rem;
 }
 
 .categories-box {

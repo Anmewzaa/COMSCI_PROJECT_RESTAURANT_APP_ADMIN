@@ -97,7 +97,7 @@ const HomePage = () => {
                 picker="month"
                 value={selectedDate}
                 onChange={handleDateChange}
-                format="DD/MM/YYYY"
+                format="MM/YYYY"
                 className="prompt-bold"
               />
             </div>

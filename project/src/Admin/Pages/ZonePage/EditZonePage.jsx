@@ -7,9 +7,10 @@ import { useParams } from "react-router-dom";
 // SWAL
 import Swal from "sweetalert2";
 // Antd
-import { Input, Button } from "antd";
+import { Input, Button, Spin } from "antd";
 
 const EditZonePage = () => {
+  const [spinning, setSpinning] = useState(true);
   const { id } = useParams();
   const [zone, setZone] = useState({
     zone_name: "",
@@ -24,6 +25,7 @@ const EditZonePage = () => {
       })
       .then((data) => {
         setInitialValue("zone_name", data.data.response.zone_name);
+        setSpinning(false);
       });
   };
   const setInitialValue = (name, value) => {
@@ -73,6 +75,7 @@ const EditZonePage = () => {
   };
   return (
     <>
+      <Spin fullscreen spinning={spinning} />
       <form onSubmit={submitForm} className="form">
         <div className="form-menu-container">
           <div>

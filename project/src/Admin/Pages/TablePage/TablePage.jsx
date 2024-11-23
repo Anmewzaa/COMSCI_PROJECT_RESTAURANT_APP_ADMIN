@@ -78,6 +78,15 @@ const TablePage = () => {
     fetchTables();
     fetchEmployee();
   }, []);
+  const groupedByZone = table.reduce((acc, item) => {
+    const zoneName = item.table_zone[0]?.zone_name;
+    if (!zoneName) return acc;
+    if (!acc[zoneName]) {
+      acc[zoneName] = [];
+    }
+    acc[zoneName].push(item);
+    return acc;
+  }, {});
 
   return (
     <>
@@ -101,7 +110,7 @@ const TablePage = () => {
               </Link>
             </Button>
           </div>
-          <div className="table-page-contaner">
+          {/* <div className="table-page-contaner">
             <ul className="table-map">
               {table &&
                 table.map((item, index) => (
@@ -125,13 +134,42 @@ const TablePage = () => {
                   </div>
                 ))}
             </ul>
+          </div> */}
+          <div>
+            {Object.keys(groupedByZone).map((zoneName) => (
+              <div key={zoneName} className="table-page-contaner">
+                <h3 className="zone-name">{zoneName}</h3>
+                <ul className="table-map">
+                  {groupedByZone[zoneName].map((item, index) => (
+                    <div key={index}>
+                      <li
+                        className={`table-map-item cursor ${
+                          item.table_status === "open" && "active"
+                        }`}
+                        onClick={() => showDrawer(item)}
+                      >
+                        <h2 className="table-number inter-bold">
+                          {item.table_number}
+                        </h2>
+                        <p className="table-zone prompt-medium">
+                          {item.table_zone[0].zone_name}
+                        </p>
+                        <p className="table-sear prompt-medium">
+                          {item.table_seat} ที่นั่ง
+                        </p>
+                      </li>
+                    </div>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
           <Drawer
             title="รายละเอียดโต๊ะ"
             onClose={hideDrawer}
             open={open}
             loading={false}
-            size="large"
+            width="100%"
           >
             {currentItem && (
               <>
@@ -148,9 +186,12 @@ const TablePage = () => {
                         onClick={() => {
                           navigate(`edit/${currentItem.table_id}`);
                         }}
-                        className="prompt-semibold"
+                        className="prompt-semibold mr-1"
                       >
                         แก้ไขโต๊ะ
+                      </Button>
+                      <Button onClick={() => {}} className="prompt-semibold">
+                        ลบโต๊ะ
                       </Button>
                     </div>
                   </div>
