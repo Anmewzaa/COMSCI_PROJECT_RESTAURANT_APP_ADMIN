@@ -27,7 +27,7 @@ const OpenTableInfo = ({ item }) => {
   const [selectedMenuIds, setSelectedMenuIds] = useState([]);
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      const menuIds = selectedRows.map((row) => row.menu_id);
+      const menuIds = selectedRows.map((row) => row._id);
       setSelectedMenuIds(menuIds);
     },
     getCheckboxProps: (record) => ({
@@ -136,6 +136,7 @@ const OpenTableInfo = ({ item }) => {
               type: "checkbox",
               ...rowSelection,
             }}
+            rowKey={(record) => record}
             columns={columns}
             dataSource={filterOrdersByStatus(1)}
             pagination={{ pageSize: 5 }}
@@ -144,7 +145,7 @@ const OpenTableInfo = ({ item }) => {
                 <Button
                   className="prompt-semibold mr-1"
                   onClick={() => {
-                    // changeOrderStatus(item._id, current + 2, record._id);
+                    changeOrderStatus(item._id, current + 2, selectedMenuIds);
                   }}
                 >
                   ส่งรายการอาหาร
@@ -229,6 +230,7 @@ const OpenTableInfo = ({ item }) => {
   ];
   return (
     <>
+      {JSON.stringify(selectedMenuIds)}
       <div className="menuinfo-infotable">
         <div className="text-container">
           <h4 className="prompt-bold">พนักงานประจำโต๊ะ</h4>
@@ -255,6 +257,13 @@ const OpenTableInfo = ({ item }) => {
                 {
                   key: "2",
                   label: "เพิ่มรายการอาหาร",
+                  onClick: () => {
+                    window.open(
+                      `${import.meta.env.VITE_API_CUSTOMER_URL}/order?id=${
+                        item.table_id
+                      }&language=th`
+                    );
+                  },
                 },
                 {
                   key: "3",
@@ -278,7 +287,7 @@ const OpenTableInfo = ({ item }) => {
                 errorLevel="H"
                 value={`${import.meta.env.VITE_API_CUSTOMER_URL}/order?id=${
                   item.table_id
-                }`}
+                }&language=th`}
                 icon={AppLogo}
                 size={400}
                 iconSize={250 / 4}

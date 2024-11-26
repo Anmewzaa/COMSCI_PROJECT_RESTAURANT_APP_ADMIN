@@ -164,38 +164,46 @@ const TablePage = () => {
             {currentItem && (
               <>
                 <div>
-                  <div className="top-container">
-                    <div className="menuinfo-main-text">
-                      <h2 className="prompt-bold">
-                        โต๊ะที่ {currentItem.table_number}
-                      </h2>
-                      <p className="prompt-regular">{`(เหมาะสำหรับ ${currentItem.table_seat} ที่นั่ง)`}</p>
-                    </div>
-                    <div>
-                      <Button
-                        onClick={() => {
-                          navigate(`edit/${currentItem.table_id}`);
-                        }}
-                        className="prompt-semibold mr-1"
-                      >
-                        แก้ไขโต๊ะ
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          deleteTable(currentItem._id);
-                        }}
-                        className="prompt-semibold"
-                      >
-                        ลบโต๊ะ
-                      </Button>
-                    </div>
-                  </div>
                   {currentItem && currentItem.table_status !== "close" ? (
                     <>
+                      <div className="top-container">
+                        <div className="menuinfo-main-text">
+                          <h2 className="prompt-bold">
+                            โต๊ะที่ {currentItem.table_number}
+                          </h2>
+                          <p className="prompt-regular">{`(เหมาะสำหรับ ${currentItem.table_seat} ที่นั่ง)`}</p>
+                        </div>
+                      </div>
                       <OpenTableInfo item={currentItem} />
                     </>
                   ) : (
                     <>
+                      <div className="top-container">
+                        <div className="menuinfo-main-text">
+                          <h2 className="prompt-bold">
+                            โต๊ะที่ {currentItem.table_number}
+                          </h2>
+                          <p className="prompt-regular">{`(เหมาะสำหรับ ${currentItem.table_seat} ที่นั่ง)`}</p>
+                        </div>
+                        <div>
+                          <Button
+                            onClick={() => {
+                              navigate(`edit/${currentItem.table_id}`);
+                            }}
+                            className="prompt-semibold mr-1"
+                          >
+                            แก้ไขโต๊ะ
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              deleteTable(currentItem._id);
+                            }}
+                            className="prompt-semibold"
+                          >
+                            ลบโต๊ะ
+                          </Button>
+                        </div>
+                      </div>
                       <div className="menuinfo-opentable prompt-semibold">
                         <div className="mb-1 ">
                           <label>พนักงาน</label>

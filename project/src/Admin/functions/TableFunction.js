@@ -134,7 +134,7 @@ export const changeOrderStatus = async (id, status, menu_id) => {
         .put(
           `${import.meta.env.VITE_API_URL}/authen/table/change_status/${id}`,
           {
-            order_ids: [menu_id],
+            order_ids: menu_id,
             new_status: status,
           },
           {
