@@ -93,7 +93,7 @@ const CreateTablePage = () => {
           <div>
             <label className="prompt-semibold">จำนวนที่นั่ง</label>
             <Input
-              placeholder="เลขโต๊ะ"
+              placeholder="จำนวนที่นั่ง"
               onChange={inputValue("table_seat")}
               className="prompt-regular"
               value={table.table_seat}

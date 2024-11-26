@@ -82,7 +82,7 @@ export const closeTable = async (id) => {
     }
   });
 };
-export const checkbill = async (id) => {
+export const checkbill = async (id, item) => {
   Swal.fire({
     title: "ต้องการที่ชำระเงินใช่หรือไม่?",
     text: "You won't be able to revert this!",
@@ -109,7 +109,21 @@ export const checkbill = async (id) => {
             text: "Your file has been deleted.",
             icon: "success",
           }).then(() => {
-            window.location.reload();
+            axios
+              .post(
+                `${import.meta.env.VITE_API_URL}/authen/history/create`,
+                {
+                  table: [item],
+                },
+                {
+                  headers: {
+                    Authorization: `Bearer ${JWT_TOKEN}`,
+                  },
+                }
+              )
+              .then(() => {
+                window.location.reload();
+              });
           });
         })
         .catch((err) => {
@@ -174,7 +188,7 @@ export const deleteOrder = async (id, menu_id) => {
         .put(
           `${import.meta.env.VITE_API_URL}/authen/table/delete/${id}`,
           {
-            id: menu_id,
+            order_ids: menu_id,
           },
           {
             headers: {
@@ -188,7 +202,7 @@ export const deleteOrder = async (id, menu_id) => {
             text: "Your file has been deleted.",
             icon: "success",
           }).then(() => {
-            return true;
+            window.location.reload();
           });
         })
         .catch((err) => {

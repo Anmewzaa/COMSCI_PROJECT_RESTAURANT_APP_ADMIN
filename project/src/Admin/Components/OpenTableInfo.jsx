@@ -41,7 +41,12 @@ const OpenTableInfo = ({ item }) => {
       dataIndex: ["menu", "menu_name"],
       key: "name",
       width: "32%",
-      render: (item) => <div>{`${item.thai} (${item.english})`}</div>,
+      render: (item, record) => {
+        if (!record.menu) {
+          return <div className="deleted-menu">เมนูที่ถูกลบ</div>;
+        }
+        return <div>{`${item.thai} (${item.english})`}</div>;
+      },
     },
     {
       title: "ตัวเลือกเสริม",
@@ -123,6 +128,13 @@ const OpenTableInfo = ({ item }) => {
   const countOrdersByStatus = (status) => {
     return filterOrdersByStatus(status).length;
   };
+  const calculateTotalPrice = (orders) => {
+    return orders.reduce((total, order) => {
+      const price = order.menu?.menu_price || 0;
+      const numericPrice = Number(price);
+      return total + numericPrice;
+    }, 0);
+  };
   const steps = [
     {
       title: "รายการอาหารใหม่",
@@ -153,9 +165,7 @@ const OpenTableInfo = ({ item }) => {
                 <Button
                   className="prompt-semibold"
                   onClick={() => {
-                    // deleteOrder(item._id, record._id).then((result) =>
-                    //   alert(result)
-                    // );
+                    deleteOrder(item._id, selectedMenuIds);
                   }}
                 >
                   ลบรายการอาหาร
@@ -181,9 +191,34 @@ const OpenTableInfo = ({ item }) => {
         <>
           <br />
           <Table
+            rowSelection={{
+              type: "checkbox",
+              ...rowSelection,
+            }}
+            rowKey={(record) => record}
             columns={columns}
             dataSource={filterOrdersByStatus(2)}
             pagination={{ pageSize: 5 }}
+            title={() => (
+              <div className="left-side-container">
+                <Button
+                  className="prompt-semibold mr-1"
+                  onClick={() => {
+                    changeOrderStatus(item._id, current + 2, selectedMenuIds);
+                  }}
+                >
+                  ส่งรายการอาหาร
+                </Button>
+                <Button
+                  className="prompt-semibold"
+                  onClick={() => {
+                    deleteOrder(item._id, selectedMenuIds);
+                  }}
+                >
+                  ลบรายการอาหาร
+                </Button>
+              </div>
+            )}
             footer={() => (
               <>
                 <div className="summary-price mb-05">
@@ -214,13 +249,18 @@ const OpenTableInfo = ({ item }) => {
                 </div>
                 <div className="summary-price">
                   <h4>ราคารวม</h4>
-                  <h4>0 บาท</h4>
+                  <h4>{calculateTotalPrice(filterOrdersByStatus(3))} บาท</h4>
                 </div>
               </>
             )}
           />
           <br />
-          <Button block onClick={() => checkbill(item._id)}>
+          <Button
+            block
+            onClick={() => {
+              checkbill(item._id, item);
+            }}
+          >
             <ShoppingCartOutlined />
             ชำระเงิน
           </Button>
@@ -230,7 +270,6 @@ const OpenTableInfo = ({ item }) => {
   ];
   return (
     <>
-      {JSON.stringify(selectedMenuIds)}
       <div className="menuinfo-infotable">
         <div className="text-container">
           <h4 className="prompt-bold">พนักงานประจำโต๊ะ</h4>
