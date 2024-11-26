@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 // Axios
 import axios from "axios";
 // Antd
-import { Select, Input, Button, InputNumber } from "antd";
+import { Select, Input, Button, InputNumber, message } from "antd";
 
 const CreateTablePage = () => {
   const [table, setTable] = useState({
@@ -83,7 +83,9 @@ const CreateTablePage = () => {
               style={{
                 width: "100%",
               }}
-              onChange={(value) => setTable({ ...table, table_number: value })}
+              onChange={(value) => {
+                setTable({ ...table, table_number: value });
+              }}
               value={table.table_number}
               required
             />

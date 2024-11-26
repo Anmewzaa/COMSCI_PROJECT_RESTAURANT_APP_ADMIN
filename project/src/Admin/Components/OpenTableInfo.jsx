@@ -24,19 +24,30 @@ import {
 } from "../functions/TableFunction";
 
 const OpenTableInfo = ({ item }) => {
+  const [selectedMenuIds, setSelectedMenuIds] = useState([]);
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      const menuIds = selectedRows.map((row) => row.menu_id);
+      setSelectedMenuIds(menuIds);
+    },
+    getCheckboxProps: (record) => ({
+      disabled: record.name === "Disabled User",
+      name: record.name,
+    }),
+  };
   const columns = [
     {
       title: "ชื่อ",
-      dataIndex: ["menu", "menu_name", "thai"],
+      dataIndex: ["menu", "menu_name"],
       key: "name",
-      width: "25%",
-      render: (item) => <div>{item}</div>,
+      width: "32%",
+      render: (item) => <div>{`${item.thai} (${item.english})`}</div>,
     },
     {
       title: "ตัวเลือกเสริม",
       dataIndex: ["option"],
       key: "price",
-      width: "25%",
+      width: "32%",
       render: (item) => (
         <>
           {item.length > 0 ? (
@@ -53,44 +64,44 @@ const OpenTableInfo = ({ item }) => {
       ),
     },
     {
-      title: "ราคา",
+      title: "ราคา (บาท)",
       dataIndex: ["menu", "menu_price"],
       key: "price",
-      width: "25%",
+      width: "32%",
     },
-    {
-      title: "คำสั่ง",
-      key: "action",
-      width: "25%",
-      render: (text, record) => (
-        <Space size="middle">
-          {current != 2 && (
-            <>
-              <Button
-                className="prompt-semibold"
-                onClick={() => {
-                  changeOrderStatus(item._id, current + 2, record._id);
-                }}
-              >
-                ส่งรายการ
-              </Button>
-              <Button
-                className="prompt-semibold"
-                danger
-                onClick={() => {
-                  deleteOrder(item._id, record._id).then((result) =>
-                    alert(result)
-                  );
-                }}
-              >
-                <DeleteOutlined />
-                ลบ
-              </Button>
-            </>
-          )}
-        </Space>
-      ),
-    },
+    // {
+    //   title: "",
+    //   key: "action",
+    //   width: "25%",
+    //   render: (text, record) => (
+    //     <Space size="middle">
+    //       {current != 2 && (
+    //         <>
+    //           <Button
+    //             className="prompt-semibold"
+    //             onClick={() => {
+    //               changeOrderStatus(item._id, current + 2, record._id);
+    //             }}
+    //           >
+    //             ส่งรายการ
+    //           </Button>
+    //           <Button
+    //             className="prompt-semibold"
+    //             danger
+    //             onClick={() => {
+    //               deleteOrder(item._id, record._id).then((result) =>
+    //                 alert(result)
+    //               );
+    //             }}
+    //           >
+    //             <DeleteOutlined />
+    //             ลบ
+    //           </Button>
+    //         </>
+    //       )}
+    //     </Space>
+    //   ),
+    // },
   ];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -121,9 +132,35 @@ const OpenTableInfo = ({ item }) => {
         <div>
           <br />
           <Table
+            rowSelection={{
+              type: "checkbox",
+              ...rowSelection,
+            }}
             columns={columns}
             dataSource={filterOrdersByStatus(1)}
             pagination={{ pageSize: 5 }}
+            title={() => (
+              <div className="left-side-container">
+                <Button
+                  className="prompt-semibold mr-1"
+                  onClick={() => {
+                    // changeOrderStatus(item._id, current + 2, record._id);
+                  }}
+                >
+                  ส่งรายการอาหาร
+                </Button>
+                <Button
+                  className="prompt-semibold"
+                  onClick={() => {
+                    // deleteOrder(item._id, record._id).then((result) =>
+                    //   alert(result)
+                    // );
+                  }}
+                >
+                  ลบรายการอาหาร
+                </Button>
+              </div>
+            )}
             footer={() => (
               <>
                 <div className="summary-price mb-05">

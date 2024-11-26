@@ -87,6 +87,21 @@ const TablePage = () => {
     acc[zoneName].push(item);
     return acc;
   }, {});
+  const deleteTable = async (id) => {
+    try {
+      const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/authen/table/delete/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${JWT_TOKEN}`,
+          },
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -110,31 +125,6 @@ const TablePage = () => {
               </Link>
             </Button>
           </div>
-          {/* <div className="table-page-contaner">
-            <ul className="table-map">
-              {table &&
-                table.map((item, index) => (
-                  <div key={index}>
-                    <li
-                      className={`table-map-item cursor ${
-                        item.table_status === "open" && "active"
-                      }`}
-                      onClick={() => showDrawer(item)}
-                    >
-                      <h2 className="table-number inter-bold">
-                        {item.table_number}
-                      </h2>
-                      <p className="table-zone prompt-medium">
-                        {item.table_zone[0].zone_name}
-                      </p>
-                      <p className="table-sear prompt-medium">
-                        {item.table_seat} ที่นั่ง
-                      </p>
-                    </li>
-                  </div>
-                ))}
-            </ul>
-          </div> */}
           <div>
             {Object.keys(groupedByZone).map((zoneName) => (
               <div key={zoneName} className="table-page-contaner">
@@ -190,7 +180,12 @@ const TablePage = () => {
                       >
                         แก้ไขโต๊ะ
                       </Button>
-                      <Button onClick={() => {}} className="prompt-semibold">
+                      <Button
+                        onClick={() => {
+                          deleteTable(currentItem._id);
+                        }}
+                        className="prompt-semibold"
+                      >
                         ลบโต๊ะ
                       </Button>
                     </div>
