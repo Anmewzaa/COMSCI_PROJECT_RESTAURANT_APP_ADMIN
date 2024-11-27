@@ -58,7 +58,7 @@ const columns = [
         <DeleteComponent
           id={item?.option_id}
           name={"option"}
-          destination={"menu/option"}
+          destination={"/menu/option"}
         />
       </Space>
     ),
@@ -116,6 +116,7 @@ const OptionPage = () => {
       </div>
       <div>
         <Table
+          pagination={{ pageSize: 5 }}
           columns={columns}
           dataSource={searchFilter}
           className="form-table-container"

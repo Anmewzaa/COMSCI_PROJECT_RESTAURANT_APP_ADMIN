@@ -92,6 +92,7 @@ const MenuPage = () => {
               type: "checkbox",
               ...rowSelection,
             }}
+            pagination={{ pageSize: 5 }}
             className="form-table-container"
             title={() => (
               <div className="left-side-container">
