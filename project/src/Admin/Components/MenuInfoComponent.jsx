@@ -80,7 +80,7 @@ const MenuInfoComponent = ({ menu }) => {
                 src={`${import.meta.env.VITE_API_URL}/images/${
                   menu.menu_image
                 }`}
-                alt="menu-image"
+                alt="paradise-menu-image"
               />
             </Tooltip>
           </div>
