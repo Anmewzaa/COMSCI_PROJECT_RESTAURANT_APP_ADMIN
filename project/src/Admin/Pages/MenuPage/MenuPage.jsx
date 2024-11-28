@@ -12,6 +12,8 @@ import "../../CSS/MenuPage.css";
 import { Link } from "react-router-dom";
 // Antd
 import { Input, Button, Table } from "antd";
+// SWAL
+import Swal from "sweetalert2";
 
 const MenuPage = () => {
   const [search, setSearch] = useState("");
@@ -49,20 +51,54 @@ const MenuPage = () => {
   };
   const changeMenuStatus = async (param) => {
     try {
-      const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
-      axios
-        .put(
-          `${import.meta.env.VITE_API_URL}/authen/menu/changestatus`,
-          { menu_ids: selectedMenuIds, status: param },
-          {
-            headers: {
-              Authorization: `Bearer ${JWT_TOKEN}`,
-            },
-          }
-        )
-        .then(() => {
-          alert("PASS");
-        });
+      var message = "";
+      if (param) {
+        message = "แจ้งรายการมี";
+      } else {
+        message = "แจ้งรายการหมด";
+      }
+      Swal.fire({
+        title: "แจ้งเตือน",
+        text: `ต้องการที่จะ${message}ใช่หรือไม่ ?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ตกลง",
+        cancelButtonText: "ยกเลิก",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
+          axios
+            .put(
+              `${import.meta.env.VITE_API_URL}/authen/menu/changestatus`,
+              { menu_ids: selectedMenuIds, status: param },
+              {
+                headers: {
+                  Authorization: `Bearer ${JWT_TOKEN}`,
+                },
+              }
+            )
+            .then(() => {
+              Swal.fire({
+                title: "แจ้งเตือน",
+                text: `อัพเดทสถานะ${message}สำเร็จ`,
+                icon: "success",
+              }).then(() => {
+                window.location.reload();
+              });
+            })
+            .catch((err) => {
+              return Swal.fire({
+                title: "แจ้งเตือน",
+                text: err,
+                icon: "error",
+              }).then(() => {
+                window.location.reload();
+              });
+            });
+        }
+      });
     } catch (err) {
       console.log(err);
     }
@@ -92,7 +128,8 @@ const MenuPage = () => {
               type: "checkbox",
               ...rowSelection,
             }}
-            pagination={{ pageSize: 5 }}
+            pagination={{ pageSize: 10 }}
+            scroll={{ x: "max-content", y: "calc(50vh)" }}
             className="form-table-container"
             title={() => (
               <div className="left-side-container">
@@ -114,7 +151,7 @@ const MenuPage = () => {
               {
                 title: "ชื่ออาหาร",
                 dataIndex: "menu_name",
-                width: "20%",
+                width: "16%",
                 render: (text) => (
                   <div className="prompt-medium">
                     {text.thai} ({text.english})
@@ -124,7 +161,7 @@ const MenuPage = () => {
               {
                 title: "คำอธิบาย",
                 dataIndex: "menu_describe",
-                width: "20%",
+                width: "17%",
                 render: (text) => (
                   <div className="prompt-medium">
                     {text.thai} ({text.english})
@@ -134,13 +171,37 @@ const MenuPage = () => {
               {
                 title: "ราคา (บาท)",
                 dataIndex: "menu_price",
-                width: "20%",
+                width: "16%",
                 render: (text) => <div className="prompt-medium">{text}</div>,
+              },
+              {
+                title: "หมวดหมู่",
+                dataIndex: "menu_category_id",
+                width: "16%",
+                render: (text) => (
+                  <div className="prompt-medium">
+                    <>{text[0].category_name.thai}</>
+                  </div>
+                ),
+                filters: [
+                  ...Array.from(
+                    new Set(
+                      menu.map(
+                        (item) => item.menu_category_id[0].category_name.thai
+                      )
+                    )
+                  ).map((category) => ({
+                    text: category,
+                    value: category,
+                  })),
+                ],
+                onFilter: (value, record) =>
+                  record.menu_category_id[0].category_name.thai === value,
               },
               {
                 title: "สถานะ",
                 dataIndex: "menu_status",
-                width: "20%",
+                width: "16%",
                 render: (status) => (
                   <div className="prompt-medium">
                     <>{status ? "มี" : "หมด"}</>
@@ -161,7 +222,7 @@ const MenuPage = () => {
               {
                 title: "",
                 dataIndex: "command",
-                width: "15%",
+                width: "14%",
                 render: (_, record) => (
                   <div>
                     <MenuInfoComponent menu={record} />
@@ -171,6 +232,9 @@ const MenuPage = () => {
             ]}
             dataSource={searchFilter}
             rowKey={(record) => record._id}
+            rowClassName={(record) =>
+              record.menu_status === false ? "expired-menu" : ""
+            }
           />
         </div>
       </SearchContext.Provider>

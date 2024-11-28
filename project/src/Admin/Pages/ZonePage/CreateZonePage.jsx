@@ -18,35 +18,49 @@ const CreateZonePage = () => {
     try {
       e.preventDefault();
       const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
-      await axios
-        .post(
-          `${import.meta.env.VITE_API_URL}/authen/zone/create`,
-          {
-            zone_name: zone.zone_name,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${JWT_TOKEN}`,
-            },
-          }
-        )
-        .then((result) => {
-          if (result.data.error) {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: result.data.error,
+      Swal.fire({
+        title: "แจ้งเตือน",
+        text: "ต้องการที่จะสร้างโซนใช่หรือไม่ ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ตกลง",
+        cancelButtonText: "ยกเลิก",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .post(
+              `${import.meta.env.VITE_API_URL}/authen/zone/create`,
+              {
+                zone_name: zone.zone_name,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${JWT_TOKEN}`,
+                },
+              }
+            )
+            .then(() => {
+              Swal.fire({
+                title: "แจ้งเตือน",
+                text: "สร้างโซนสำเร็จ",
+                icon: "success",
+              }).then(() => {
+                window.location.href = "/zone";
+              });
+            })
+            .catch((err) => {
+              return Swal.fire({
+                title: "แจ้งเตือน",
+                text: err,
+                icon: "error",
+              }).then(() => {
+                window.location.href = "/zone";
+              });
             });
-          } else {
-            Swal.fire({
-              icon: "success",
-              title: "เพิ่มโซนสำเร็จ",
-              text: "",
-            }).then(() => {
-              window.location.href = "/zone";
-            });
-          }
-        });
+        }
+      });
     } catch (err) {
       console.log(err);
     }

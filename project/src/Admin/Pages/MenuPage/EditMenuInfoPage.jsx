@@ -78,67 +78,76 @@ const EditMenuInfoPage = () => {
       });
   };
   const formSubmit = async (e) => {
-    e.preventDefault();
-    if (
-      !(
-        menu.name_thai &&
-        menu.name_english &&
-        menu.describe_thai &&
-        menu.describe_english &&
-        menu.price &&
-        menu.menu_cost &&
-        menu.category_id &&
-        menu.option_id.length > 0
-      )
-    ) {
-      return;
-    }
-
     try {
-      const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
-      await axios
-        .put(
-          `${import.meta.env.VITE_API_URL}/authen/menu/update/${id}`,
-          {
-            menu_name_thai: menu.name_thai,
-            menu_name_english: menu.name_english,
-            menu_describe_thai: menu.describe_thai,
-            menu_describe_english: menu.describe_english,
-            menu_price: menu.price,
-            menu_cost: menu.menu_cost,
-            menu_category_id: menu.category_id,
-            menu_option_id: menu.option_id,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${JWT_TOKEN}`,
-            },
-          }
+      e.preventDefault();
+      if (
+        !(
+          menu.name_thai &&
+          menu.name_english &&
+          menu.describe_thai &&
+          menu.describe_english &&
+          menu.price &&
+          menu.menu_cost &&
+          menu.category_id &&
+          menu.option_id.length > 0
         )
-        .then((result) => {
-          if (result.data.error) {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: result.data.error,
-            });
-          } else {
-            Swal.fire({
-              icon: "success",
-              title: "อัพเดทรายการอาหารเสร็จสมบูรณ์",
-              text: "...",
-            }).then(() => {
-              window.location.href = "/menu";
-            });
-          }
-        });
-    } catch (err) {
-      console.error("Error:", err);
+      ) {
+        return;
+      }
+
       Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "มีบางอย่างผิดพลาด กรุณาลองใหม่",
+        title: "แจ้งเตือน",
+        text: "ต้องการที่จะแก้ไขรายการอาหารใช่หรือไม่ ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ตกลง",
+        cancelButtonText: "ยกเลิก",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
+          axios
+            .put(
+              `${import.meta.env.VITE_API_URL}/authen/menu/update/${id}`,
+              {
+                menu_name_thai: menu.name_thai,
+                menu_name_english: menu.name_english,
+                menu_describe_thai: menu.describe_thai,
+                menu_describe_english: menu.describe_english,
+                menu_price: menu.price,
+                menu_cost: menu.menu_cost,
+                menu_category_id: menu.category_id,
+                menu_option_id: menu.option_id,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${JWT_TOKEN}`,
+                },
+              }
+            )
+            .then(() => {
+              Swal.fire({
+                title: "แจ้งเตือน",
+                text: "แก้ไขรายการอาหารสำเร็จ",
+                icon: "success",
+              }).then(() => {
+                window.location.href = "/menu";
+              });
+            })
+            .catch((err) => {
+              return Swal.fire({
+                title: "แจ้งเตือน",
+                text: err,
+                icon: "error",
+              }).then(() => {
+                window.location.href = "/menu";
+              });
+            });
+        }
       });
+    } catch (err) {
+      console.log(err);
     }
   };
 

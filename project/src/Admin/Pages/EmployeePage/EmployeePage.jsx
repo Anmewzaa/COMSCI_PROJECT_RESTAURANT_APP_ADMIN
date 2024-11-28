@@ -15,29 +15,31 @@ const columns = [
     title: "ชื่อ",
     dataIndex: "user_fullname",
     key: "name",
+    width: "15%",
     render: (item) => <div className="prompt-medium">{`${item}`}</div>,
   },
   {
     title: "ชื่อเล่น",
     dataIndex: "user_nickname",
     key: "nickname",
+    width: "15%",
     render: (item) => <div className="prompt-medium">{`${item}`}</div>,
   },
   {
     title: "เบอร์โทร",
     dataIndex: "user_telnum",
     key: "telnum",
+    width: "15%",
     render: (item) => <div className="prompt-medium">{`${item}`}</div>,
   },
   {
     title: "หน้าที่",
     key: "user_role",
     dataIndex: "user_role",
+    width: "15%",
     render: (text) => (
       <div className="prompt-extrabold">
-        <Tag color={`${text === "ผู้จัดการ" ? "geekblue" : "green"}`}>
-          {text}
-        </Tag>
+        <Tag color={`${text === "ผู้จัดการ" ? "gold" : ""}`}>{text}</Tag>
       </div>
     ),
   },
@@ -45,15 +47,17 @@ const columns = [
     title: "สิทธิการเข้าถึง",
     key: "user_access_rights",
     dataIndex: "user_access_rights",
+    width: "15%",
     render: (text) => (
       <div className="prompt-extrabold">
-        <Tag color={`${text === "Admin" ? "volcano" : "green"}`}>{text}</Tag>
+        <Tag color={`${text === "Admin" ? "gold" : ""}`}>{text}</Tag>
       </div>
     ),
   },
   {
-    title: "คำสั่ง",
+    title: "",
     key: "action",
+    width: "15%",
     render: (item) => (
       <Space size="middle">
         <EditComponent id={item?.user_id} />
@@ -71,10 +75,6 @@ const EmployeePage = () => {
   const [loadingStatus, setLoadingStatus] = useState(true);
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
-  const handleResize = () => {
-    setIsMobile(window.innerWidth < 900);
-  };
   const searchFilter = users?.filter((item) => {
     if (search === "") {
       return item;
@@ -100,11 +100,7 @@ const EmployeePage = () => {
       });
   };
   useEffect(() => {
-    window.addEventListener("resize", handleResize);
     fetchAPI();
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
   }, []);
   return (
     <>
@@ -129,7 +125,8 @@ const EmployeePage = () => {
           dataSource={searchFilter}
           className="form-table-container"
           loading={loadingStatus}
-          scroll={isMobile ? { x: 900 } : null}
+          pagination={{ pageSize: 10 }}
+          scroll={{ x: "max-content", y: 55 * 7 }}
         />
       </div>
     </>

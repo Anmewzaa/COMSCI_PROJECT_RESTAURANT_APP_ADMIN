@@ -41,7 +41,7 @@ const columns = [
         <DeleteComponent
           id={item?.category_id}
           name={"categories"}
-          destination={"/categories"}
+          destination={"/menu/categories"}
         />
       </Space>
     ),
@@ -52,10 +52,6 @@ const CategoriesPage = () => {
   const [loadingStatus, setLoadingStatus] = useState(true);
   const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
-  const handleResize = () => {
-    setIsMobile(window.innerWidth < 900);
-  };
   const searchFilter = categories?.filter((item) => {
     if (search === "") {
       return item;
@@ -74,11 +70,7 @@ const CategoriesPage = () => {
       });
   };
   useEffect(() => {
-    window.addEventListener("resize", handleResize);
     fetchAPI();
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
   }, []);
   return (
     <>
@@ -103,7 +95,8 @@ const CategoriesPage = () => {
           dataSource={searchFilter}
           className="form-table-container"
           loading={loadingStatus}
-          scroll={isMobile ? { x: 900 } : null}
+          pagination={{ pageSize: 10 }}
+          scroll={{ x: "max-content", y: "calc(50vh)" }}
         />
       </div>
     </>

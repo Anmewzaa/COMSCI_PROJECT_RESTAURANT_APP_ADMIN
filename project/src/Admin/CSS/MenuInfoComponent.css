@@ -1,10 +1,10 @@
-.menu-info-container .image-container {
-  display: flex;
-  justify-content: center;
-  margin: 1rem 0;
+.menu-info-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
 }
 .menu-info-container img {
-  width: 70%;
+  border-radius: 5px;
 }
 .menu-info-container .info-container {
   margin-bottom: 1rem;
@@ -17,4 +17,10 @@ p {
 .menu-info-container .btn-container {
   display: flex;
   justify-content: flex-end;
+}
+.text-container {
+  display: flex;
+}
+.text-container span {
+  margin-right: 0.4rem;
 }

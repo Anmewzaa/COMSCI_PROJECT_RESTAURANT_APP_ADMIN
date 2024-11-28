@@ -21,43 +21,61 @@ const CreateEmployeePage = () => {
     setUserInfo({ ...userinfo, [name]: event.target.value });
   };
   const submitForm = async (e) => {
-    e.preventDefault();
-    const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
-    await axios
-      .post(
-        `${import.meta.env.VITE_API_URL}/user/create`,
-        {
-          user_fullname: userinfo.user_fullname,
-          user_nickname: userinfo.user_nickname,
-          user_telnum: userinfo.user_telnum,
-          user_role: userinfo.user_role,
-          user_access_rights: userinfo.user_access_rights,
-          account_username: userinfo.account_username,
-          account_password: userinfo.account_password,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${JWT_TOKEN}`,
-          },
-        }
-      )
-      .then((result) => {
-        if (result.data.error) {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: result.data.error,
-          });
-        } else {
-          Swal.fire({
-            icon: "success",
-            title: "เพิ่มพนักงานเสร็จสมบูรณ์",
-            text: "...",
-          }).then(() => {
-            window.location.href = "/admin/employee";
-          });
+    try {
+      e.preventDefault();
+      const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
+      Swal.fire({
+        title: "แจ้งเตือน",
+        text: "ต้องการที่จะเพิ่มพนักงานในระบบใช่หรือไม่ ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ตกลง",
+        cancelButtonText: "ยกเลิก",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .post(
+              `${import.meta.env.VITE_API_URL}/authen/user/create`,
+              {
+                user_fullname: userinfo.user_fullname,
+                user_nickname: userinfo.user_nickname,
+                user_telnum: userinfo.user_telnum,
+                user_role: userinfo.user_role,
+                user_access_rights: userinfo.user_access_rights,
+                account_username: userinfo.account_username,
+                account_password: userinfo.account_password,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${JWT_TOKEN}`,
+                },
+              }
+            )
+            .then(() => {
+              Swal.fire({
+                title: "แจ้งเตือน",
+                text: "เพิ่มพนักงานในระบบสำเร็จ",
+                icon: "success",
+              }).then(() => {
+                window.location.href = "/employee";
+              });
+            })
+            .catch((err) => {
+              return Swal.fire({
+                title: "แจ้งเตือน",
+                text: err,
+                icon: "error",
+              }).then(() => {
+                window.location.href = "/employee";
+              });
+            });
         }
       });
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <>
@@ -162,7 +180,7 @@ const CreateEmployeePage = () => {
           </div>
         </div>
         <Button
-          className="prompt-regular"
+          className="prompt-semibold"
           block
           htmlType="submit"
           size={"large"}

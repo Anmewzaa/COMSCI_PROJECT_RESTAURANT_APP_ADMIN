@@ -65,7 +65,7 @@ const HeaderComponent = () => {
       <div className="header-box ">
         <h3 className="prompt-semibold-italic">{renderHeader()}</h3>
         <div className="profile">
-          <div className="text-container">
+          <div className="header-text-container">
             <p className="welcome-text prompt-bold">ยินดีต้อนรับ</p>
             <p className="name-text inter-black">{user.user_fullname}</p>
           </div>

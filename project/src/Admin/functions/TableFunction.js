@@ -6,14 +6,26 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 export const openTable = async (id, table_employee, table_customer_amount) => {
+  if (
+    table_employee === "" ||
+    table_customer_amount === 0 ||
+    !table_customer_amount
+  ) {
+    return Swal.fire({
+      title: "แจ้งเตือน",
+      text: "กรุณากรอกข้อมูลให้ครบถ้วน",
+      icon: "error",
+    });
+  }
   Swal.fire({
-    title: "ต้องการที่จะเปิดโต๊ะใช่หรือไม่?",
-    text: "You won't be able to revert this!",
+    title: "แจ้งเตือน",
+    text: "ต้องการที่จะเปิดโต๊ะใช่หรือไม่ ?",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
+    confirmButtonText: "ตกลง",
+    cancelButtonText: "ยกเลิก",
   }).then((result) => {
     if (result.isConfirmed) {
       axios
@@ -31,16 +43,21 @@ export const openTable = async (id, table_employee, table_customer_amount) => {
         )
         .then(() => {
           Swal.fire({
-            title: "Success !",
-            text: "Your file has been deleted.",
+            title: "แจ้งเตือน",
+            text: "เปิดโต๊ะสำเร็จ",
             icon: "success",
           }).then(() => {
             window.location.reload();
           });
         })
         .catch((err) => {
-          console.log(err);
-          return alert(err);
+          return Swal.fire({
+            title: "แจ้งเตือน",
+            text: err,
+            icon: "error",
+          }).then(() => {
+            window.location.reload();
+          });
         });
     }
   });
@@ -135,13 +152,14 @@ export const checkbill = async (id, item) => {
 };
 export const changeOrderStatus = async (id, status, menu_id) => {
   Swal.fire({
-    title: "ต้องการที่จะเปลี่ยนสถานะอาหารใช่หรือไม่?",
-    text: "You won't be able to revert this!",
+    title: "แจ้งเตือน",
+    text: "ต้องการเปลี่ยนสถานะอาหารใช่หรือไม่ ?",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
+    confirmButtonText: "ตกลง",
+    cancelButtonText: "ยกเลิก",
   }).then((result) => {
     if (result.isConfirmed) {
       axios
@@ -159,16 +177,19 @@ export const changeOrderStatus = async (id, status, menu_id) => {
         )
         .then(() => {
           Swal.fire({
-            title: "Success !",
-            text: "Your file has been deleted.",
+            title: "แจ้งเตือน",
+            text: "เปลี่ยนสถานะอาหารสำเร็จ",
             icon: "success",
           }).then(() => {
             window.location.reload();
           });
         })
         .catch((err) => {
-          console.log(err);
-          return alert(err);
+          Swal.fire({
+            title: "แจ้งเตือน",
+            text: err,
+            icon: "error",
+          });
         });
     }
   });

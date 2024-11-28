@@ -4,7 +4,9 @@ import "../../CSS/TablePage.css";
 // axios
 import axios from "axios";
 // React Hook
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
+// Context
+export const TableContext = createContext(null);
 // Antd
 import {
   Drawer,
@@ -24,19 +26,18 @@ import OpenTableInfo from "../../Components/OpenTableInfo";
 import { Link, useNavigate } from "react-router-dom";
 
 const TablePage = () => {
+  // VARIABLE
   const [loading, setLoading] = useState(true);
   const [currentItem, setCurrentItem] = useState(null);
   const [open, setOpen] = useState(false);
-  const showDrawer = (item) => {
-    setCurrentItem(item);
-    setOpen(true);
-  };
-  const hideDrawer = () => {
-    setCurrentItem(null);
-    setOpen(false);
-  };
-  const navigate = useNavigate();
   const [table, setTable] = useState([]);
+  const [employee, setEmployee] = useState([]);
+  const [search, setSearch] = useState("");
+  const [selectEmployee, setSelectEmployee] = useState("");
+  const [selectCustomerAmount, setSelectCustomerAmount] = useState(0);
+  const navigate = useNavigate();
+
+  // FETCH DATA
   const fetchTables = async () => {
     try {
       const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
@@ -54,7 +55,6 @@ const TablePage = () => {
       console.log(err);
     }
   };
-  const [employee, setEmployee] = useState([]);
   const fetchEmployee = async () => {
     try {
       const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
@@ -71,13 +71,26 @@ const TablePage = () => {
       console.log(err);
     }
   };
-  const [search, setSearch] = useState("");
-  const [selectEmployee, setSelectEmployee] = useState("");
-  const [selectCustomerAmount, setSelectCustomerAmount] = useState(0);
+
+  // USE EFFECT
   useEffect(() => {
     fetchTables();
     fetchEmployee();
   }, []);
+
+  // FUNCTION
+  const refreshData = () => {
+    fetchTables();
+    setOpen(false);
+  };
+  const showDrawer = (item) => {
+    setCurrentItem(item);
+    setOpen(true);
+  };
+  const hideDrawer = () => {
+    setCurrentItem(null);
+    setOpen(false);
+  };
   const groupedByZone = table.reduce((acc, item) => {
     const zoneName = item.table_zone[0]?.zone_name;
     if (!zoneName) return acc;
@@ -102,13 +115,19 @@ const TablePage = () => {
       console.log(err);
     }
   };
+  const filteredTables = table.filter((item) => {
+    return (
+      item.table_number.toString().includes(search) ||
+      item.table_zone[0]?.zone_name.toLowerCase().includes(search.toLowerCase())
+    );
+  });
 
   return (
     <>
       {loading ? (
-        <Spin spinning={loading} />
+        <Spin spinning={loading} fullscreen />
       ) : (
-        <>
+        <TableContext.Provider value={{ refreshData, table }}>
           <div className="form-input-container">
             <Input
               type="text"
@@ -130,26 +149,28 @@ const TablePage = () => {
               <div key={zoneName} className="table-page-contaner">
                 <h3 className="zone-name">{zoneName}</h3>
                 <ul className="table-map">
-                  {groupedByZone[zoneName].map((item, index) => (
-                    <div key={index}>
-                      <li
-                        className={`table-map-item cursor ${
-                          item.table_status === "open" && "active"
-                        }`}
-                        onClick={() => showDrawer(item)}
-                      >
-                        <h2 className="table-number inter-bold">
-                          {item.table_number}
-                        </h2>
-                        <p className="table-zone prompt-medium">
-                          {item.table_zone[0].zone_name}
-                        </p>
-                        <p className="table-sear prompt-medium">
-                          {item.table_seat} ที่นั่ง
-                        </p>
-                      </li>
-                    </div>
-                  ))}
+                  {groupedByZone[zoneName]
+                    .filter((item) => filteredTables.includes(item))
+                    .map((item, index) => (
+                      <div key={index}>
+                        <li
+                          className={`table-map-item cursor ${
+                            item.table_status === "open" && "active"
+                          }`}
+                          onClick={() => showDrawer(item)}
+                        >
+                          <h2 className="table-number inter-bold">
+                            {item.table_number}
+                          </h2>
+                          <p className="table-zone prompt-medium">
+                            {item.table_zone[0].zone_name}
+                          </p>
+                          <p className="table-sear prompt-medium">
+                            {item.table_seat} ที่นั่ง
+                          </p>
+                        </li>
+                      </div>
+                    ))}
                 </ul>
               </div>
             ))}
@@ -188,7 +209,7 @@ const TablePage = () => {
                         <div>
                           <Button
                             onClick={() => {
-                              navigate(`edit/${currentItem.table_id}`);
+                              navigate(`edit/${currentItem._id}`);
                             }}
                             className="prompt-semibold mr-1"
                           >
@@ -236,6 +257,7 @@ const TablePage = () => {
                             }}
                             onChange={(value) => setSelectCustomerAmount(value)}
                             value={selectCustomerAmount}
+                            required
                           />
                         </div>
                         <Button
@@ -260,7 +282,7 @@ const TablePage = () => {
               </>
             )}
           </Drawer>
-        </>
+        </TableContext.Provider>
       )}
     </>
   );

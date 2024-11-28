@@ -16,46 +16,53 @@ const CreateCategoriesPage = () => {
     setCategories({ ...categories, [name]: event.target.value });
   };
   const submitForm = async (e) => {
-    e.preventDefault();
-    if (!(categories.thai && categories.english)) {
-      return Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "กรุณากรอกให้ครบถ้วน",
-      });
-    }
     try {
+      e.preventDefault();
       const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
-      await axios
-        .post(
-          `${import.meta.env.VITE_API_URL}/authen/categories/create`,
-          {
-            category_name_thai: categories.thai,
-            category_name_english: categories.english,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${JWT_TOKEN}`,
-            },
-          }
-        )
-        .then((result) => {
-          if (result.data.error) {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: result.data.error,
+      Swal.fire({
+        title: "แจ้งเตือน",
+        text: "ต้องการที่จะสร้างหมวดหมู่อาหารใช่หรือไม่ ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ตกลง",
+        cancelButtonText: "ยกเลิก",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .post(
+              `${import.meta.env.VITE_API_URL}/authen/categories/create`,
+              {
+                category_name_thai: categories.thai,
+                category_name_english: categories.english,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${JWT_TOKEN}`,
+                },
+              }
+            )
+            .then(() => {
+              Swal.fire({
+                title: "แจ้งเตือน",
+                text: "สร้างหมวดหมู่อาหารสำเร็จ",
+                icon: "success",
+              }).then(() => {
+                window.location.href = "/menu/categories";
+              });
+            })
+            .catch((err) => {
+              return Swal.fire({
+                title: "แจ้งเตือน",
+                text: err,
+                icon: "error",
+              }).then(() => {
+                window.location.href = "/menu/categories";
+              });
             });
-          } else {
-            Swal.fire({
-              icon: "success",
-              title: "สร้างรายการอาหารเสร็จสมบูรณ์",
-              text: "...",
-            }).then(() => {
-              window.location.href = "/menu/categories";
-            });
-          }
-        });
+        }
+      });
     } catch (err) {
       console.log(err);
     }
@@ -88,7 +95,7 @@ const CreateCategoriesPage = () => {
           </div>
         </div>
         <Button
-          className="prompt-regular"
+          className="prompt-semibold"
           block
           htmlType="submit"
           size={"large"}

@@ -52,44 +52,63 @@ const EditEmployeePage = () => {
     fetchAPI();
   }, []);
   const submitForm = async (e) => {
-    e.preventDefault();
-    const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
-    await axios
-      .put(
-        `${import.meta.env.VITE_API_URL}/authen/user/update/${id}`,
-        {
-          user_fullname: userinfo.user_fullname,
-          user_nickname: userinfo.user_nickname,
-          user_telnum: userinfo.user_telnum,
-          user_role: userinfo.user_role,
-          user_access_rights: userinfo.user_access_rights,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${JWT_TOKEN}`,
-          },
-        }
-      )
-      .then((result) => {
-        if (result.data.error) {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: result.data.error,
-          });
-        } else {
-          Swal.fire({
-            icon: "success",
-            title: "อัพเดทรายการอาหารเสร็จสมบูรณ์",
-            text: "...",
-          }).then(() => {
-            window.location.href = "/admin/employee";
-          });
+    try {
+      e.preventDefault();
+      const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
+      Swal.fire({
+        title: "แจ้งเตือน",
+        text: "ต้องการที่จะแก้ไขพนักงานในระบบใช่หรือไม่ ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ตกลง",
+        cancelButtonText: "ยกเลิก",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .put(
+              `${import.meta.env.VITE_API_URL}/authen/user/update/${id}`,
+              {
+                user_fullname: userinfo.user_fullname,
+                user_nickname: userinfo.user_nickname,
+                user_telnum: userinfo.user_telnum,
+                user_role: userinfo.user_role,
+                user_access_rights: userinfo.user_access_rights,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${JWT_TOKEN}`,
+                },
+              }
+            )
+            .then(() => {
+              Swal.fire({
+                title: "แจ้งเตือน",
+                text: "แก้ไขพนักงานในระบบสำเร็จ",
+                icon: "success",
+              }).then(() => {
+                window.location.href = "/employee";
+              });
+            })
+            .catch((err) => {
+              return Swal.fire({
+                title: "แจ้งเตือน",
+                text: err,
+                icon: "error",
+              }).then(() => {
+                window.location.href = "/employee";
+              });
+            });
         }
       });
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <>
+      {userinfo.user_fullname}
       <Spin fullscreen spinning={spinning} />
       <form onSubmit={submitForm} className="form">
         <div className="form-menu-container">
@@ -175,7 +194,7 @@ const EditEmployeePage = () => {
           </div>
         </div>
         <Button
-          className=""
+          className="prompt-semibold"
           block
           htmlType="submit"
           size={"large"}

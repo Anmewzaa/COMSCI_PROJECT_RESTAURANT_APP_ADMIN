@@ -41,37 +41,55 @@ const EditZonePage = () => {
     fetchAPI();
   }, []);
   const submitForm = async (e) => {
-    e.preventDefault();
-    const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
-    await axios
-      .put(
-        `${import.meta.env.VITE_API_URL}/authen/zone/update/${id}`,
-        {
-          zone_name: zone.zone_name,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${JWT_TOKEN}`,
-          },
-        }
-      )
-      .then((result) => {
-        if (result.data.error) {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: result.data.error,
-          });
-        } else {
-          Swal.fire({
-            icon: "success",
-            title: "อัพเดทโซนเสร็จสมบูรณ์",
-            text: "...",
-          }).then(() => {
-            window.location.href = "/zone";
-          });
+    try {
+      e.preventDefault();
+      const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
+      Swal.fire({
+        title: "แจ้งเตือน",
+        text: "ต้องการที่จะแก้ไขโซนใช่หรือไม่ ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ตกลง",
+        cancelButtonText: "ยกเลิก",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .put(
+              `${import.meta.env.VITE_API_URL}/authen/zone/update/${id}`,
+              {
+                zone_name: zone.zone_name,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${JWT_TOKEN}`,
+                },
+              }
+            )
+            .then(() => {
+              Swal.fire({
+                title: "แจ้งเตือน",
+                text: "แก้ไขโซนสำเร็จ",
+                icon: "success",
+              }).then(() => {
+                window.location.href = "/zone";
+              });
+            })
+            .catch((err) => {
+              return Swal.fire({
+                title: "แจ้งเตือน",
+                text: err,
+                icon: "error",
+              }).then(() => {
+                window.location.href = "/zone";
+              });
+            });
         }
       });
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <>

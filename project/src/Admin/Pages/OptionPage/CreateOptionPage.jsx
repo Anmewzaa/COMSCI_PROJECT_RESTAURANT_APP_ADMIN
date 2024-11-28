@@ -33,17 +33,20 @@ const CreateOptionPage = () => {
       title: "ชื่อรายการย่อยภาษาไทย",
       dataIndex: ["sub_option_name", "thai"],
       key: "option_name_thai",
+      width: "33%",
       render: (item) => <div className="prompt-medium">{item}</div>,
     },
     {
       title: "ชื่อรายการย่อยภาษาไทย",
       dataIndex: ["sub_option_name", "english"],
       key: "option_name_english",
+      width: "33%",
       render: (item) => <div className="prompt-medium">{item}</div>,
     },
     {
       title: "คำสั่ง",
       dataIndex: "",
+      width: "33%",
       render: (_, __, index) => (
         <Button
           className="prompt-semibold"
@@ -63,47 +66,64 @@ const CreateOptionPage = () => {
     setSubOption({ ...subOption, [name]: event.target.value });
   };
   const submitForm = async (e) => {
-    e.preventDefault();
-    if (!(option.thai && option.english && option.sub_option.length !== 0)) {
-      return Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "กรุณากรอกให้ครบถ้วน",
+    try {
+      e.preventDefault();
+      if (!(option.thai && option.english && option.sub_option.length !== 0)) {
+        return Swal.fire({
+          icon: "error",
+          title: "แจ้งเตือน",
+          text: "กรุณากรอกส่วนเสริมอาหารให้ครบถ้วน",
+        });
+      }
+      Swal.fire({
+        title: "แจ้งเตือน",
+        text: "ต้องการที่จะสร้างส่วนเสริมอาหารใช่หรือไม่ ?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ตกลง",
+        cancelButtonText: "ยกเลิก",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
+          axios
+            .post(
+              `${import.meta.env.VITE_API_URL}/authen/option/create`,
+              {
+                option_name_thai: option.thai,
+                option_name_english: option.english,
+                sub_option: option.sub_option,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${JWT_TOKEN}`,
+                },
+              }
+            )
+            .then(() => {
+              Swal.fire({
+                title: "แจ้งเตือน",
+                text: "สร้างส่วนเสริมอาหารสำเร็จ",
+                icon: "success",
+              }).then(() => {
+                window.location.href = "/menu/option";
+              });
+            })
+            .catch((err) => {
+              return Swal.fire({
+                title: "แจ้งเตือน",
+                text: err,
+                icon: "error",
+              }).then(() => {
+                window.location.href = "/menu/option";
+              });
+            });
+        }
       });
+    } catch (err) {
+      console.log(err);
     }
-    const JWT_TOKEN = await localStorage.getItem("PARADISE_LOGIN_TOKEN");
-    await axios
-      .post(
-        `${import.meta.env.VITE_API_URL}/authen/option/create`,
-        {
-          option_name_thai: option.thai,
-          option_name_english: option.english,
-          sub_option: option.sub_option,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${JWT_TOKEN}`,
-          },
-        }
-      )
-      .then((result) => {
-        console.log(result);
-        if (result.data.error) {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: result.data.error,
-          });
-        } else {
-          Swal.fire({
-            icon: "success",
-            title: "สร้างรายการอาหารเสร็จสมบูรณ์",
-            text: "...",
-          }).then(() => {
-            window.location.href = "/menu/option";
-          });
-        }
-      });
   };
   const addSubOption = async () => {
     if (!(subOption.thai && subOption.english)) {
@@ -167,7 +187,8 @@ const CreateOptionPage = () => {
             columns={columns}
             dataSource={option.sub_option}
             bordered
-            pagination={{ pageSize: 3 }}
+            pagination={{ pageSize: 10 }}
+            scroll={{ x: "max-content", y: "calc(50vh)" }}
             title={() => (
               <div style={{ display: "flex", justifyContent: "flex-end" }}>
                 <Button onClick={showModal} className="prompt-semibold">
@@ -185,6 +206,7 @@ const CreateOptionPage = () => {
             footer={(_, { OkBtn }) => (
               <>
                 <Button
+                  size="large"
                   block
                   onClick={() => addSubOption()}
                   className="prompt-semibold"
@@ -198,6 +220,7 @@ const CreateOptionPage = () => {
               <div className="mb-1">
                 <label className="prompt-semibold">รายการย่อยภาษาไทย</label>
                 <Input
+                  size="large"
                   placeholder="รายการย่อยภาษาไทย"
                   block
                   value={subOption.thai}
@@ -208,6 +231,7 @@ const CreateOptionPage = () => {
               <div className="mb-1">
                 <label className="prompt-semibold">รายการย่อยภาษาอังกฤษ</label>
                 <Input
+                  size="large"
                   placeholder="รายการย่อยภาษาอังกฤษ"
                   block
                   value={subOption.english}
@@ -219,7 +243,7 @@ const CreateOptionPage = () => {
           </Modal>
         </div>
         <Button
-          className="prompt-regular"
+          className="prompt-semibold"
           block
           htmlType="submit"
           size={"large"}

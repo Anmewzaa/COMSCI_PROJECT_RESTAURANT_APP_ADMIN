@@ -1,20 +1,19 @@
 /* eslint-disable react/prop-types */
 // Antd
-import {
-  Divider,
-  Steps,
-  Space,
-  Table,
-  Dropdown,
-  Modal,
-  QRCode,
-  Button,
-} from "antd";
+import { Divider, Steps, Table, Modal, QRCode, Button, Tag } from "antd";
+import { QrcodeOutlined } from "@ant-design/icons";
 // react
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { TableContext } from "../Pages/TablePage/TablePage";
 // Image
 import AppLogo from "../../images/app-logo.png";
-import { DeleteOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import {
+  ShoppingCartOutlined,
+  CloseOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
+// Day
+import dayjs from "dayjs";
 // Functions
 import {
   checkbill,
@@ -23,8 +22,14 @@ import {
   deleteOrder,
 } from "../functions/TableFunction";
 
-const OpenTableInfo = ({ item }) => {
+const OpenTableInfo = ({ item, table }) => {
+  // VARIABLE
+  const { refreshData } = useContext(TableContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMenuIds, setSelectedMenuIds] = useState([]);
+  const [current, setCurrent] = useState(0);
+
+  // FUNCTION
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
       const menuIds = selectedRows.map((row) => row._id);
@@ -40,7 +45,7 @@ const OpenTableInfo = ({ item }) => {
       title: "ชื่อ",
       dataIndex: ["menu", "menu_name"],
       key: "name",
-      width: "32%",
+      width: "24%",
       render: (item, record) => {
         if (!record.menu) {
           return <div className="deleted-menu">เมนูที่ถูกลบ</div>;
@@ -52,7 +57,7 @@ const OpenTableInfo = ({ item }) => {
       title: "ตัวเลือกเสริม",
       dataIndex: ["option"],
       key: "price",
-      width: "32%",
+      width: "24%",
       render: (item) => (
         <>
           {item.length > 0 ? (
@@ -72,43 +77,19 @@ const OpenTableInfo = ({ item }) => {
       title: "ราคา (บาท)",
       dataIndex: ["menu", "menu_price"],
       key: "price",
-      width: "32%",
+      width: "24%",
     },
-    // {
-    //   title: "",
-    //   key: "action",
-    //   width: "25%",
-    //   render: (text, record) => (
-    //     <Space size="middle">
-    //       {current != 2 && (
-    //         <>
-    //           <Button
-    //             className="prompt-semibold"
-    //             onClick={() => {
-    //               changeOrderStatus(item._id, current + 2, record._id);
-    //             }}
-    //           >
-    //             ส่งรายการ
-    //           </Button>
-    //           <Button
-    //             className="prompt-semibold"
-    //             danger
-    //             onClick={() => {
-    //               deleteOrder(item._id, record._id).then((result) =>
-    //                 alert(result)
-    //               );
-    //             }}
-    //           >
-    //             <DeleteOutlined />
-    //             ลบ
-    //           </Button>
-    //         </>
-    //       )}
-    //     </Space>
-    //   ),
-    // },
+    {
+      title: "เวลา",
+      dataIndex: ["menu", "updatedAt"],
+      key: "price",
+      width: "24%",
+      render: (updatedAt) => {
+        const formattedTime = dayjs(updatedAt).format("HH:mm:ss");
+        return formattedTime;
+      },
+    },
   ];
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -118,7 +99,6 @@ const OpenTableInfo = ({ item }) => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const [current, setCurrent] = useState(0);
   const onChange = (value) => {
     setCurrent(value);
   };
@@ -151,7 +131,8 @@ const OpenTableInfo = ({ item }) => {
             rowKey={(record) => record}
             columns={columns}
             dataSource={filterOrdersByStatus(1)}
-            pagination={{ pageSize: 5 }}
+            pagination={{ pageSize: 10 }}
+            scroll={{ x: "max-content", y: "calc(50vh)" }}
             title={() => (
               <div className="left-side-container">
                 <Button
@@ -163,12 +144,18 @@ const OpenTableInfo = ({ item }) => {
                   ส่งรายการอาหาร
                 </Button>
                 <Button
-                  className="prompt-semibold"
+                  className="prompt-semibold mr-1"
                   onClick={() => {
-                    deleteOrder(item._id, selectedMenuIds);
+                    changeOrderStatus(item._id, 4, selectedMenuIds);
                   }}
                 >
                   ลบรายการอาหาร
+                </Button>
+                <Button
+                  className="prompt-semibold"
+                  onClick={() => refreshData()}
+                >
+                  รีเฟรช
                 </Button>
               </div>
             )}
@@ -185,7 +172,7 @@ const OpenTableInfo = ({ item }) => {
       ),
     },
     {
-      title: "รายการอาหารที่กำลังทำ",
+      title: "กำลังทำ",
       description: "ขั้นตอนที่ 2",
       content: (
         <>
@@ -198,7 +185,8 @@ const OpenTableInfo = ({ item }) => {
             rowKey={(record) => record}
             columns={columns}
             dataSource={filterOrdersByStatus(2)}
-            pagination={{ pageSize: 5 }}
+            pagination={{ pageSize: 10 }}
+            scroll={{ x: "max-content", y: "calc(50vh)" }}
             title={() => (
               <div className="left-side-container">
                 <Button
@@ -210,12 +198,18 @@ const OpenTableInfo = ({ item }) => {
                   ส่งรายการอาหาร
                 </Button>
                 <Button
-                  className="prompt-semibold"
+                  className="prompt-semibold mr-1"
                   onClick={() => {
-                    deleteOrder(item._id, selectedMenuIds);
+                    changeOrderStatus(item._id, 4, selectedMenuIds);
                   }}
                 >
                   ลบรายการอาหาร
+                </Button>
+                <Button
+                  className="prompt-semibold"
+                  onClick={() => refreshData()}
+                >
+                  รีเฟรช
                 </Button>
               </div>
             )}
@@ -232,7 +226,7 @@ const OpenTableInfo = ({ item }) => {
       ),
     },
     {
-      title: "รายการอาหารที่เสร็จแล้ว",
+      title: "เสร็จแล้ว",
       description: "ขั้นตอนที่ 3",
       content: (
         <>
@@ -240,7 +234,22 @@ const OpenTableInfo = ({ item }) => {
           <Table
             columns={columns}
             dataSource={filterOrdersByStatus(3)}
-            pagination={{ pageSize: 5 }}
+            pagination={{ pageSize: 10 }}
+            scroll={{ x: "max-content", y: "calc(50vh)" }}
+            rowSelection={{
+              type: "checkbox",
+              ...rowSelection,
+            }}
+            title={() => (
+              <div className="left-side-container">
+                <Button
+                  className="prompt-semibold"
+                  onClick={() => refreshData()}
+                >
+                  รีเฟรช
+                </Button>
+              </div>
+            )}
             footer={() => (
               <>
                 <div className="summary-price mb-05">
@@ -267,6 +276,44 @@ const OpenTableInfo = ({ item }) => {
         </>
       ),
     },
+    {
+      title: "ยกเลิก",
+      description: "ขั้นตอนที่ 4",
+      width: "100",
+      content: (
+        <div>
+          <br />
+          <Table
+            rowSelection={{
+              type: "checkbox",
+              ...rowSelection,
+            }}
+            rowKey={(record) => record}
+            columns={columns}
+            dataSource={filterOrdersByStatus(4)}
+            pagination={{ pageSize: 5 }}
+            title={() => (
+              <div className="left-side-container">
+                <Button
+                  className="prompt-semibold"
+                  onClick={() => refreshData()}
+                >
+                  รีเฟรช
+                </Button>
+              </div>
+            )}
+            footer={() => (
+              <>
+                <div className="summary-price mb-05">
+                  <h4>ทั้งหมด</h4>
+                  <h4>{countOrdersByStatus(4)} รายการ</h4>
+                </div>
+              </>
+            )}
+          />
+        </div>
+      ),
+    },
   ];
   return (
     <>
@@ -284,36 +331,32 @@ const OpenTableInfo = ({ item }) => {
           </p>
         </div>
         <div>
-          <Dropdown.Button
-            className="action-drop-btn "
-            menu={{
-              items: [
-                {
-                  key: "1",
-                  label: "แสดง QRCode",
-                  onClick: () => showModal("QRCode Content"),
-                },
-                {
-                  key: "2",
-                  label: "เพิ่มรายการอาหาร",
-                  onClick: () => {
-                    window.open(
-                      `${import.meta.env.VITE_API_CUSTOMER_URL}/order?id=${
-                        item.table_id
-                      }&language=th`
-                    );
-                  },
-                },
-                {
-                  key: "3",
-                  label: "ยกเลิกโต๊ะ",
-                  onClick: () => closeTable(item._id),
-                },
-              ],
-            }}
-          >
-            <p className="prompt-bold">คำสั่ง</p>
-          </Dropdown.Button>
+          <div className="action-drop-btn">
+            <Button
+              onClick={() => showModal("QRCode Content")}
+              icon={<QrcodeOutlined />}
+            >
+              แสดง QR code
+            </Button>
+            <Button
+              icon={<PlusOutlined />}
+              onClick={() =>
+                window.open(
+                  `${import.meta.env.VITE_API_CUSTOMER_URL}/order?id=${
+                    item.table_id
+                  }&language=th`
+                )
+              }
+            >
+              เพิ่มรายการอาหาร
+            </Button>
+            <Button
+              onClick={() => closeTable(item._id)}
+              icon={<CloseOutlined />}
+            >
+              ยกเลิกโต๊ะ
+            </Button>
+          </div>
           <Modal
             title="QR CODE (ใช้สำหรับสแกนเข้าเว็บสั่งอาหาร)"
             open={isModalOpen}

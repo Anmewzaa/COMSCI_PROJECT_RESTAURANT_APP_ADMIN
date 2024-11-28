@@ -69,10 +69,7 @@ const OptionPage = () => {
   const [loadingStatus, setLoadingStatus] = useState(true);
   const [option, setOption] = useState([]);
   const [search, setSearch] = useState("");
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
-  const handleResize = () => {
-    setIsMobile(window.innerWidth < 900);
-  };
+
   const searchFilter = option?.filter((item) => {
     if (search === "") {
       return item;
@@ -91,11 +88,7 @@ const OptionPage = () => {
       });
   };
   useEffect(() => {
-    window.addEventListener("resize", handleResize);
     fetchAPI();
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
   }, []);
   return (
     <>
@@ -116,12 +109,12 @@ const OptionPage = () => {
       </div>
       <div>
         <Table
-          pagination={{ pageSize: 5 }}
           columns={columns}
           dataSource={searchFilter}
           className="form-table-container"
           loading={loadingStatus}
-          scroll={isMobile ? { x: 900 } : null}
+          pagination={{ pageSize: 10 }}
+          scroll={{ x: "max-content", y: "calc(50vh)" }}
         />
       </div>
     </>

@@ -93,6 +93,7 @@ const LoginPage = () => {
               เข้าสู่ระบบ
             </Button>
             <Button
+              onClick={() => submitForm()}
               className="prompt-semibold btn-login-mobile"
               block
               htmlType="submit"
