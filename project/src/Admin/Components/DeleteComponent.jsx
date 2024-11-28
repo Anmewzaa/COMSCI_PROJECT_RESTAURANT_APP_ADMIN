@@ -9,8 +9,8 @@ import { Button } from "antd";
 const DeleteComponent = ({ name, id, destination }) => {
   const formSubmit = () => {
     Swal.fire({
-      title: "ต้องการลบใช่ไหม?",
-      text: "",
+      title: "แจ้งเตือน",
+      text: "ต้องการลบใช่ไหม ?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

@@ -88,8 +88,7 @@ const EditMenuInfoPage = () => {
           menu.describe_english &&
           menu.price &&
           menu.menu_cost &&
-          menu.category_id &&
-          menu.option_id.length > 0
+          menu.category_id
         )
       ) {
         return;

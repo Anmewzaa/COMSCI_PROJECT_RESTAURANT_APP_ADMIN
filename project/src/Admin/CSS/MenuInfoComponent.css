@@ -24,3 +24,10 @@ p {
 .text-container span {
   margin-right: 0.4rem;
 }
+
+@media screen and (max-width: 900px) {
+  .menu-info-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

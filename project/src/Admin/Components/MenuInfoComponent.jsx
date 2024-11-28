@@ -28,13 +28,14 @@ const MenuInfoComponent = ({ menu }) => {
 
   const deleteMenuInfo = (id) => {
     Swal.fire({
-      title: "ต้องการลบใช่ไหม?",
-      text: "You won't be able to revert this!",
+      title: "แจ้งเตือน",
+      text: "ต้องการลบใช่ไหม ?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "ตกลง",
+      cancelButtonText: "ยกเลิก",
     }).then((result) => {
       if (result.isConfirmed) {
         const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
