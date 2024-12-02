@@ -2,10 +2,9 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   margin: 1rem;
-  gap: 0.4rem;
+  gap: 1rem;
 }
 .kitchen-box {
-  /* border: 1px solid #c6c6c6; */
   min-height: 500px;
 }
 .kitchen-header {
@@ -13,16 +12,8 @@
   justify-content: center;
   padding: 1rem;
   font: bold;
-  color: #ffffff;
-}
-.bg-red {
-  background: #f23e3e;
-}
-.bg-yellow {
-  background: #ffd43b;
-}
-.bg-green {
-  background: #a9e34b;
+  margin-bottom: 0.8rem;
+  background: rgb(191, 191, 191);
 }
 
 .kitchen-item .kitchen-card {
@@ -31,12 +22,22 @@
   align-items: center;
   padding: 1rem;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin-bottom: 0.8rem;
 }
 .kitchen-item .kitchen-card .table-number {
-  color: #ffffff;
-  background: linear-gradient(to right, #fd7e14, #fcc419);
+  /* background: linear-gradient(
+    to bottom,
+    rgba(253, 126, 20, 0.1),
+    rgba(252, 196, 25, 0.3)
+  ); */
   padding: 0.4rem 1rem;
 }
 .kitchen-item .kitchen-card .table-option {
   color: gray;
+}
+
+.left-container {
+  display: flex;
+  justify-content: end;
+  margin: 1rem;
 }

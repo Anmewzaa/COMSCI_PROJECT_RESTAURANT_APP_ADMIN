@@ -94,9 +94,12 @@ const MenuInfoComponent = ({ menu }) => {
                 </div>
                 <div className="text-container">
                   <span className="prompt-semibold">หมวดหมู่ :</span>
-                  <p className="prompt-regular">
-                    {`${menu.menu_category_id[0].category_name.thai} (${menu.menu_category_id[0].category_name.english})`}
-                  </p>
+                  {
+                    menu?.menu_category_id?.[0]?.category_name?.thai &&
+                    menu?.menu_category_id?.[0]?.category_name?.english
+                      ? `${menu.menu_category_id[0].category_name.thai} (${menu.menu_category_id[0].category_name.english})`
+                      : "หมวดหมู่ที่ถูกลบ" //
+                  }
                 </div>
                 <div className="text-container">
                   <span className="prompt-semibold">ราคา :</span>

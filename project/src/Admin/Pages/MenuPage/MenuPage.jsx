@@ -178,16 +178,20 @@ const MenuPage = () => {
                 title: "หมวดหมู่",
                 dataIndex: "menu_category_id",
                 width: "16%",
-                render: (text) => (
-                  <div className="prompt-medium">
-                    <>{text[0].category_name.thai}</>
-                  </div>
-                ),
+                render: (text) => {
+                  const categoryName =
+                    text && text.length > 0
+                      ? text[0]?.category_name?.thai
+                      : "หมวดหมู่ที่ถูกลบ";
+                  return <div className="prompt-medium">{categoryName}</div>;
+                },
                 filters: [
                   ...Array.from(
                     new Set(
                       menu.map(
-                        (item) => item.menu_category_id[0].category_name.thai
+                        (item) =>
+                          item.menu_category_id?.[0]?.category_name?.thai ||
+                          "หมวดหมู่ที่ถูกลบ"
                       )
                     )
                   ).map((category) => ({
@@ -196,7 +200,7 @@ const MenuPage = () => {
                   })),
                 ],
                 onFilter: (value, record) =>
-                  record.menu_category_id[0].category_name.thai === value,
+                  record.menu_category_id?.[0]?.category_name?.thai === value,
               },
               {
                 title: "สถานะ",

@@ -31,13 +31,12 @@ const DeleteComponent = ({ name, id, destination }) => {
           )
           .then(() => {
             Swal.fire({
-              title: "Deleted!",
-              text: "Your file has been deleted.",
+              title: "แจ้งเตือน",
+              text: `ลบสำเร็จ`,
               icon: "success",
+            }).then(() => {
+              window.location.replace(`${destination}`);
             });
-          })
-          .then(() => {
-            window.location.replace(`${destination}`);
           });
       }
     });
