@@ -19,7 +19,6 @@ import {
   checkbill,
   closeTable,
   changeOrderStatus,
-  deleteOrder,
 } from "../functions/TableFunction";
 
 const OpenTableInfo = ({ item, table }) => {
@@ -273,6 +272,7 @@ const OpenTableInfo = ({ item, table }) => {
             <ShoppingCartOutlined />
             ชำระเงิน
           </Button>
+          {JSON.stringify(item.table_order)}
         </>
       ),
     },

@@ -9,13 +9,14 @@ import EditComponent from "../../Components/EditComponent";
 import DeleteComponent from "../../Components/DeleteComponent";
 // Antd
 import { Table, Tag, Space, Button, Input } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 
 const columns = [
   {
     title: "ชื่อหมวดหมู่อาหาร",
     dataIndex: "category_name",
     key: "name",
-    width: "25%",
+    width: "33%",
     render: (item) => (
       <div className="prompt-medium">{`${item.thai} (${item.english})`}</div>
     ),
@@ -24,7 +25,7 @@ const columns = [
     title: "วันที่แก้ไขล่าสุด",
     key: "update_date",
     dataIndex: "updatedAt",
-    width: "25%",
+    width: "33%",
     render: (text) => (
       <div className="prompt-bold">
         <Tag>{new Date(text).toLocaleString()}</Tag>
@@ -34,7 +35,7 @@ const columns = [
   {
     title: "",
     key: "action",
-    width: "25%",
+    width: "33%",
     render: (item) => (
       <Space size="middle">
         <EditComponent id={item?.category_id} />
@@ -83,7 +84,7 @@ const CategoriesPage = () => {
           onChange={(e) => setSearch(e.target.value)}
           size="large"
         />
-        <Button size="large">
+        <Button size="large" icon={<PlusOutlined />}>
           <Link to={"create"} className="prompt-semibold">
             เพิ่มหมวดหมู่อาหาร
           </Link>

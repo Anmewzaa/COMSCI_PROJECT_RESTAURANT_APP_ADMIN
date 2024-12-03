@@ -89,14 +89,14 @@ const EditTablePage = () => {
           if (result.data.error) {
             Swal.fire({
               icon: "error",
-              title: "Oops...",
+              title: "แจ้งเตือน",
               text: result.data.error,
             });
           } else {
             Swal.fire({
               icon: "success",
-              title: "แก้ไขโต๊ะเสร็จสมบูรณ์",
-              text: "...",
+              title: "แจ้งเตือน",
+              text: "แก้ไขโต๊ะเสร็จสมบูรณ์",
             }).then(() => {
               window.location.href = "/table";
             });

@@ -6,145 +6,105 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 // Antd
 import { Spin, Statistic, DatePicker, Empty } from "antd";
-// Dayjs
-import dayjs from "dayjs";
+const { RangePicker } = DatePicker;
 // Components
 import IncomeProfit from "../Components/IncomeProfit";
-import MenuChart from "../Components/MenuChart";
 
 const HomePage = () => {
-  const [loading, setLoading] = useState(true);
-  const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
-  const [shopData, setShopData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(dayjs());
-  const [totals, setTotals] = useState({
-    visits: 0,
-    orders: 0,
-    tables: 0,
-  });
-  const fetchAPI = async () => {
-    await axios
-      .get(`${import.meta.env.VITE_API_URL}/authen/shop/getall`, {
+  // VARIABLE
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [staticData, setStaticData] = useState([]);
+  const [totalVisits, setTotalVisits] = useState(0);
+  const [totalIncome, setTotalIncome] = useState(0);
+  const [totalProfit, setTotalProfit] = useState(0);
+
+  // FUNCTION
+  const calculateTotals = (data) => {
+    let totalVisits = 0;
+    let totalIncome = 0;
+    let totalProfit = 0;
+
+    for (const record of data) {
+      for (const info of record.static_info) {
+        totalVisits += info.visits;
+        totalIncome += info.income;
+        totalProfit += info.profit;
+      }
+    }
+
+    return { totalVisits, totalIncome, totalProfit };
+  };
+
+  const handleDateChange = (dates) => {
+    if (dates) {
+      setDateRange([dates[0].toDate(), dates[1].toDate()]);
+    } else {
+      setDateRange([null, null]);
+    }
+  };
+
+  const fetchAPI = () => {
+    const JWT_TOKEN = localStorage.getItem("PARADISE_LOGIN_TOKEN");
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/authen/static/get`, {
         headers: {
           Authorization: `Bearer ${JWT_TOKEN}`,
         },
       })
       .then((data) => {
-        setShopData(data.data.response);
+        const rawData = data.data.response;
+        const filteredData = filterDataByDateRange(rawData, dateRange); // กรองข้อมูลตามช่วงเดือน
+        setStaticData(filteredData);
+
+        const calculatedTotals = calculateTotals(filteredData);
+        setTotalVisits(calculatedTotals.totalVisits);
+        setTotalIncome(calculatedTotals.totalIncome);
+        setTotalProfit(calculatedTotals.totalProfit);
       });
   };
-  const handleDateChange = (date) => {
-    if (!date) {
-      setFilteredData(shopData);
-      setSelectedDate(dayjs());
-      return;
-    }
-    setSelectedDate(date);
 
-    const selectedMonth = date.month();
-    const selectedYear = date.year();
+  const filterDataByDateRange = (data, dateRange) => {
+    if (!dateRange[0] || !dateRange[1]) return data; // ถ้าไม่ได้เลือกช่วงวันที่ ให้คืนข้อมูลทั้งหมด
 
-    const filtered = shopData.filter((item) => {
-      const itemDate = dayjs(item.date);
-      return (
-        itemDate.year() === selectedYear && itemDate.month() === selectedMonth
-      );
+    const [startDate, endDate] = dateRange;
+
+    return data.filter((record) => {
+      const recordDate = new Date(record.static_date); // แปลงวันที่ในข้อมูลเป็น Date object
+      return recordDate >= startDate && recordDate <= endDate; // ตรวจสอบว่าช่วงวันที่อยู่ใน range ที่เลือกหรือไม่
     });
-    setFilteredData(filtered);
-  };
-  const calculateTotals = (data) => {
-    const totalVisits = data.reduce((acc, item) => acc + item.visits, 0);
-    const totalOrders = data.reduce((acc, item) => acc + item.orders, 0);
-    const totalTables = data.reduce((acc, item) => acc + item.tables, 0);
-
-    setTotals({
-      visits: totalVisits,
-      orders: totalOrders,
-      tables: totalTables,
-    });
-
-    setLoading(false);
   };
 
+  // USE EFFECT
   useEffect(() => {
     fetchAPI();
   }, []);
 
-  useEffect(() => {
-    const filtered = shopData.filter((item) => {
-      const itemDate = dayjs(item.date);
-      return (
-        itemDate.year() === selectedDate.year() &&
-        itemDate.month() === selectedDate.month()
-      );
-    });
-    setFilteredData(filtered);
-    calculateTotals(filtered);
-  }, [shopData, selectedDate]);
-
   return (
     <>
-      {loading ? (
-        <>
-          <Spin fullscreen />
-        </>
-      ) : (
-        <>
-          <div className="home-contianer">
-            <div className="home-btn-group mb-1">
-              <DatePicker
-                picker="month"
-                value={selectedDate}
-                onChange={handleDateChange}
-                format="MM/YYYY"
-                className="prompt-bold"
-              />
-            </div>
-            {filteredData.length > 0 ? (
-              <>
-                <div className="static-container mb-1">
-                  <div className="white-container prompt-semibold">
-                    <Statistic title="ลูกค้าทั้งหมด" value={totals.visits} />
-                  </div>
-                  <div className="white-container prompt-semibold">
-                    <Statistic
-                      title="รายการอาหารที่ถูกสั่งทั้งหมด"
-                      value={totals.orders}
-                    />
-                  </div>
-                  <div className="white-container prompt-semibold">
-                    <Statistic
-                      title="จำนวนโต๊ะที่ถูกเปิดทั้งหมด"
-                      value={totals.tables}
-                    />
-                  </div>
-                </div>
-                <div className="chart-container">
-                  <div className="white-container">
-                    {filteredData.length > 0 ? (
-                      <>
-                        <IncomeProfit
-                          value={filteredData}
-                          selectdate={selectedDate}
-                          key={`${selectedDate.year()}-${selectedDate.month()}`}
-                        />
-                      </>
-                    ) : (
-                      <Empty />
-                    )}
-                  </div>
-                  <div className="white-container">
-                    <MenuChart value={filteredData} />
-                  </div>
-                </div>
-              </>
-            ) : (
-              <Empty />
-            )}
+      {/* <div className="container-left">
+        <RangePicker
+          onChange={handleDateChange}
+          format="DD/MM/YYYY"
+          placeholder={["วันที่เริ่ม", "วันที่สิ้นสุด"]}
+          size="large"
+        />
+      </div> */}
+      <div className="white-container">
+        <div className="static-container">
+          <div className="box">
+            <Statistic title="จำนวนลูกค้าทั้งหมด (คน)" value={totalVisits} />
           </div>
-        </>
-      )}
+          <div className="box">
+            <Statistic title="จำนวนรายได้ทั้งหมด (บาท)" value={totalIncome} />
+          </div>
+          <div className="box">
+            <Statistic title="จำนวนกำไรทั้งหมด (บาท)" value={totalProfit} />
+          </div>
+        </div>
+      </div>
+      <div className="white-container">
+        <IncomeProfit value={staticData} selectdate={dateRange} />
+      </div>
     </>
   );
 };

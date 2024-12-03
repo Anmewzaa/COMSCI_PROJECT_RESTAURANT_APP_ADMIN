@@ -4,6 +4,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 // Antd
 import { Button } from "antd";
+// Antd icon
+import { DeleteOutlined } from "@ant-design/icons";
 
 // eslint-disable-next-line react/prop-types
 const DeleteComponent = ({ name, id, destination }) => {
@@ -44,7 +46,11 @@ const DeleteComponent = ({ name, id, destination }) => {
 
   return (
     <>
-      <Button onClick={formSubmit} className="prompt-semibold">
+      <Button
+        onClick={formSubmit}
+        className="prompt-semibold"
+        icon={<DeleteOutlined />}
+      >
         ลบ
       </Button>
     </>

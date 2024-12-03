@@ -1,28 +1,27 @@
 /* eslint-disable react/prop-types */
 // Antd
-import {
-  Button,
-  Modal,
-  Input,
-  Tooltip,
-  Image,
-  Divider,
-  List,
-  Typography,
-} from "antd";
+import { Button, Modal, Input, Tooltip, Image, List } from "antd";
 const { TextArea } = Input;
+import {
+  InfoCircleOutlined,
+  DeleteOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
 // axios
 import axios from "axios";
 // CSS
 import "../CSS/MenuInfoComponent.css";
 // React
-import { useState } from "react";
+import { useState, useContext } from "react";
+// Context
+import { UserContext } from "../Pages/AdminLayout";
 // SWAL
 import Swal from "sweetalert2";
 // React Router Dom
 import { useNavigate } from "react-router-dom";
 
 const MenuInfoComponent = ({ menu }) => {
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -47,8 +46,8 @@ const MenuInfoComponent = ({ menu }) => {
           })
           .then(() => {
             Swal.fire({
-              title: "Deleted!",
-              text: "Your file has been deleted.",
+              title: "แจ้งเตือน",
+              text: "ลบรายการอาหารเสร็จสิ้น",
               icon: "success",
             });
             window.location.replace(`/menu`);
@@ -62,7 +61,11 @@ const MenuInfoComponent = ({ menu }) => {
 
   return (
     <>
-      <Button onClick={() => setOpen(true)} className="prompt-semibold">
+      <Button
+        onClick={() => setOpen(true)}
+        className="prompt-semibold"
+        icon={<InfoCircleOutlined />}
+      >
         รายละเอียด
       </Button>
       <Modal
@@ -92,23 +95,25 @@ const MenuInfoComponent = ({ menu }) => {
                   <span className="prompt-semibold">ชื่อ :</span>
                   <p className="prompt-regular">{`${menu.menu_name.thai} (${menu.menu_name.english})`}</p>
                 </div>
-                <div className="text-container">
+                <div className="text-container ">
                   <span className="prompt-semibold">หมวดหมู่ :</span>
-                  {
-                    menu?.menu_category_id?.[0]?.category_name?.thai &&
-                    menu?.menu_category_id?.[0]?.category_name?.english
-                      ? `${menu.menu_category_id[0].category_name.thai} (${menu.menu_category_id[0].category_name.english})`
-                      : "หมวดหมู่ที่ถูกลบ" //
-                  }
+                  {menu?.menu_category_id?.[0]?.category_name?.thai &&
+                  menu?.menu_category_id?.[0]?.category_name?.english
+                    ? `${menu.menu_category_id[0].category_name.thai} (${menu.menu_category_id[0].category_name.english})`
+                    : "หมวดหมู่ที่ถูกลบ"}
                 </div>
                 <div className="text-container">
                   <span className="prompt-semibold">ราคา :</span>
                   <p className="prompt-regular">{menu.menu_price} บาท</p>
                 </div>
-                <div className="text-container">
-                  <span className="prompt-semibold">ราคาต้นทุน :</span>
-                  <p className="prompt-regular">{menu.menu_cost} บาท</p>
-                </div>
+                {user.user_access_rights === "Admin" && (
+                  <>
+                    <div className="text-container">
+                      <span className="prompt-semibold">ราคาต้นทุน :</span>
+                      <p className="prompt-regular">{menu.menu_cost} บาท</p>
+                    </div>
+                  </>
+                )}
               </div>
               <>
                 <h3 className="mb-1">คำอธิบาย</h3>
@@ -144,18 +149,24 @@ const MenuInfoComponent = ({ menu }) => {
               />
             </div>
             <div className="btn-container">
-              <Button
-                className="mr-1 prompt-semibold"
-                onClick={() => editMenuInfo(menu.menu_id)}
-              >
-                แก้ไข
-              </Button>
-              <Button
-                className="mr-1 prompt-semibold"
-                onClick={() => deleteMenuInfo(menu.menu_id)}
-              >
-                ลบ
-              </Button>
+              {user.user_access_rights === "Admin" && (
+                <>
+                  <Button
+                    className="mr-1 prompt-semibold"
+                    onClick={() => editMenuInfo(menu.menu_id)}
+                    icon={<EditOutlined />}
+                  >
+                    แก้ไข
+                  </Button>
+                  <Button
+                    className="mr-1 prompt-semibold"
+                    onClick={() => deleteMenuInfo(menu.menu_id)}
+                    icon={<DeleteOutlined />}
+                  >
+                    ลบ
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>

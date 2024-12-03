@@ -2,6 +2,8 @@
 import { useNavigate } from "react-router-dom";
 // Antd
 import { Button } from "antd";
+// Antd icon
+import { EditOutlined } from "@ant-design/icons";
 
 // eslint-disable-next-line react/prop-types
 const EditComponent = ({ id }) => {
@@ -11,6 +13,7 @@ const EditComponent = ({ id }) => {
       <Button
         onClick={() => navigate(`edit/${id}`)}
         className="prompt-semibold"
+        icon={<EditOutlined />}
       >
         แก้ไข
       </Button>

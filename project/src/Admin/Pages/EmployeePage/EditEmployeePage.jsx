@@ -108,7 +108,6 @@ const EditEmployeePage = () => {
   };
   return (
     <>
-      {userinfo.user_fullname}
       <Spin fullscreen spinning={spinning} />
       <form onSubmit={submitForm} className="form">
         <div className="form-menu-container">
@@ -204,7 +203,7 @@ const EditEmployeePage = () => {
             border: "none",
           }}
         >
-          อัพเดทหมวดหมู่อาหาร
+          อัพเดทข้อมูลพนักงาน
         </Button>
       </form>
     </>

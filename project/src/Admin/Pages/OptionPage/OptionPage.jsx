@@ -9,6 +9,7 @@ import EditComponent from "../../Components/EditComponent";
 import DeleteComponent from "../../Components/DeleteComponent";
 // Antd
 import { Table, Tag, Space, Button, Input } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 
 const columns = [
   {
@@ -101,7 +102,7 @@ const OptionPage = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Button size="large">
+        <Button size="large" icon={<PlusOutlined />}>
           <Link to={"create"} className="prompt-semibold">
             เพิ่มส่วนเสริมอาหาร
           </Link>

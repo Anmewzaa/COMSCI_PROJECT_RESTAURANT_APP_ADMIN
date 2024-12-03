@@ -51,6 +51,7 @@ const navitems = [
             key: "table-manage",
             label: "จัดการโซน",
             link: "/zone",
+            access_role: "Admin",
           },
         ],
       },
@@ -68,6 +69,7 @@ const navitems = [
             key: "table-history",
             label: "ประวัติครัว",
             link: "/history",
+            access_role: "Admin",
           },
         ],
       },
@@ -105,6 +107,7 @@ const navitems = [
     key: "group2",
     label: "ผู้จัดการ",
     type: "group",
+    access_role: "Admin",
     children: [
       {
         key: "manage-staff",
@@ -131,8 +134,8 @@ const NavBarComponent = () => {
             item.access_role !== user.user_access_rights
           ) {
             Swal.fire({
-              title: "Access Denied",
-              text: "You do not have permission to access this page.",
+              title: "แจ้งเตือน",
+              text: "ไม่มีสิทธิในการเข้าถึงในส่วนนี้",
               icon: "error",
               confirmButtonColor: "#3085d6",
             });

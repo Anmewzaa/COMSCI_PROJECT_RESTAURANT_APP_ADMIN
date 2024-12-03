@@ -1,12 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // CSS
 import "../../CSS/TablePage.css";
+import { Badge } from "antd";
 // axios
 import axios from "axios";
 // React Hook
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 // Context
 export const TableContext = createContext(null);
+import { UserContext } from "../AdminLayout";
 // Antd
 import {
   Drawer,
@@ -17,7 +19,7 @@ import {
   Input,
   Spin,
 } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 // Functions
 import { openTable } from "../../functions/TableFunction";
 // Componentes
@@ -27,6 +29,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const TablePage = () => {
   // VARIABLE
+  const { user } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [currentItem, setCurrentItem] = useState(null);
   const [open, setOpen] = useState(false);
@@ -135,14 +138,15 @@ const TablePage = () => {
               className="cursor mr-1 prompt-semibold"
               value={search}
               size="large"
-              prefix={<SearchOutlined />}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <Button size="large">
-              <Link to={"create"} className="prompt-semibold">
-                เพิ่มโต๊ะ
-              </Link>
-            </Button>
+            {user.user_access_rights === "Admin" && (
+              <Button size="large" icon={<PlusOutlined />}>
+                <Link to={"create"} className="prompt-semibold">
+                  เพิ่มโต๊ะ
+                </Link>
+              </Button>
+            )}
           </div>
           <div>
             {Object.keys(groupedByZone).map((zoneName) => (
@@ -153,7 +157,9 @@ const TablePage = () => {
                     .filter((item) => filteredTables.includes(item))
                     .map((item, index) => (
                       <div key={index}>
-                        <li
+                        <Badge
+                          count={0}
+                          offset={[0, 0]}
                           className={`table-map-item cursor ${
                             item.table_status === "open" && "active"
                           }`}
@@ -168,7 +174,7 @@ const TablePage = () => {
                           <p className="table-sear prompt-medium">
                             {item.table_seat} ที่นั่ง
                           </p>
-                        </li>
+                        </Badge>
                       </div>
                     ))}
                 </ul>
@@ -207,22 +213,26 @@ const TablePage = () => {
                           <p className="prompt-regular">{`(เหมาะสำหรับ ${currentItem.table_seat} ที่นั่ง)`}</p>
                         </div>
                         <div>
-                          <Button
-                            onClick={() => {
-                              navigate(`edit/${currentItem._id}`);
-                            }}
-                            className="prompt-semibold mr-1"
-                          >
-                            แก้ไขโต๊ะ
-                          </Button>
-                          <Button
-                            onClick={() => {
-                              deleteTable(currentItem._id);
-                            }}
-                            className="prompt-semibold"
-                          >
-                            ลบโต๊ะ
-                          </Button>
+                          {user.user_access_rights === "Admin" && (
+                            <>
+                              <Button
+                                onClick={() => {
+                                  navigate(`edit/${currentItem._id}`);
+                                }}
+                                className="prompt-semibold mr-1"
+                              >
+                                แก้ไขโต๊ะ
+                              </Button>
+                              <Button
+                                onClick={() => {
+                                  deleteTable(currentItem._id);
+                                }}
+                                className="prompt-semibold"
+                              >
+                                ลบโต๊ะ
+                              </Button>
+                            </>
+                          )}
                         </div>
                       </div>
                       <div className="menuinfo-opentable prompt-semibold">

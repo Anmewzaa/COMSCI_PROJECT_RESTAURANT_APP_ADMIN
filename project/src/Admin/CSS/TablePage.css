@@ -41,6 +41,7 @@
   border: 3px solid gray;
 }
 .active {
+  background: lightgreen;
   border: 4px solid green;
 }
 .table-map-item p {

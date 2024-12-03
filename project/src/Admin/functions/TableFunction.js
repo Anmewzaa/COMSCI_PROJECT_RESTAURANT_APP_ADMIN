@@ -42,13 +42,38 @@ export const openTable = async (id, table_employee, table_customer_amount) => {
           }
         )
         .then(() => {
-          Swal.fire({
-            title: "แจ้งเตือน",
-            text: "เปิดโต๊ะสำเร็จ",
-            icon: "success",
-          }).then(() => {
-            window.location.reload();
-          });
+          axios.put(
+            `${
+              import.meta.env.VITE_API_URL
+            }/authen/shop/update/visits/${parseInt(table_customer_amount)}`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${JWT_TOKEN}`,
+              },
+            }
+          );
+        })
+        .then(() => {
+          axios
+            .put(
+              `${import.meta.env.VITE_API_URL}/authen/shop/update/tables/1`,
+              {},
+              {
+                headers: {
+                  Authorization: `Bearer ${JWT_TOKEN}`,
+                },
+              }
+            )
+            .then(() => {
+              Swal.fire({
+                title: "แจ้งเตือน",
+                text: "เปิดโต๊ะสำเร็จ",
+                icon: "success",
+              }).then(() => {
+                window.location.reload();
+              });
+            });
         })
         .catch((err) => {
           return Swal.fire({
@@ -64,13 +89,14 @@ export const openTable = async (id, table_employee, table_customer_amount) => {
 };
 export const closeTable = async (id) => {
   Swal.fire({
-    title: "ต้องการที่จะยกเลิกโต๊ะใช่หรือไม่?",
-    text: "You won't be able to revert this!",
+    title: "แจ้งเตือน",
+    text: "ต้องการที่จะยกเลิกโต๊ะใช่หรือไม่?",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
+    confirmButtonText: "ตกลง",
+    cancelButtonText: "ยกเลิก",
   }).then((result) => {
     if (result.isConfirmed) {
       axios
@@ -85,8 +111,8 @@ export const closeTable = async (id) => {
         )
         .then(() => {
           Swal.fire({
-            title: "Success !",
-            text: "Your file has been deleted.",
+            title: "แจ้งเตือน",
+            text: "ยกเลิกโต๊ะสำเร็จ",
             icon: "success",
           }).then(() => {
             window.location.reload();
@@ -94,20 +120,25 @@ export const closeTable = async (id) => {
         })
         .catch((err) => {
           console.log(err);
-          return alert(err);
+          return Swal.fire({
+            title: "แจ้งเตือน",
+            text: "ไม่สามารถยกเลิกโต๊ะได้เนื่องจากมีรายการอาหารแล้ว",
+            icon: "error",
+          });
         });
     }
   });
 };
 export const checkbill = async (id, item) => {
   Swal.fire({
-    title: "ต้องการที่ชำระเงินใช่หรือไม่?",
-    text: "You won't be able to revert this!",
+    title: "แจ้งเตือน",
+    text: "ต้องการที่ชำระเงินใช่หรือไม่ ?",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
+    confirmButtonText: "ตกลง",
+    cancelButtonText: "ยกเลิก",
   }).then((result) => {
     if (result.isConfirmed) {
       axios
@@ -122,8 +153,8 @@ export const checkbill = async (id, item) => {
         )
         .then(() => {
           Swal.fire({
-            title: "Success !",
-            text: "Your file has been deleted.",
+            title: "แจ้งเตือน",
+            text: "ชำระเงินเสร็จสิ้น",
             icon: "success",
           }).then(() => {
             axios
@@ -181,6 +212,20 @@ export const changeOrderStatus = async (id, status, menu_id) => {
             text: "เปลี่ยนสถานะอาหารสำเร็จ",
             icon: "success",
           }).then(() => {
+            if (status === 3) {
+              axios.put(
+                `${import.meta.env.VITE_API_URL}/authen/shop/update/menus}`,
+                {
+                  menu_id: menu_id,
+                  amount: "1",
+                },
+                {
+                  headers: {
+                    Authorization: `Bearer ${JWT_TOKEN}`,
+                  },
+                }
+              );
+            }
             window.location.reload();
           });
         })

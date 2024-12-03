@@ -1,9 +1,10 @@
 // React Hook
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 // Components
 import MenuInfoComponent from "../../Components/MenuInfoComponent";
 // Context
 export const SearchContext = createContext(null);
+import { UserContext } from "../AdminLayout";
 // Axios
 import axios from "axios";
 // CSS
@@ -12,10 +13,12 @@ import "../../CSS/MenuPage.css";
 import { Link } from "react-router-dom";
 // Antd
 import { Input, Button, Table } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 // SWAL
 import Swal from "sweetalert2";
 
 const MenuPage = () => {
+  const { user } = useContext(UserContext);
   const [search, setSearch] = useState("");
   const [menu, setMenu] = useState([]);
   const [loading, setLoading] = useState();
@@ -115,11 +118,15 @@ const MenuPage = () => {
             size={"large"}
             value={search}
           />
-          <Button size={"large"}>
-            <Link to={"create"} className="prompt-semibold">
-              เพิ่มรายการอาหาร
-            </Link>
-          </Button>
+          {user.user_access_rights === "Admin" && (
+            <>
+              <Button size={"large"} icon={<PlusOutlined />}>
+                <Link to={"create"} className="prompt-semibold">
+                  เพิ่มรายการอาหาร
+                </Link>
+              </Button>
+            </>
+          )}
         </div>
         <div>
           <Table
