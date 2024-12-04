@@ -272,7 +272,6 @@ const OpenTableInfo = ({ item, table }) => {
             <ShoppingCartOutlined />
             ชำระเงิน
           </Button>
-          {JSON.stringify(item.table_order)}
         </>
       ),
     },

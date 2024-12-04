@@ -42,38 +42,13 @@ export const openTable = async (id, table_employee, table_customer_amount) => {
           }
         )
         .then(() => {
-          axios.put(
-            `${
-              import.meta.env.VITE_API_URL
-            }/authen/shop/update/visits/${parseInt(table_customer_amount)}`,
-            {},
-            {
-              headers: {
-                Authorization: `Bearer ${JWT_TOKEN}`,
-              },
-            }
-          );
-        })
-        .then(() => {
-          axios
-            .put(
-              `${import.meta.env.VITE_API_URL}/authen/shop/update/tables/1`,
-              {},
-              {
-                headers: {
-                  Authorization: `Bearer ${JWT_TOKEN}`,
-                },
-              }
-            )
-            .then(() => {
-              Swal.fire({
-                title: "แจ้งเตือน",
-                text: "เปิดโต๊ะสำเร็จ",
-                icon: "success",
-              }).then(() => {
-                window.location.reload();
-              });
-            });
+          Swal.fire({
+            title: "แจ้งเตือน",
+            text: "เปิดโต๊ะสำเร็จ",
+            icon: "success",
+          }).then(() => {
+            window.location.reload();
+          });
         })
         .catch((err) => {
           return Swal.fire({
@@ -122,7 +97,7 @@ export const closeTable = async (id) => {
           console.log(err);
           return Swal.fire({
             title: "แจ้งเตือน",
-            text: "ไม่สามารถยกเลิกโต๊ะได้เนื่องจากมีรายการอาหารแล้ว",
+            text: `ไม่สามารถยกเลิกโต๊ะได้เนื่องจากมีรายการอาหารแล้ว${err}`,
             icon: "error",
           });
         });
