@@ -40,7 +40,7 @@ const EditOptionPage = () => {
       render: (item) => <div className="prompt-medium">{item}</div>,
     },
     {
-      title: "ชื่อรายการย่อยภาษาไทย",
+      title: "ชื่อรายการย่อยภาษาอังกฤษ",
       dataIndex: ["sub_option_name", "english"],
       key: "option_name_english",
       width: "33%",
