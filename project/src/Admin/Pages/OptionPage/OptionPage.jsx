@@ -91,6 +91,7 @@ const OptionPage = () => {
   useEffect(() => {
     fetchAPI();
   }, []);
+
   return (
     <>
       <div className="form-input-container">
